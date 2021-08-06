@@ -11,8 +11,11 @@ def createFolders(root):
     directories = ('train', 'test')
     for i in range(2):
         path = os.path.join(root, directories[i])
-        os.mkdir(path)
+        try:
+            os.mkdir(path)
+        except Exception:
+            pass
         print("Created %s directory" %path)
 
 if __name__ == "__main__":
-    createFolders("C:/Users/Radu Baciu/Desktop/asdf")
+    createFolders("splittedData")
