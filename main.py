@@ -8,14 +8,16 @@ import sklearn.metrics
 import os
 
 def createFolders(root):
-    directories = ('train', 'test')
+    print(root)
+    directories = ('splittedData\\train', 'splittedData\\test')
     for i in range(2):
         path = os.path.join(root, directories[i])
+        print(path)
         try:
-            os.mkdir(path)
+            os.makedirs(path)
         except Exception:
             pass
         print("Created %s directory" %path)
 
 if __name__ == "__main__":
-    createFolders("splittedData")
+    createFolders(os.getcwd())
