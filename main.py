@@ -13,6 +13,9 @@ import os
 import shutil
 import fnmatch
 import cv2 as cv
+import seaborn as sns
+from Classes import DataVisualization
+
 
 animalsDataset='C:/animalsDataset'
 
@@ -75,11 +78,30 @@ def loadData(dataDir):
 
     return np.array(data)
         
+def visualizeImage(train,labels):
+    plt.figure(figsize = (5,5))
+    plt.imshow(train[1][0])
+    plt.title(labels[train[0][1]])
+    plt.show()
+
+def checkDatasetBalance(train,labels):
+    l=[]
+    for i in train:
+        l.append(labels[i[1]])
+    sns.set_style('darkgrid')
+    sns.countplot(l)
+
 
 if __name__ == "__main__":
-    createFolders(os.getcwd())
-    splitData()
+    # createFolders(os.getcwd())
+    # splitData()
+
     train=loadData('inputData/train')
     test=loadData('inputData/test')
+
+    labels=['cat','dog']
+
+    checkDatasetBalance(train,labels)
+    visualizeImage(train,labels)
 
 
