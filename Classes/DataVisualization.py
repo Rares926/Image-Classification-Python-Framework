@@ -7,6 +7,7 @@ def visualizeImage(dataset,labels):
     plt.imshow(dataset[1][0])
     plt.title(labels[dataset[0][1]])
     plt.show()
+    plt.close()
 
 
 def checkDatasetBalance(dataset,labels):
@@ -15,5 +16,9 @@ def checkDatasetBalance(dataset,labels):
         l.append(labels[i[1]])
     sns.set_style('darkgrid')
     sns.countplot(l)
+    plt.show()
+    plt.close()
+
+
 
 

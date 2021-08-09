@@ -28,6 +28,7 @@ def splitData(Dataset,label):
         numberOfFiles=len(list)
         # toBeTrained=int(quotient*numberOfFiles)
         # toBeTested=numberOfFiles-toBeTrained
+        
         toBeTrained=100
         numberOfFiles=150
 
@@ -62,13 +63,8 @@ def loadData(dataDir):
                 print(e)
 
 
-    # data=random.sample(data,len(data))   #daca fac asta inainte imi strica datele dar dc?
-    return np.array(data)
-
-    # data=np.random.shuffle(np.array(data))
-    # return np.random.shuffle(np.array(data)) 
-
-    # #nu inteleg dc nu merge chestia asta 
+    np.random.shuffle(np.array(data))
+    return data 
 
 def proccesAndNormalize(train,test,imageSize):
     xTrain = []
@@ -87,11 +83,7 @@ def proccesAndNormalize(train,test,imageSize):
     xTrain=np.array(xTrain)/255
     xTest=np.array(xTest)/255
 
-
-    xTrain.reshape(-1, imageSize, imageSize, 1)
     yTrain = np.array(yTrain)
-
-    xTest.reshape(-1, imageSize, imageSize, 1)
     yTest = np.array(yTest)
 
     return xTrain,yTrain,xTest,yTest

@@ -25,4 +25,3 @@ if __name__ == "__main__":
     dv.checkDatasetBalance(train,labels) 
 
     xTrain,yTrain,xTest,yTest=dp.proccesAndNormalize(train,test,imageSize)
-    print(yTrain)
