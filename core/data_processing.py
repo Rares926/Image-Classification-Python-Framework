@@ -3,7 +3,7 @@ import numpy as np
 import cv2 as cv
 
 # Internal framework imports
-from utils.io import IOHelper
+from utils.io_helper import IOHelper
 from utils.json_helper import JsonHelper
 
 # Typing imports imports
@@ -44,8 +44,8 @@ class DataProcessing:
             number_of_files = len(list)
             to_be_trained = int(quotient * number_of_files)
             to_be_tested = number_of_files - to_be_trained
-            to_be_trained = 300
-            number_of_files = 500
+            #to_be_trained = 300
+            #number_of_files = 500
 
             for photo in range(to_be_trained):
                 source = os.path.join(dataset, label[key]['name'], list[photo])
