@@ -1,3 +1,4 @@
+# from Utils.JSON_helper import build
 from typing import Pattern
 from numpy import testing
 from numpy.core.defchararray import _translate_dispatcher
@@ -6,20 +7,23 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from Classes import DataVisualization as dv
-from Classes import DataProcessing as dp
+from Classes import data_visualization as dv
+from Classes import data_processing as dp
+from Utils import json_helper as jh
 
 
 animalsDataset='C:/animalsDataset'
-labels=['cat','dog']
 imageSize=224
 
 if __name__ == "__main__":
-    dp.createFolders(os.getcwd())
-    dp.splitData(animalsDataset,labels)
 
-    train=dp.loadData('inputData/train')
-    test=dp.loadData('inputData/test')
+    labels=jh.build(animalsDataset)
+    print(labels)
+    dp.createFolders(os.getcwd())
+    dp.splitData(animalsDataset,4/5,labels)
+
+    train=dp.loadData('inputData/train',imageSize,labels)
+    test=dp.loadData('inputData/test',imageSize,labels)
 
     dv.visualizeImage(train,labels)
     dv.checkDatasetBalance(train,labels) 

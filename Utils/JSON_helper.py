@@ -9,11 +9,13 @@ def build(path:str):
         content = {}
         content['name'] = dir_list[i]
         content['uid'] = "class_" + format(i, '03d')
-        result[i] = content
+        result[str(i)] = content
     json_content = json.dumps(result)
+
     with open('data.json', 'w') as outfile:
         json.dump(json_content, outfile)
-    a=0
+
+    return result
 
 
 if __name__ == "__main__":

@@ -4,6 +4,8 @@ import numpy as np
 import cv2 as cv
 from numpy.lib.function_base import append
 import random
+from typing import Dict 
+
 
 def createFolders(root):
     print(root)
@@ -18,13 +20,11 @@ def createFolders(root):
         print("Created %s directory" %path)
 
 
-def splitData(Dataset,label):
+def splitData(Dataset,quotient,label:Dict[str,Dict[str,str]]):
 
-    quotient=4/5  #80/20 split 
-    directories=('cats','dogs')
+    for key in label:
 
-    for i in range(2):
-        list = os.listdir(os.path.join(Dataset,directories[i]))
+        list = os.listdir(os.path.join(Dataset,label[key]["name"])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
         numberOfFiles=len(list)
         # toBeTrained=int(quotient*numberOfFiles)
         # toBeTested=numberOfFiles-toBeTrained
@@ -32,29 +32,28 @@ def splitData(Dataset,label):
         numberOfFiles=150
 
         for photo in range(toBeTrained):
-            source=os.path.join(Dataset,directories[i],list[photo])
-            destination='inputData/train'
+            source=os.path.join(Dataset,label[key]["name"],list[photo])
+            #list[photo][:-4] is good to erase the .jpg in case is needed
+            destination='inputData/train/'+label[key]["uid"]+"P"+str(photo)+'.jpg'
             shutil.copy(source,destination)
 
         for photo in range(toBeTrained,numberOfFiles):
-            source=os.path.join(Dataset,directories[i],list[photo])
-            destination='inputData/test'
+            source=os.path.join(Dataset,label[key]["name"],list[photo])
+            destination='inputData/test/'+label[key]["uid"]+"P"+str(photo)+'.jpg'
             shutil.copy(source,destination)
 
 
-def loadData(dataDir):
+def loadData(dataDir:str,imageSize:float,label:Dict[str,Dict[str,str]]) -> np.array:
 
-    labels=['cat','dog']
-    imageSize=224
 
     data=[]
     
-    for label in labels:
+    for key in label:
         path=os.path.join(dataDir) #nu are sens acum dar o sa aiba dupa ce schimbam putin implementarile 
-        classNumber=labels.index(label)  #luam clasa in dataset ca si indicele acesteia din labels
+        classNumber=int(key)  #luam clasa in dataset ca si indicele acesteia din labels
         for image in os.listdir(path): #parcurge pe rand toate pozele din folderul dat 
             try:
-                if label in image:
+                if label[key]["uid"] in image:
                     imgArr=cv.imread(os.path.join(path,image))[...,::-1] #converteste imagina din BGR in RGB 
                     arrResized=cv.resize(imgArr,(imageSize,imageSize)) #ii da resize dupa marimile dorite 
                     data.append([arrResized,classNumber])
@@ -62,15 +61,12 @@ def loadData(dataDir):
                 print(e)
 
 
-    # data=random.sample(data,len(data))   #daca fac asta inainte imi strica datele dar dc?
-    return np.array(data)
+    np.random.shuffle(np.array(data))
+    return data
 
-    # data=np.random.shuffle(np.array(data))
-    # return np.random.shuffle(np.array(data)) 
 
-    # #nu inteleg dc nu merge chestia asta 
 
-def proccesAndNormalize(train,test,imageSize):
+def proccesAndNormalize(train:np.ndarray,test:np.ndarray,imageSize:float):
     xTrain = []
     yTrain = []
     xTest = []
@@ -87,11 +83,7 @@ def proccesAndNormalize(train,test,imageSize):
     xTrain=np.array(xTrain)/255
     xTest=np.array(xTest)/255
 
-
-    xTrain.reshape(-1, imageSize, imageSize, 1)
     yTrain = np.array(yTrain)
-
-    xTest.reshape(-1, imageSize, imageSize, 1)
     yTest = np.array(yTest)
 
     return xTrain,yTrain,xTest,yTest

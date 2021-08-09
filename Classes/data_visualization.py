@@ -5,7 +5,7 @@ import seaborn as sns
 def visualizeImage(dataset,labels):
     plt.figure(figsize = (5,5))
     plt.imshow(dataset[1][0])
-    plt.title(labels[dataset[0][1]])
+    plt.title(labels[str(dataset[0][1])]["name"])
     plt.show()
     plt.close()
 
@@ -13,7 +13,8 @@ def visualizeImage(dataset,labels):
 def checkDatasetBalance(dataset,labels):
     l=[]
     for i in dataset:
-        l.append(labels[i[1]])
+        l.append(labels[str(i[1])]["name"])
+
     sns.set_style('darkgrid')
     sns.countplot(l)
     plt.show()
