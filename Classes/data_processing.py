@@ -60,8 +60,9 @@ def loadData(dataDir:str,imageSize:float,label:Dict[str,Dict[str,str]]) -> np.ar
             except Exception as e:
                 print(e)
 
+    data=np.array(data)
+    np.random.shuffle(data)
 
-    np.random.shuffle(np.array(data))
     return data
 
 
