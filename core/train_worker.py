@@ -11,9 +11,15 @@ class TrainWorker:
     
     def create_model(self, labels):
         self.model = tf.keras.models.Sequential([
-            tf.keras.layers.Conv2D(32, (5, 5), padding='same', input_shape=(224, 224, 3)),
+            tf.keras.layers.Conv2D(16, (3, 3), padding='same', input_shape=(224, 224, 3)),
             tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(64, (5, 5), padding='same'),
+            tf.keras.layers.Conv2D(32, (3, 3), padding='same'),
+            tf.keras.layers.MaxPool2D((2,2)),
+            tf.keras.layers.Conv2D(64, (3, 3), padding='same'),
+            tf.keras.layers.MaxPool2D((2,2)),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same'),
+            tf.keras.layers.MaxPool2D((2,2)),
+            tf.keras.layers.Conv2D(64, (3, 3), padding='same'),
             tf.keras.layers.MaxPool2D((2,2)),
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(128, activation='relu'),
