@@ -10,7 +10,7 @@ import os
 from Classes import data_visualization as dv
 from Classes import data_processing as dp
 from Utils import json_helper as jh
-
+from Classes import training
 
 animalsDataset='C:/animalsDataset'
 imageSize=224
@@ -18,7 +18,6 @@ imageSize=224
 if __name__ == "__main__":
 
     labels=jh.build(animalsDataset)
-    print(labels)
     dp.createFolders(os.getcwd())
     dp.splitData(animalsDataset,4/5,labels)
 
@@ -29,3 +28,6 @@ if __name__ == "__main__":
     dv.checkDatasetBalance(train,labels) 
 
     xTrain,yTrain,xTest,yTest=dp.proccesAndNormalize(train,test,imageSize)
+
+    training.createAndRunModel(labels,xTrain,yTrain,xTest,yTest,imageSize)
+

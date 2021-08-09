@@ -28,8 +28,8 @@ def splitData(Dataset,quotient,label:Dict[str,Dict[str,str]]):
         numberOfFiles=len(list)
         # toBeTrained=int(quotient*numberOfFiles)
         # toBeTested=numberOfFiles-toBeTrained
-        toBeTrained=100
-        numberOfFiles=150
+        toBeTrained=300
+        numberOfFiles=500
 
         for photo in range(toBeTrained):
             source=os.path.join(Dataset,label[key]["name"],list[photo])
@@ -62,8 +62,9 @@ def loadData(dataDir:str,imageSize:float,label:Dict[str,Dict[str,str]]) -> np.ar
 
     data=np.array(data)
     np.random.shuffle(data)
-
     return data
+
+    # return np.array(data)
 
 
 
@@ -81,11 +82,15 @@ def proccesAndNormalize(train:np.ndarray,test:np.ndarray,imageSize:float):
         xTest.append(feature)
         yTest.append(label)
     
+
     xTrain=np.array(xTrain)/255
     xTest=np.array(xTest)/255
 
-    yTrain = np.array(yTrain)
-    yTest = np.array(yTest)
+    xTrain.reshape(-1,imageSize,imageSize,1)
+    xTest.reshape(-1,imageSize,imageSize,1)
+
+    yTrain = np.array(yTrain)/255
+    yTest = np.array(yTest)/255
 
     return xTrain,yTrain,xTest,yTest
 
