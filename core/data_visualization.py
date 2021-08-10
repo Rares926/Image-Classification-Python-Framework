@@ -13,7 +13,7 @@ class DataVisualization:
     @staticmethod
     def visualizeImage(dataset, labels):
         plt.figure(figsize = (5,5))
-        plt.imshow(dataset[1][0])
+        plt.imshow(dataset[0][0])
         plt.title(labels[str(dataset[0][1])]['name'])
         plt.show()
         plt.close()

@@ -45,8 +45,8 @@ def run():
         parser.add_argument("--training_workspace_dir", "-t", required=True, help="The path of the training workspace root dir")
         args = parser.parse_args()
 
-        yolotftrainer = ClassifierTrainer()
-        yolotftrainer.do_train(args.dataset_root_dir, args.training_workspace_dir)
+        trainer = ClassifierTrainer()
+        trainer.do_train(args.dataset_root_dir, args.training_workspace_dir)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()

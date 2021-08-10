@@ -11,22 +11,29 @@ class TrainWorker:
     
     def create_model(self, labels):
         self.model = tf.keras.models.Sequential([
-            tf.keras.layers.Conv2D(16, (3, 3), padding='same', input_shape=(224, 224, 3)),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(32, (3, 3), padding='same'),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(64, (3, 3), padding='same'),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(128, (3, 3), padding='same'),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(64, (3, 3), padding='same'),
-            tf.keras.layers.MaxPool2D((2,2)),
+            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.Dropout(0.2),
             tf.keras.layers.Dense(len(labels), activation='softmax')
         ])
 
-        loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+        loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
 
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
