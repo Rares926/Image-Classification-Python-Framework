@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+import datetime
 # Internal framework imports
 
 # Typing imports imports
@@ -45,8 +45,13 @@ class TrainWorker:
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
-        self.model.fit(x_train, y_train, epochs=epochs)
+        workspace=workspace+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
+
+        self.model.fit(x_train, y_train, epochs=epochs,callbacks=[tensorboard_callback])
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
+        
         print('\nTest loss:', test_loss)
         print('\nTest accuracy:', test_acc)
