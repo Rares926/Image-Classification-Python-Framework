@@ -41,7 +41,7 @@ class TrainWorker:
                 loss=loss_fn,
                 metrics=['accuracy'])
 
-    def train(self, x_train, y_train, x_test, y_test, epochs = 10):
+    def train(self, workspace, x_train, y_train, x_test, y_test, epochs = 10):
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 

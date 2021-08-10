@@ -38,23 +38,23 @@ class DataProcessing:
             IOHelper.create_directory(output_path, True)
 
     @staticmethod
-    def splitData(dataset, quotient, label: Dict[str,Dict[str,str]]):
+    def splitData(dataset, workspace, quotient, label: Dict[str,Dict[str,str]]):
         for key in label:
             list = os.listdir(os.path.join(dataset, label[key]['name'])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
             number_of_files = len(list)
             to_be_trained = int(quotient * number_of_files)
-            to_be_tested = number_of_files - to_be_trained
+            #to_be_tested = number_of_files - to_be_trained
             #to_be_trained = 300
             #number_of_files = 500
 
             for photo in range(to_be_trained):
                 source = os.path.join(dataset, label[key]['name'], list[photo])
-                destination = 'inputData/train/' + label[key]['uid'] + 'P' + str(photo) + '.jpg'
+                destination = workspace + '/inputData/train/' + label[key]['uid'] + 'P' + str(photo) + '.jpg'
                 IOHelper.copyfile(source, destination)
 
             for photo in range(to_be_trained, number_of_files):
                 source = os.path.join(dataset, label[key]['name'], list[photo])
-                destination = 'inputData/test/' + label[key]['uid'] + 'P' + str(photo) + '.jpg'
+                destination = workspace + '/inputData/test/' + label[key]['uid'] + 'P' + str(photo) + '.jpg'
                 IOHelper.copyfile(source, destination)
 
     @staticmethod

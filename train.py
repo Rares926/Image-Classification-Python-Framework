@@ -19,11 +19,14 @@ class ClassifierTrainer():
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         labels = DataProcessing.build_labels(dataset_root_dir)
-        DataProcessing.createFolders(os.getcwd())
-        DataProcessing.splitData(dataset_root_dir, 4/5, labels)
+        DataProcessing.createFolders(training_workspace_dir)
+        DataProcessing.splitData(dataset_root_dir, training_workspace_dir, 4/5, labels)
 
-        train = DataProcessing.loadData('inputData/train', ClassifierTrainer.NETWORK_SIZE, labels)
-        test = DataProcessing.loadData('inputData/test', ClassifierTrainer.NETWORK_SIZE, labels)
+        train_location = training_workspace_dir + '/inputData/train'
+        test_location = training_workspace_dir + '/inputData/test'
+
+        train = DataProcessing.loadData(train_location, ClassifierTrainer.NETWORK_SIZE, labels)
+        test = DataProcessing.loadData(test_location, ClassifierTrainer.NETWORK_SIZE, labels)
 
         DataVisualization.visualizeImage(train, labels)
         DataVisualization.checkDatasetBalance(train, labels) 
@@ -33,7 +36,7 @@ class ClassifierTrainer():
         print("Starting training worker...")
         train_worker = TrainWorker()
         train_worker.create_model(labels)
-        train_worker.train(x_train, y_train, x_test, y_test)
+        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
 
 
 def run():
