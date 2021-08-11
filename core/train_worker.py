@@ -52,6 +52,7 @@ class TrainWorker:
             raise Exception("The model must be created in order to be used!")
 
         checkpoint_path = workspace+"/checkpoints/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"/cp.ckpt"
+        
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
                                                          save_weights_only=True,
                                                          verbose=1)
