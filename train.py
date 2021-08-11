@@ -1,5 +1,6 @@
 import os
 import sys
+import tensorflow as tf
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 
@@ -34,7 +35,33 @@ class ClassifierTrainer():
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        train_worker = TrainWorker()
+        model = tf.keras.models.Sequential([
+            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(len(labels), activation='softmax')
+        ])
+        augmentations = tf.keras.models.Sequential([
+            tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
+            tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
+        ])
+        train_worker = TrainWorker(model, augmentations)
         train_worker.create_model(labels)
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
 
