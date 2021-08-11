@@ -4,6 +4,7 @@ import os
 
 # Internal framework imports
 
+from utils.io_helper import IOHelper
 # Typing imports imports
 
 
@@ -51,9 +52,15 @@ class TrainWorker:
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
-        checkpoint_path = workspace+"/checkpoints/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"/cp.ckpt"
+
+        checkpoint_path = os.path.join(workspace,"checkpoints")
+        IOHelper.create_directory(checkpoint_path)
+
         
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"{epoch:03G}cp.h5",
+                                                         save_best_only=False,
+                                                         save_freq='epoch',
+                                                         monitor='val_loss',
                                                          save_weights_only=True,
                                                          verbose=1)
 
