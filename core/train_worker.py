@@ -1,7 +1,9 @@
 import tensorflow as tf
+import datetime
+import os
 
 # Internal framework imports
-
+from utils.io_helper import IOHelper
 # Typing imports imports
 
 
@@ -49,23 +51,17 @@ class TrainWorker:
                 metrics=['accuracy'])
 
     def train(self, workspace, x_train, y_train, x_test, y_test, epochs = 10):
-<<<<<<< Updated upstream
-        if self.model is None:
-            raise Exception("The model must be created in order to be used!")
-
-        self.model.fit(x_train, y_train, epochs=epochs)
-=======
 
         checkpoint_path = os.path.join(workspace,"checkpoints")
         IOHelper.create_directory(checkpoint_path)
 
         
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"{epoch:03G}cp.h5",
-                                                         save_best_only=False,
-                                                         save_freq='epoch',
-                                                         monitor='val_loss',
-                                                         save_weights_only=True,
-                                                         verbose=1)
+            save_best_only=False,
+            save_freq='epoch',
+            monitor='val_loss',
+            save_weights_only=True,
+            verbose=1)
 
 
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -73,7 +69,6 @@ class TrainWorker:
 
 
         self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback, cp_callback])
->>>>>>> Stashed changes
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
         print('\nTest loss:', test_loss)
