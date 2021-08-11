@@ -28,3 +28,11 @@ class DataVisualization:
         sns.countplot(l)
         plt.show()
         plt.close()
+
+    @staticmethod
+    def showImage(image, image_class,prob):
+        plt.figure(figsize = (5,5))
+        plt.imshow(image.astype("uint8"))
+        plt.title("Image class {} probability {}".format(image_class,prob))
+        plt.show()
+        plt.close()

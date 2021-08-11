@@ -35,7 +35,7 @@ class ClassifierTrainer():
 
         print("Starting training worker...")
         train_worker = TrainWorker()
-        train_worker.create_model(labels)
+        train_worker.create_model(len(labels))
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
 
 

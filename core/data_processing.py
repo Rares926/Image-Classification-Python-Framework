@@ -71,6 +71,7 @@ class DataProcessing:
                 try:
                     if labels[key]['uid'] in image:
                         img_arr = cv.imread(os.path.join(path, image))[...,::-1] #converteste imagina din BGR in RGB 
+                        #conditionam resize ul 
                         arr_resized = cv.resize(img_arr, (image_size, image_size)) #ii da resize dupa marimile dorite 
                         data.append([arr_resized, class_number])
                 except Exception as e:

@@ -12,8 +12,10 @@ class TrainWorker:
     def __init__(self):
         self.model = None
     
-    def create_model(self, labels):
+
+    def create_model(self, labels_size):
         self.model = tf.keras.models.Sequential([
+            #model de aug
             tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.MaxPool2D((2, 2)),
@@ -33,7 +35,7 @@ class TrainWorker:
             tf.keras.layers.Dense(128, activation='relu'),
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dropout(0.2),
-            tf.keras.layers.Dense(len(labels), activation='softmax')
+            tf.keras.layers.Dense(labels_size, activation='softmax')
         ])
 
         self.model.summary()
@@ -57,7 +59,7 @@ class TrainWorker:
         IOHelper.create_directory(checkpoint_path)
 
         
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"{epoch:03G}cp.h5",
+        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"cp-{epoch:03G}.h5",
                                                          save_best_only=False,
                                                          save_freq='epoch',
                                                          monitor='val_loss',
