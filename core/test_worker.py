@@ -15,9 +15,9 @@ class TestWorker:
     def __init__(self):
         self.model = None
     
-    def create_model(self, classes):
+    def create_model(self, nr_classes):
         train_worker = TrainWorker()
-        train_worker.create_model(classes)
+        train_worker.create_model(nr_classes)
         self.model=train_worker.model # asta ar putea fi mutata si in constructor cred
 
 
