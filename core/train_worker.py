@@ -62,7 +62,7 @@ class TrainWorker:
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
 
 
-        self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback,cp_callback])
+        self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback, cp_callback])
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
         

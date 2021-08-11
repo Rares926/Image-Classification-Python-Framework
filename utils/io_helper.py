@@ -116,7 +116,14 @@ class IOHelper:
         if IOHelper.file_exists(file_path):
             os.remove(file_path)
         else:
-            print("Cannot remove file bacause doesn't exist: ", file_path)
+            print("Cannot remove file because it doesn't exist: ", file_path)
+
+    @staticmethod
+    def deletedirectory(dir_path: str) -> None:
+        if IOHelper.dir_exists(dir_path):
+            shutil.rmtree(dir_path)
+        else:
+            print("Cannot delete directory because it doesn't exist ", dir_path)
     
     @staticmethod
     def get_path_leaf(path: str) -> str:
@@ -131,3 +138,5 @@ class IOHelper:
     def is_image_file(file_path: str) -> bool:
         extension = IOHelper.get_extension(file_path)
         return extension.lower() in IOHelper.IMAGE_EXTENSIONS
+    
+    #TODO : directory recursive delete

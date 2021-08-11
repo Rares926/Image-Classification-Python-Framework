@@ -15,10 +15,10 @@ class DataProcessing:
         pass
     
     @staticmethod
-    def build_labels(path: str):
+    def build_labels(dataset_root_dir: str, training_workspace_dir: str):
         labels = {}
 
-        dir_list = IOHelper.get_subdirs(path)
+        dir_list = IOHelper.get_subdirs(dataset_root_dir)
         count = len(dir_list)
         
         for i in range(count):
@@ -27,11 +27,12 @@ class DataProcessing:
             content['uid'] = "class_" + format(i, '03d')
             labels[str(i)] = content
         
-        JsonHelper.write_json('data.json', labels)
+        JsonHelper.write_json(os.path.join(training_workspace_dir, 'data.json'), labels)
         return labels
 
     @staticmethod
     def createFolders(root):
+        IOHelper.deletedirectory(os.path.join(root,'inputData'))
         directories = ('inputData\\train', 'inputData\\test')
         for directory in directories:
             output_path = os.path.join(root, directory)
