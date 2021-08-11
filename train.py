@@ -1,5 +1,6 @@
 import os
 import sys
+from utils.io_helper import IOHelper
 import tensorflow as tf
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
@@ -19,6 +20,7 @@ class ClassifierTrainer():
         pass
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
+        IOHelper.create_directory(training_workspace_dir)
         labels = DataProcessing.build_labels(dataset_root_dir, training_workspace_dir)
         DataProcessing.createFolders(training_workspace_dir)
         DataProcessing.splitData(dataset_root_dir, training_workspace_dir, 4/5, labels)

@@ -1,10 +1,8 @@
-from time import process_time
 import tensorflow as tf
 import cv2 as cv
 import numpy as np
 import os
 
-from tensorflow.python.framework import indexed_slices 
 # Internal framework imports
 from train import TrainWorker
 from core.data_visualization import DataVisualization
@@ -19,7 +17,6 @@ class TestWorker:
         train_worker = TrainWorker()
         train_worker.create_model(nr_classes)
         self.model=train_worker.model # asta ar putea fi mutata si in constructor cred
-
 
     def procces_image(self,image_path,image_size):
         image=cv.imread(image_path)[...,::-1]
@@ -36,9 +33,7 @@ class TestWorker:
 
         return np.array(data)
 
-
     def load_checkpoint(self,checkpoint_path):
-
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
@@ -46,10 +41,8 @@ class TestWorker:
         self.model.load_weights(checkpoint_path)
 
     def evaluate_model(self,test_images,test_labels):
-
         loss, acc = self.model.evaluate(test_images, test_labels, verbose=2)
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
-
 
     def test_image(self,image_path,image_size): 
         img_names = os.listdir(image_path)
@@ -72,12 +65,4 @@ class TestWorker:
                 percent=[result[0,indexes_list[index]] for index in range(len(indexes_list))]
                 print(list(zip(img_names,indexes_list,percent)))
                 # for index in range(len(indexes_list)):
-                #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[0,indexes_list[index]]))
-
-
-    def test(self, workspace, x_train, y_train, x_test, y_test, epochs = 10):
-        
-        if self.model is None:
-            raise Exception("The model must be created in order to be used!")
-        
-  
+                #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[0,indexes_list[index]]))   

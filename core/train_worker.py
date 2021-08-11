@@ -9,17 +9,16 @@ from utils.io_helper import IOHelper
 
 class TrainWorker:
     def __init__(self, model_layers, augment_layers = None):
+        self.inner_model = model_layers
         self.model = model_layers
         self.augments = augment_layers
 
     def create_model(self, labels_size):
         self.model = tf.keras.models.Sequential([
             self.augments,
-            self.model,
+            self.inner_model,
             tf.keras.layers.Dense(labels_size, activation='softmax')
         ])
-
-        self.model.summary()
 
         loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
 
@@ -29,17 +28,13 @@ class TrainWorker:
                 loss=loss_fn,
                 metrics=['accuracy'])
 
-
     def train(self, workspace, x_train, y_train, x_test, y_test, epochs = 10):
-
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
-
 
         checkpoint_path = os.path.join(workspace,"checkpoints")
         IOHelper.create_directory(checkpoint_path)
 
-        
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"cp-{epoch:03G}.h5",
                                                          save_best_only=False,
                                                          save_freq='epoch',
@@ -47,10 +42,8 @@ class TrainWorker:
                                                          save_weights_only=True,
                                                          verbose=1)
 
-
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
-
 
         self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback, cp_callback])
 
