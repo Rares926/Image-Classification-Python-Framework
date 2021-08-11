@@ -51,7 +51,7 @@ class TestWorker:
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
 
 
-    def test_image(self,image_path,image_size,batchsize=1): 
+    def test_image(self,image_path,image_size): 
         img_names = os.listdir(image_path)
         data=self.procces_folder(img_names,image_path,image_size)
 
