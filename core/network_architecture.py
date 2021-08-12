@@ -6,14 +6,14 @@ import tensorflow as tf
 
 class ModelArchitecture:
 
-    def __init__(self, len=224, wid=224, ch=3):
+    def __init__(self, len:float=224, wid:float=224, ch:int=3):
         self.input_shape=(len, wid, ch) # length,width,channels
         self.inner_model=None
         self.augments=None 
         self.model = tf.keras.models.Sequential()
 
 
-    def set_model(self, labels_size ,augumentation_layer=0):
+    def set_model(self, labels_size:int ,augumentation_layer:int=0):
 
         self.inner_model = [
             tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),

@@ -1,6 +1,7 @@
 import tensorflow as tf
 import datetime
 import os
+import numpy as np 
 
 # Internal framework imports
 from utils.io_helper import IOHelper
@@ -11,7 +12,7 @@ class TrainWorker:
     def __init__(self,model):
         self.model=model
 
-    def train(self, workspace, x_train, y_train, x_test, y_test, epochs = 10):
+    def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array, epochs:int = 10):
         loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
 
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)

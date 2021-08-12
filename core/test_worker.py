@@ -14,13 +14,13 @@ class TestWorker:
     def __init__(self,model):
         self.model = model
     
-    def procces_image(self,image_path,image_size):
+    def procces_image(self,image_path:str,image_size:float):
         image=cv.imread(image_path)[...,::-1]
         image = cv.resize(image, (image_size, image_size))
         image=image/255.0
         return image
 
-    def procces_folder(self,img_names,folder_path,image_size):
+    def procces_folder(self,img_names:str,folder_path:str,image_size:float):
         data=[]
         for name in img_names:
             tmp_path=os.path.join(folder_path,name)
@@ -29,7 +29,7 @@ class TestWorker:
 
         return np.array(data)
 
-    def load_checkpoint(self,checkpoint_path):
+    def load_checkpoint(self,checkpoint_path:str):
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
@@ -40,7 +40,7 @@ class TestWorker:
         loss, acc = self.model.evaluate(test_images, test_labels, verbose=2)
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
 
-    def test_image(self,image_path,image_size): 
+    def test_image(self,image_path:str,image_size:float): 
         img_names = os.listdir(image_path)
         data=self.procces_folder(img_names,image_path,image_size)
 

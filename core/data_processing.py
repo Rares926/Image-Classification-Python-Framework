@@ -39,7 +39,7 @@ class DataProcessing:
             IOHelper.create_directory(output_path, True)
 
     @staticmethod
-    def splitData(dataset, workspace, quotient, label: Dict[str,Dict[str,str]]):
+    def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
         for key in label:
             list = os.listdir(os.path.join(dataset, label[key]['name'])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
             # number_of_files = len(list)
