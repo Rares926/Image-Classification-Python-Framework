@@ -8,30 +8,27 @@ from utils.io_helper import IOHelper
 
 
 class TrainWorker:
-    def __init__(self, input_dims, model_layers, augment_layers = None):
-        self.inner_model = model_layers
-        self.augments = augment_layers
-        self.input_shape = input_dims
-        self.model = tf.keras.models.Sequential()
+    def __init__(self,model):
+        self.model=model
 
-    def create_model(self, labels_size):
-        self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
-        if self.augments is not None:
-            for aug_layer in self.augments:
-                self.model.add(aug_layer)
+    # def create_model(self, labels_size):
+    #     self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
+    #     if self.augments is not None:
+    #         for aug_layer in self.augments:
+    #             self.model.add(aug_layer)
 
-        for inner_layer in self.inner_model:
-            self.model.add(inner_layer)
+    #     for inner_layer in self.inner_model:
+    #         self.model.add(inner_layer)
 
-        self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
+    #     self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
 
-        loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
+    #     loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
 
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    #     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
-        self.model.compile(optimizer=optimizer,
-                loss=loss_fn,
-                metrics=['accuracy'])
+    #     self.model.compile(optimizer=optimizer,
+    #             loss=loss_fn,
+    #             metrics=['accuracy'])
 
     def train(self, workspace, x_train, y_train, x_test, y_test, epochs = 10):
         if self.model is None:

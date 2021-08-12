@@ -9,7 +9,7 @@ from jsonargparse.util import usage_and_exit_error_handler
 from core.data_visualization import DataVisualization
 from core.data_processing import DataProcessing
 from core.train_worker import TrainWorker
-
+from core.network_architecture import ModelArchitecture
 # Typing imports imports
 
 
@@ -40,34 +40,13 @@ class ClassifierTrainer():
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        model = [
-            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.2),
+        model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
 
-            tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.2),
+        model=model_architurecture.set_model(len(labels),1)
 
-            tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.2),
+        train_worker = TrainWorker(model)
 
-            tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Dropout(0.2)
-        ]
-        augmentations =[
-            tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
-            tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
-        ]
-        input_dims = (self.length, self.width, self.channels) # length,width,channels
-        train_worker = TrainWorker(input_dims, model, augmentations)
-        train_worker.create_model(len(labels))
+        # train_worker.create_model(len(labels))
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
 
 
