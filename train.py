@@ -16,9 +16,9 @@ from core.train_worker import TrainWorker
 class ClassifierTrainer():
     NETWORK_SIZE = 224
 
-    def __init__(self, len, wid, ch):
-        self.length = len
-        self.width = wid
+    def __init__(self, len, wid, ch=3):
+        self.length = int(len)
+        self.width = int(wid)
         self.channels = ch
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):

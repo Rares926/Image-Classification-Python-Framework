@@ -10,11 +10,36 @@ from core.data_visualization import DataVisualization
 
 
 class TestWorker:
+    NETWORK_SIZE = 224
+
     def __init__(self):
         self.model = None
     
     def create_model(self, nr_classes):
-        train_worker = TrainWorker()
+        NETWORK_SIZE = 224
+        model = [
+            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.Dropout(0.2)
+        ]
+        input_dims = (TestWorker.NETWORK_SIZE, TestWorker.NETWORK_SIZE, 3)
+        train_worker = TrainWorker(input_dims, model)
         train_worker.create_model(nr_classes)
         self.model=train_worker.model # asta ar putea fi mutata si in constructor cred
 
@@ -61,8 +86,9 @@ class TestWorker:
 
             else:
                 result=self.model.predict(data,batch_size=len(img_names))
+                print(result)
                 indexes_list=[np.argmax(i) for i in result]
-                percent=[result[0,indexes_list[index]] for index in range(len(indexes_list))]
+                percent=[result[index,indexes_list[index]] for index in range(len(indexes_list))]
                 print(list(zip(img_names,indexes_list,percent)))
                 # for index in range(len(indexes_list)):
-                #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[0,indexes_list[index]]))   
+                #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[index,indexes_list[index]]))   
