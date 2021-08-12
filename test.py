@@ -5,7 +5,7 @@ from jsonargparse.util import usage_and_exit_error_handler
 
 # Internal framework imports
 from core.test_worker import TestWorker
-
+from core.network_architecture import ModelArchitecture
 # Typing imports imports
 
 
@@ -17,8 +17,11 @@ class ModelTester():
     
     def do_test(self, checkpoint_root_dir: str, image_root_dir: str):
 
-        testWorker=TestWorker()
-        testWorker.create_model(2)
+        # model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
+        model_architurecture=ModelArchitecture(224,224,3)
+        model=model_architurecture.set_model(2)
+
+        testWorker=TestWorker(model)
         testWorker.load_checkpoint(checkpoint_root_dir)
         testWorker.test_image(image_root_dir,ModelTester.NETWORK_SIZE)
 

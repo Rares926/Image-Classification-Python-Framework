@@ -5,16 +5,15 @@ import tensorflow as tf
 
 
 class ModelArchitecture:
-    NETWORK_SIZE = 224
 
-    def __init__(self, len, wid, ch=3):
+    def __init__(self, len=224, wid=224, ch=3):
         self.input_shape=(len, wid, ch) # length,width,channels
         self.inner_model=None
         self.augments=None 
         self.model = tf.keras.models.Sequential()
 
 
-    def set_model(self, labels_size,augumentation_layer=0):
+    def set_model(self, labels_size ,augumentation_layer=0):
 
         self.inner_model = [
             tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
@@ -37,11 +36,12 @@ class ModelArchitecture:
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dropout(0.2)
                 ]
-        if augumentation_layer==1:
+        if augumentation_layer==0:
             self.augments =[
                 tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
                 tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
                             ]
+
 
         self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
         if self.augments is not None:
@@ -52,14 +52,6 @@ class ModelArchitecture:
             self.model.add(inner_layer)
 
         self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
-
-        loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
-
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-
-        self.model.compile(optimizer=optimizer,
-                loss=loss_fn,
-                metrics=['accuracy'])
 
         return self.model        
 

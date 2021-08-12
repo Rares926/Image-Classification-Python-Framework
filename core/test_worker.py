@@ -1,10 +1,9 @@
-import tensorflow as tf
+
 import cv2 as cv
 import numpy as np
 import os
 
 # Internal framework imports
-from train import TrainWorker
 from core.data_visualization import DataVisualization
 # Typing imports imports
 
@@ -12,37 +11,9 @@ from core.data_visualization import DataVisualization
 class TestWorker:
     NETWORK_SIZE = 224
 
-    def __init__(self):
-        self.model = None
+    def __init__(self,model):
+        self.model = model
     
-    def create_model(self, nr_classes):
-        NETWORK_SIZE = 224
-        model = [
-            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.2),
-
-            tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.2),
-
-            tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.2),
-
-            tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Dropout(0.2)
-        ]
-        input_dims = (TestWorker.NETWORK_SIZE, TestWorker.NETWORK_SIZE, 3)
-        train_worker = TrainWorker(input_dims, model)
-        train_worker.create_model(nr_classes)
-        self.model=train_worker.model # asta ar putea fi mutata si in constructor cred
-
     def procces_image(self,image_path,image_size):
         image=cv.imread(image_path)[...,::-1]
         image = cv.resize(image, (image_size, image_size))
