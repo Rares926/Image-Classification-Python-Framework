@@ -16,8 +16,10 @@ from core.train_worker import TrainWorker
 class ClassifierTrainer():
     NETWORK_SIZE = 224
 
-    def __init__(self):
-        pass
+    def __init__(self, len, wid, ch):
+        self.length = len
+        self.width = wid
+        self.channels = ch
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -28,6 +30,7 @@ class ClassifierTrainer():
         train_location = training_workspace_dir + '/inputData/train'
         test_location = training_workspace_dir + '/inputData/test'
 
+        #TODO: loadData needs image length and width instead of ClassifierTrainer.NETWORK_SIZE
         train = DataProcessing.loadData(train_location, ClassifierTrainer.NETWORK_SIZE, labels)
         test = DataProcessing.loadData(test_location, ClassifierTrainer.NETWORK_SIZE, labels)
 
@@ -62,7 +65,7 @@ class ClassifierTrainer():
             tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
             tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
         ]
-        input_dims = (ClassifierTrainer.NETWORK_SIZE, ClassifierTrainer.NETWORK_SIZE, 3) # length,width,channels
+        input_dims = (self.length, self.width, self.channels) # length,width,channels
         train_worker = TrainWorker(input_dims, model, augmentations)
         train_worker.create_model(len(labels))
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
@@ -75,9 +78,12 @@ def run():
         description="Train a custom classifier using Tensorflow framework")
         parser.add_argument("--dataset_root_dir", "-d", required=True, help="The path of the dataset root dir")
         parser.add_argument("--training_workspace_dir", "-t", required=True, help="The path of the training workspace root dir")
+        parser.add_argument("--image_length", "-l", required=True, help="Image length for the model")
+        parser.add_argument("--image_width", "-w", required=True, help="Image width for the model")
+        parser.add_argument("--image_channels", "-c", required=False, help="Number of image channels for the model (default is 3)")
         args = parser.parse_args()
 
-        trainer = ClassifierTrainer()
+        trainer = ClassifierTrainer(args.image_length, args.image_width)
         trainer.do_train(args.dataset_root_dir, args.training_workspace_dir)
 
     except Exception as ex:
