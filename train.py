@@ -37,7 +37,7 @@ class ClassifierTrainer():
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        model = tf.keras.models.Sequential([
+        model = [
             tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.MaxPool2D((2, 2)),
@@ -57,12 +57,13 @@ class ClassifierTrainer():
             tf.keras.layers.Dense(128, activation='relu'),
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dropout(0.2)
-        ])
-        augmentations = tf.keras.models.Sequential([
+        ]
+        augmentations =[
             tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
             tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
-        ])
-        train_worker = TrainWorker(model, augmentations)
+        ]
+        input_dims = (ClassifierTrainer.NETWORK_SIZE, ClassifierTrainer.NETWORK_SIZE, 3) # length,width,channels
+        train_worker = TrainWorker(input_dims, model, augmentations)
         train_worker.create_model(len(labels))
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
 
