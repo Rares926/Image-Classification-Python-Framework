@@ -56,8 +56,7 @@ class ClassifierTrainer():
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(128, activation='relu'),
             tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Dropout(0.2),
-            tf.keras.layers.Dense(len(labels), activation='softmax')
+            tf.keras.layers.Dropout(0.2)
         ])
         augmentations = tf.keras.models.Sequential([
             tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
