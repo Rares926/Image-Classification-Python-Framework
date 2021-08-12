@@ -10,15 +10,19 @@ from utils.io_helper import IOHelper
 class TrainWorker:
     def __init__(self, model_layers, augment_layers = None):
         self.inner_model = model_layers
-        self.model = model_layers
         self.augments = augment_layers
+        self.model = tf.keras.models.Sequential()
 
     def create_model(self, labels_size):
-        self.model = tf.keras.models.Sequential([
-            self.augments,
-            self.inner_model,
-            tf.keras.layers.Dense(labels_size, activation='softmax')
-        ])
+        self.model.add(tf.keras.layers.InputLayer(input_shape=(224, 224, 3)))
+        if self.augments is not None:
+            for aug_layer in range(0, len(self.augments.layers)):
+                self.model.add(self.augments.layers[aug_layer])
+
+        for inner_layer in range(0, len(self.inner_model.layers)):
+            self.model.add(self.inner_model.layers[inner_layer])
+
+        self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
 
         loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
 
