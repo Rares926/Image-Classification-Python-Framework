@@ -1,25 +1,24 @@
 import os
 import sys
-from utils.io_helper import IOHelper
-import tensorflow as tf
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 
 # Internal framework imports
-from core.data_visualization import DataVisualization
-from core.data_processing import DataProcessing
-from core.train_worker import TrainWorker
-from core.network_architecture import ModelArchitecture
+from .core.data_visualization import DataVisualization
+from .core.data_processing import DataProcessing
+from .core.train_worker import TrainWorker
+from .core.network_architecture import ModelArchitecture
+from .utils.io_helper import IOHelper
 # Typing imports imports
 
 
 class ClassifierTrainer():
     NETWORK_SIZE = 224
 
-    def __init__(self, len, wid, ch=3):
+    def __init__(self, len, wid, ch):
         self.length = int(len)
         self.width = int(wid)
-        self.channels = ch
+        self.channels = int(ch)
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -60,7 +59,7 @@ def run():
         parser.add_argument("--image_channels", "-c", required=False, help="Number of image channels for the model (default is 3)")
         args = parser.parse_args()
 
-        trainer = ClassifierTrainer(args.image_length, args.image_width)
+        trainer = ClassifierTrainer(args.image_length, args.image_width,args.image_channels)
         trainer.do_train(args.dataset_root_dir, args.training_workspace_dir)
 
     except Exception as ex:

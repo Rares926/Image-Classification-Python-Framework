@@ -4,7 +4,7 @@ import os
 import numpy as np 
 
 # Internal framework imports
-from utils.io_helper import IOHelper
+from ..utils.io_helper import IOHelper
 # Typing imports imports
 
 
@@ -39,7 +39,11 @@ class TrainWorker:
                     loss=loss_fn,
                     metrics=['accuracy'])
                     
+        self.model.summary()
+        
         self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback, cp_callback])
+
+
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
         

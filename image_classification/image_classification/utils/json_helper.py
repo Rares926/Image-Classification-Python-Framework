@@ -1,7 +1,7 @@
 import json
 
 # Internal framework imports
-from utils.io_helper import IOHelper
+from .io_helper import IOHelper
 
 # Typing imports imports
 

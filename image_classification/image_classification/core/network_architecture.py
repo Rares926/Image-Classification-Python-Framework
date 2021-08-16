@@ -7,7 +7,7 @@ import tensorflow as tf
 class ModelArchitecture:
 
     DEFAULT_INNER_MODEL = [
-            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)), #self.input.shape
+            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu'), #self.input.shape
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.MaxPool2D((2, 2)),
             tf.keras.layers.Dropout(0.2),
@@ -48,6 +48,7 @@ class ModelArchitecture:
 
  
         self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
+
         if self.augments is not None:
             for aug_layer in self.augments:
                 self.model.add(aug_layer)

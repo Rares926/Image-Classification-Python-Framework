@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Internal framework imports
-from core.data_visualization import DataVisualization
+from .data_visualization import DataVisualization
 # Typing imports imports
 
 

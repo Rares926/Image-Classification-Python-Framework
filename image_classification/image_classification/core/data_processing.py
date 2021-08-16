@@ -3,8 +3,8 @@ import numpy as np
 import cv2 as cv
 
 # Internal framework imports
-from utils.io_helper import IOHelper
-from utils.json_helper import JsonHelper
+from ..utils.io_helper import IOHelper
+from ..utils.json_helper import JsonHelper
 
 # Typing imports imports
 from typing import Dict

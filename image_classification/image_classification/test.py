@@ -4,8 +4,8 @@ from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 
 # Internal framework imports
-from core.test_worker import TestWorker
-from core.network_architecture import ModelArchitecture
+from .core.test_worker import TestWorker
+from .core.network_architecture import ModelArchitecture
 # Typing imports imports
 
 
