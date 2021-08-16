@@ -6,17 +6,8 @@ import tensorflow as tf
 
 class ModelArchitecture:
 
-    def __init__(self, len:float=224, wid:float=224, ch:int=3):
-        self.input_shape=(len, wid, ch) # length,width,channels
-        self.inner_model=None
-        self.augments=None 
-        self.model = tf.keras.models.Sequential()
-
-
-    def set_model(self, labels_size:int ,augumentation_layer:int=0):
-
-        self.inner_model = [
-            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)),
+    DEFAULT_INNER_MODEL = [
+            tf.keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(224, 224, 3)), #self.input.shape
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.MaxPool2D((2, 2)),
             tf.keras.layers.Dropout(0.2),
@@ -36,13 +27,26 @@ class ModelArchitecture:
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dropout(0.2)
                 ]
-        if augumentation_layer==0:
-            self.augments =[
+
+    DEFAULT_AUGMENT_LAYERS = [
                 tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
                 tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
-                            ]
+                    ]
+
+    def __init__(self, len:float=224, wid:float=224, ch:int=3): #TODO: width height channels
+        self.input_shape=(len, wid, ch) # length,width,channels
+        self.inner_model=None
+        self.augments=None 
+        self.model = tf.keras.models.Sequential()
 
 
+    def set_model(self, labels_size:int ,use_augumentation_layer:bool=False): #inner model si aug layers cu none ca params
+
+        self.inner_model = self.DEFAULT_INNER_MODEL
+        if use_augumentation_layer==True:
+            self.augments = self.DEFAULT_AUGMENT_LAYERS
+
+ 
         self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
         if self.augments is not None:
             for aug_layer in self.augments:
@@ -53,6 +57,6 @@ class ModelArchitecture:
 
         self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
 
-        return self.model        
+        return self.model  #TODO : move to get_model method
 
 
