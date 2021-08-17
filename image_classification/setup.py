@@ -11,7 +11,7 @@ setup(
     python_requires=">=3.6",
     install_requires = [
             'opencv-python==4.5.3.56',
-            'tensorflow==2.4.0',
+            'tensorflow==2.5.0',
             'seaborn==0.11.1',
             'jsonargparse==3.4.1'
       ],
