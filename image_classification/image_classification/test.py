@@ -28,7 +28,7 @@ class ModelTester():
 
 def run():
     try:
-        parser = ArgumentParser(prog="classifiertrainer",
+        parser = ArgumentParser(prog = "classifiertrainer",
         error_handler = usage_and_exit_error_handler,
         description="Test a model saved from a checkpoint")
         parser.add_argument("--checkpoint_root_dir", "-d", required=True, help="The path to the checkpoint root")
