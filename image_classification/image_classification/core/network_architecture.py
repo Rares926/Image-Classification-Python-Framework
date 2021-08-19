@@ -1,4 +1,5 @@
 import tensorflow as tf
+import tensorflow_hub as hub
 # Internal framework imports
 
 # Typing imports imports
@@ -33,6 +34,11 @@ class ModelArchitecture:
                 tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
                     ]
 
+    trained_models={
+    "mobilenet_v2" : "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4",
+    "inception_v3" : "https://tfhub.dev/google/imagenet/inception_v3/classification/5"
+    }
+
     def __init__(self, len:float=224, wid:float=224, ch:int=3): #TODO: width height channels
         self.input_shape=(len, wid, ch) # length,width,channels
         self.inner_model=None
@@ -40,24 +46,35 @@ class ModelArchitecture:
         self.model = tf.keras.models.Sequential()
 
 
-    def set_model(self, labels_size:int ,use_augumentation_layer:bool=False): #inner model si aug layers cu none ca params
 
-        self.inner_model = self.DEFAULT_INNER_MODEL
-        if use_augumentation_layer==True:
-            self.augments = self.DEFAULT_AUGMENT_LAYERS
+    def set_model(self, labels_size:int ,use_augumentation_layer:bool=False,classifier_model=None): #inner model si aug layers cu none ca params
+        if classifier_model==None:
+            self.inner_model = self.DEFAULT_INNER_MODEL
+            if use_augumentation_layer==True:
+                self.augments = self.DEFAULT_AUGMENT_LAYERS
 
- 
-        self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
+    
+            self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
 
-        if self.augments is not None:
-            for aug_layer in self.augments:
-                self.model.add(aug_layer)
+            if self.augments is not None:
+                for aug_layer in self.augments:
+                    self.model.add(aug_layer)
 
-        for inner_layer in self.inner_model:
-            self.model.add(inner_layer)
+            for inner_layer in self.inner_model:
+                self.model.add(inner_layer)
 
-        self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
+            self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
+        else:
+         
+            feature_extractor_layer = hub.KerasLayer(self.trained_models[classifier_model],input_shape=(224, 224, 3),trainable=False)
 
+            self.model = tf.keras.Sequential([
+            feature_extractor_layer,
+            tf.keras.layers.Dense(labels_size,activation='softmax')
+                ])
+
+    
+        
         return self.model  #TODO : move to get_model method
 
 

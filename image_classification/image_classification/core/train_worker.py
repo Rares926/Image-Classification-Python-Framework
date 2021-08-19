@@ -30,13 +30,9 @@ class TrainWorker:
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
 
-        
-        loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False)
 
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-
-        self.model.compile(optimizer=optimizer,
-                    loss=loss_fn,
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                     metrics=['accuracy'])
                     
         self.model.summary()
