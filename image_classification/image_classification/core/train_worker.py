@@ -12,7 +12,7 @@ class TrainWorker:
     def __init__(self,model):
         self.model=model
 
-    def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array, epochs:int = 10):
+    def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array, epochs:int = 10,from_checkpoint:str=None):
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
@@ -30,7 +30,9 @@ class TrainWorker:
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
 
-
+        if from_checkpoint!=None:
+            self.model.load_weights(from_checkpoint)
+            
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
                     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                     metrics=['accuracy'])
