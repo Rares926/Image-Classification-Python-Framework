@@ -2,7 +2,7 @@
 import cv2 as cv
 import numpy as np
 import os
-
+import tensorflow as tf
 
 # Internal framework imports
 from .data_visualization import DataVisualization
@@ -64,3 +64,4 @@ class TestWorker:
                 print(list(zip(img_names,indexes_list,percent)))
                 # for index in range(len(indexes_list)):
                 #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[index,indexes_list[index]]))   
+
