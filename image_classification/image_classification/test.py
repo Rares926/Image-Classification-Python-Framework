@@ -21,8 +21,8 @@ class ModelTester():
 
         # model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
         model_architurecture=ModelArchitecture(224,224,3)
-        model=model_architurecture.set_model(2,classifier_model="mobilenet_v2")
-
+        model=model_architurecture.set_model(2)
+        #,classifier_model="mobilenet_v2"
         testWorker=TestWorker(model)
         testWorker.load_checkpoint(checkpoint_root_dir)
         testWorker.test_image(image_root_dir,ModelTester.NETWORK_SIZE)

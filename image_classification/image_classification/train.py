@@ -41,8 +41,8 @@ class ClassifierTrainer():
 
         print("Starting training worker...")
         model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model=model_architurecture.set_model(len(labels),classifier_model="mobilenet_v2")
-
+        model=model_architurecture.set_model(len(labels))
+        #,classifier_model="mobilenet_v2"
         train_worker = TrainWorker(model)
 
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
