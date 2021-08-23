@@ -6,22 +6,25 @@ from .network_params import NetworkParams
 
 #Typing imports
 
-class TrainBuilder:
+class TestBuilder:
     def __init__(self):
-        self.dataset_path = None
-        self.workspace_path = None
+        self.images_path = None
+        self.network_path = None
+        self.results_path = None
+        self.topK = None
         self.image_shape = None
         self.image_format = None
 
     def arg_parse(self, path: str):
         raw_data = JsonHelper.read_json(path)
-        if not {'dataset_path', 'workspace_path','network'} <= raw_data.keys():
+        if not {'network_path', 'images_path','results_path','top_k', 'network'} <= raw_data.keys():
             raise Exception("Invalid config file format")
-        self.dataset_path = raw_data['dataset_path']
-        self.workspace_path = raw_data['workspace_path']
+        self.network_path = raw_data['network_path']
+        self.images_path = raw_data['images_path']
+        self.results_path =raw_data['results_path']
+        self.topK = raw_data['top_k']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
         self.image_shape, self.image_format = network_params.get_network_params()
-
 
 
