@@ -9,16 +9,17 @@ from .core.data_processing import DataProcessing
 from .core.train_worker import TrainWorker
 from .core.network_architecture import ModelArchitecture
 from .utils.io_helper import IOHelper
+from .utils.train_builder import TrainBuilder
 # Typing imports imports
 
 
 class ClassifierTrainer():
     NETWORK_SIZE = 224
 
-    def __init__(self, len, wid, ch):
-        self.length = int(len)
-        self.width = int(wid)
-        self.channels = int(ch)
+    def __init__(self, image_shape):
+        self.length = image_shape.length
+        self.width = image_shape.width
+        self.channels = image_shape.channels
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -40,8 +41,8 @@ class ClassifierTrainer():
 
         print("Starting training worker...")
         model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model=model_architurecture.set_model(len(labels),classifier_model="mobilenet_v2")
-
+        model=model_architurecture.set_model(len(labels))
+        #,classifier_model="mobilenet_v2"
         train_worker = TrainWorker(model)
 
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
@@ -52,15 +53,13 @@ def run():
         parser = ArgumentParser(prog="classifiertrainer",
         error_handler = usage_and_exit_error_handler,
         description="Train a custom classifier using Tensorflow framework")
-        parser.add_argument("--dataset_root_dir", "-d", required=True, help="The path of the dataset root dir")
-        parser.add_argument("--training_workspace_dir", "-t", required=True, help="The path of the training workspace root dir")
-        parser.add_argument("--image_length", "-l", required=True, help="Image length for the model")
-        parser.add_argument("--image_width", "-w", required=True, help="Image width for the model")
-        parser.add_argument("--image_channels", "-c", required=False, help="Number of image channels for the model (default is 3)")
-        args = parser.parse_args()
+        parser.add_argument("--training_configuration_file", "-config", required=True, help="The path of the training configuration file (must be JSON format)")
+        program_args = parser.parse_args()
 
-        trainer = ClassifierTrainer(args.image_length, args.image_width,args.image_channels)
-        trainer.do_train(args.dataset_root_dir, args.training_workspace_dir)
+        trainer_args = TrainBuilder()
+        trainer_args.arg_parse(program_args.training_configuration_file)
+        trainer = ClassifierTrainer(trainer_args.image_shape)
+        trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()
