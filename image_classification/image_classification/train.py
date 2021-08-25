@@ -1,7 +1,9 @@
 import os
 import sys
+from PIL.Image import Image
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
+import cv2 as cv
 
 # Internal framework imports
 from .core.data_visualization import DataVisualization
@@ -10,16 +12,20 @@ from .core.train_worker import TrainWorker
 from .core.network_architecture import ModelArchitecture
 from .utils.io_helper import IOHelper
 from .utils.train_builder import TrainBuilder
+from .utils.image_shape import ImageShape
+from .utils.image_format import ImageFormat
 # Typing imports imports
 
 
 class ClassifierTrainer():
-    NETWORK_SIZE = 224
+    #NETWORK_SIZE = 224
 
-    def __init__(self, image_shape):
-        self.length = image_shape.length
-        self.width = image_shape.width
-        self.channels = image_shape.channels
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat):
+        #self.length = image_shape.length
+        #self.width = image_shape.width
+        #self.channels = image_shape.channels
+        self.image_shape = image_shape
+        self.image_format = image_format
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -31,17 +37,21 @@ class ClassifierTrainer():
         test_location = training_workspace_dir + '/inputData/test'
 
         #TODO: loadData needs image length and width instead of ClassifierTrainer.NETWORK_SIZE
-        train = DataProcessing.loadData(train_location, ClassifierTrainer.NETWORK_SIZE, labels)
-        test = DataProcessing.loadData(test_location, ClassifierTrainer.NETWORK_SIZE, labels)
+        train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, labels)
+        test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, labels)
+        
+        testimg = train[0][0]
+        cv.imshow("debug",train[0][0])
+        cv.waitKey(0)
 
-        DataVisualization.visualizeImage(train, labels)
+        DataVisualization.visualizeImage(train, labels) #something wrong here
         DataVisualization.checkDatasetBalance(train, labels) 
 
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model=model_architurecture.set_model(len(labels))
+        model_architurecture = ModelArchitecture(self.length,self.width,self.channels)
+        model = model_architurecture.set_model(len(labels))
         #,classifier_model="mobilenet_v2"
         train_worker = TrainWorker(model)
 
@@ -58,7 +68,7 @@ def run():
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
-        trainer = ClassifierTrainer(trainer_args.image_shape)
+        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:

@@ -1,17 +1,20 @@
 import os
+
 import numpy as np
 import cv2 as cv
 
 # Internal framework imports
 from ..utils.io_helper import IOHelper
 from ..utils.json_helper import JsonHelper
+from ..utils.image_shape import ImageShape
+from ..utils.image_loader import ImageLoader
+from ..utils.image_format import ImageFormat
 
 # Typing imports imports
 from typing import Dict
 
 
 class DataProcessing:
-    
     def __init__(self):
         pass
     
@@ -60,21 +63,19 @@ class DataProcessing:
                 IOHelper.copyfile(source, destination)
 
     @staticmethod
-    def loadData(data_dir: str, image_size: float, labels: Dict[str,Dict[str,str]]) -> np.array:
+    def loadData(data_dir: str, image_size: ImageShape, image_format: ImageFormat, labels: Dict[str,Dict[str,str]]) -> np.array:
         data = []
-        
-        for key in labels:
-            path = os.path.join(data_dir) #nu are sens acum dar o sa aiba dupa ce schimbam putin implementarile 
+        image_loader = ImageLoader(image_size, image_format)
+        for key in labels: 
             class_number = int(key)  #luam clasa in dataset ca si indicele acesteia din labels
-            images = IOHelper.get_image_files(path)
+            images = IOHelper.get_image_files(data_dir)
 
             for image in images: #parcurge pe rand toate pozele din folderul dat 
                 try:
                     if labels[key]['uid'] in image:
-                        img_arr = cv.imread(os.path.join(path, image))[...,::-1] #converteste imagina din BGR in RGB 
-                        #conditionam resize ul 
-                        arr_resized = cv.resize(img_arr, (image_size, image_size)) #ii da resize dupa marimile dorite 
-                        data.append([arr_resized, class_number])
+                        image_path = os.path.join(data_dir, image)
+                        image = image_loader.load_image(image_path)
+                        data.append([image, class_number])
                 except Exception as e:
                     print(e)
 

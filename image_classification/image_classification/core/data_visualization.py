@@ -32,7 +32,7 @@ class DataVisualization:
     @staticmethod
     def showImage(image:np.array, image_class:int,prob:float):
         plt.figure(figsize = (5,5))
-        plt.imshow(image.astype("uint8"))
+        plt.imshow(image)
         plt.title("Image class {} probability {}".format(image_class,prob))
         plt.show()
         plt.close()
