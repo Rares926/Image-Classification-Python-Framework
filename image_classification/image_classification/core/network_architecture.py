@@ -48,6 +48,7 @@ class ModelArchitecture:
 
 
     def set_model(self, labels_size:int ,use_augumentation_layer:bool=False,classifier_model=None): #inner model si aug layers cu none ca params
+
         if classifier_model==None:
             self.inner_model = self.DEFAULT_INNER_MODEL
             if use_augumentation_layer==True:
@@ -72,7 +73,7 @@ class ModelArchitecture:
             feature_extractor_layer,
             tf.keras.layers.Dense(labels_size,activation='softmax')
                 ])
-
+            
     
         
         return self.model  #TODO : move to get_model method

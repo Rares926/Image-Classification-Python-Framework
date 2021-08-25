@@ -41,11 +41,11 @@ class ClassifierTrainer():
 
         print("Starting training worker...")
         model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model=model_architurecture.set_model(len(labels))
+        model=model_architurecture.set_model(len(labels),classifier_model="mobilenet_v2")
         #,classifier_model="mobilenet_v2"
         train_worker = TrainWorker(model)
 
-        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
+        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test) #from_checkpoint="C:/Training_data/checkpoints/20210820-205329cp-007.h5"
 
 
 def run():
@@ -58,6 +58,7 @@ def run():
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
+
         trainer = ClassifierTrainer(trainer_args.image_shape)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
