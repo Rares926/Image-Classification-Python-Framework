@@ -36,15 +36,10 @@ class ClassifierTrainer():
         train_location = training_workspace_dir + '/inputData/train'
         test_location = training_workspace_dir + '/inputData/test'
 
-        #TODO: loadData needs image length and width instead of ClassifierTrainer.NETWORK_SIZE
         train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, labels)
         test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, labels)
-        
-        testimg = train[0][0]
-        cv.imshow("debug",train[0][0])
-        cv.waitKey(0)
 
-        DataVisualization.visualizeImage(train, labels) #something wrong here
+        DataVisualization.visualizeImage(train, labels)
         DataVisualization.checkDatasetBalance(train, labels) 
 
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)

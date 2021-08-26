@@ -1,20 +1,22 @@
 import os
 from typing import final
 import cv2 as cv
-from cv2 import data
+from cv2 import data, resize
 import numpy as np
 
 #Internal framework imports
 from .image_shape import ImageShape
 from .image_format import ImageFormat
-from .io_helper import IOHelper
+from .resize_worker import ResizeWorker
+from .image_preprocessing import ImageProcessing
 
 #Typing imports
 
 class ImageLoader:
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeWorker):
         self.image_shape = image_shape
         self.image_format = image_format
+        self.resize_method = resize_method
 
     def load_image(self, image_path: str):
         image = cv.imread(image_path)
@@ -26,9 +28,14 @@ class ImageLoader:
 
         if self.image_format.data_format == ImageFormat.DataType.FLOAT:
             image = image.astype(np.float)
-        final_image = image
-        #final_image = cv.resize(image, (self.image_shape.width, self.image_shape.length))
-            
-        return final_image
+        
+        if self.resize_method == ResizeWorker.ResizeMethod.CROP:
+            image = ImageProcessing.crop(image)
+        if self.resize_method == ResizeWorker.ResizeMethod.STRETCH:
+            image = ImageProcessing.stretch(image)
+        if self.resize_method == ResizeWorker.ResizeMethod.LETTERBOX:
+            image = ImageProcessing.letterbox(image)
+
+        return image
 
     
