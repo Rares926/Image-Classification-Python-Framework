@@ -41,7 +41,7 @@ class TrainWorker:
 
 
 
-        test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
+        test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1) #dead for some reason
         
         print('\nTest loss:', test_loss)
         print('\nTest accuracy:', test_acc)

@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow_hub as hub
 # Internal framework imports
-
+from ..utils.image_shape import ImageShape
 # Typing imports imports
 
 
@@ -39,8 +39,8 @@ class ModelArchitecture:
     "inception_v3" : "https://tfhub.dev/google/imagenet/inception_v3/classification/5"
     }
 
-    def __init__(self, len:float=224, wid:float=224, ch:int=3): #TODO: width height channels
-        self.input_shape=(len, wid, ch) # length,width,channels
+    def __init__(self, input_shape: ImageShape): #TODO: width height channels
+        self.input_shape = (input_shape.width, input_shape.height, input_shape.channels)
         self.inner_model=None
         self.augments=None 
         self.model = tf.keras.models.Sequential()
@@ -53,7 +53,6 @@ class ModelArchitecture:
             if use_augumentation_layer==True:
                 self.augments = self.DEFAULT_AUGMENT_LAYERS
 
-    
             self.model.add(tf.keras.layers.InputLayer(input_shape = self.input_shape))
 
             if self.augments is not None:
@@ -66,7 +65,7 @@ class ModelArchitecture:
             self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
         else:
          
-            feature_extractor_layer = hub.KerasLayer(self.trained_models[classifier_model],input_shape=(224, 224, 3),trainable=False)
+            feature_extractor_layer = hub.KerasLayer(self.trained_models[classifier_model],input_shape=(224, 224),trainable=False)
 
             self.model = tf.keras.Sequential([
             feature_extractor_layer,

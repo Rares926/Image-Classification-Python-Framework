@@ -27,10 +27,10 @@ class ResizeWorker:
             return cls.UNDEFINED
 
     def __init__(self, resize_method_data: str):
-        self.resize_method = self.ResizeMethod.str2enum(resize_method_data)
+        self.strategy = self.ResizeMethod.str2enum(resize_method_data)
         a=0
     
     def __str__(self) -> str:
-        print ("The resize method is {}".format(self.resize_method))
+        print ("The resize method is {}".format(self.strategy))
 
         

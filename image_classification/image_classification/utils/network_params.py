@@ -29,7 +29,7 @@ class NetworkParams:
         self.image_format = ImageFormat(network_data['input_format'])
         self.resize_method = ResizeWorker(network_data['resize']['method'])
 
-        if self.resize_method == ResizeWorker.ResizeMethod.CROP:
+        if self.resize_method.strategy == ResizeWorker.ResizeMethod.CROP:
             if not {'params'} <= network_data['resize'].keys():
                 raise Exception("Missing crop ratio params")
             if not {'tl_ratio', 'br_ratio'} <= network_data['resize']['params'].keys():

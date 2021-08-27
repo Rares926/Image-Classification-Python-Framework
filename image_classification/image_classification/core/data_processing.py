@@ -1,4 +1,6 @@
 import os
+from image_classification.utils.ratio import Ratio
+from image_classification.utils.resize_worker import ResizeWorker
 
 import numpy as np
 import cv2 as cv
@@ -63,9 +65,9 @@ class DataProcessing:
                 IOHelper.copyfile(source, destination)
 
     @staticmethod
-    def loadData(data_dir: str, image_size: ImageShape, image_format: ImageFormat, labels: Dict[str,Dict[str,str]]) -> np.array:
+    def loadData(data_dir: str, image_size: ImageShape, image_format: ImageFormat, resize_method:ResizeWorker, ratios:Ratio, labels: Dict[str,Dict[str,str]]) -> np.array:
         data = []
-        image_loader = ImageLoader(image_size, image_format)
+        image_loader = ImageLoader(image_size, image_format, resize_method, ratios)
         for key in labels: 
             class_number = int(key)  #luam clasa in dataset ca si indicele acesteia din labels
             images = IOHelper.get_image_files(data_dir)
@@ -98,8 +100,8 @@ class DataProcessing:
             x_test.append(image)
             y_test.append(label)
         
-        x_train = np.array(x_train) / 255.0
-        x_test = np.array(x_test) / 255.0
+        x_train = np.array(x_train)
+        x_test = np.array(x_test)
 
         y_train = np.array(y_train)
         y_test = np.array(y_test)

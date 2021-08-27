@@ -14,18 +14,19 @@ from .utils.io_helper import IOHelper
 from .utils.train_builder import TrainBuilder
 from .utils.image_shape import ImageShape
 from .utils.image_format import ImageFormat
+from .utils.resize_worker import ResizeWorker
+from .utils.ratio import Ratio
 # Typing imports imports
 
 
 class ClassifierTrainer():
     #NETWORK_SIZE = 224
 
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat):
-        #self.length = image_shape.length
-        #self.width = image_shape.width
-        #self.channels = image_shape.channels
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeWorker, ratios: Ratio):
         self.image_shape = image_shape
         self.image_format = image_format
+        self.resize_method = resize_method
+        self.ratios = ratios
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -36,16 +37,16 @@ class ClassifierTrainer():
         train_location = training_workspace_dir + '/inputData/train'
         test_location = training_workspace_dir + '/inputData/test'
 
-        train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, labels)
-        test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, labels)
+        train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
+        test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
 
-        DataVisualization.visualizeImage(train, labels)
-        DataVisualization.checkDatasetBalance(train, labels) 
+        #DataVisualization.visualizeImage(train, labels)
+        #DataVisualization.checkDatasetBalance(train, labels) 
 
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        model_architurecture = ModelArchitecture(self.length,self.width,self.channels)
+        model_architurecture = ModelArchitecture(self.image_shape)
         model = model_architurecture.set_model(len(labels))
         #,classifier_model="mobilenet_v2"
         train_worker = TrainWorker(model)
@@ -63,7 +64,7 @@ def run():
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
-        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format)
+        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:
