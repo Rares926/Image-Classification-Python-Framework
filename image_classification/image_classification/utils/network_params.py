@@ -4,6 +4,7 @@
 from image_classification.utils.image_format import ImageFormat
 from .json_helper import JsonHelper
 from .image_shape import ImageShape
+from ..core.optimizer import Optimizer
 
 #Typing imports
 
@@ -11,7 +12,8 @@ class NetworkParams:
     def __init__(self):
         self.image_shape = None
         self.image_format = None
-        self.checkpoint=None
+        self.checkpoint=None #asta cred ca e inutil aici il sterg dupa niste testari 
+        self.optimizer=None
 
     def build_network_params(self, network_data: dict):
 
@@ -24,8 +26,14 @@ class NetworkParams:
 
         self.image_shape = ImageShape(network_data['input_shape'])
         self.image_format = ImageFormat(network_data['input_format'])
+
         if network_data['checkpoint']!="None":
             self.checkpoint=network_data['checkpoint']
 
+        #astfel optimizer o sa fie un obiect care contine numele optimizatorului dorit si parametrii acestuia 
+        #aici o sa updatez codul sa mearga cu o lista de parametrii 
+        self.optimizer=Optimizer(network_data["optimizer"]["name"],network_data["optimizer"]["lr"],network_data["optimizer"]["grad_clip"])
+
+
     def get_network_params(self):
-        return self.image_shape, self.image_format,self.checkpoint
+        return self.image_shape, self.image_format,self.checkpoint,self.optimizer

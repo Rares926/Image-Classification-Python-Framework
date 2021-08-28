@@ -13,6 +13,7 @@ class TrainBuilder:
         self.image_shape = None
         self.image_format = None
         self.checkpoint=None
+        self.optimizer=None
 
     def arg_parse(self, path: str):
         raw_data = JsonHelper.read_json(path)
@@ -22,7 +23,7 @@ class TrainBuilder:
         self.workspace_path = raw_data['workspace_path']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
-        self.image_shape, self.image_format,self.checkpoint = network_params.get_network_params()
+        self.image_shape, self.image_format,self.checkpoint,self.optimizer = network_params.get_network_params()
 
 
 
