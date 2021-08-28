@@ -16,10 +16,11 @@ from .utils.train_builder import TrainBuilder
 class ClassifierTrainer():
     NETWORK_SIZE = 224
 
-    def __init__(self, image_shape):
+    def __init__(self, image_shape,checkpoint):
         self.length = image_shape.length
         self.width = image_shape.width
         self.channels = image_shape.channels
+        self.checkpoint=checkpoint
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -40,10 +41,18 @@ class ClassifierTrainer():
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model=model_architurecture.set_model(len(labels),classifier_model="mobilenet_v2")
+        model_architurecture=ModelArchitecture(self.length,self.width,self.channels,self.checkpoint)
+        model=model_architurecture.set_model(len(labels))
         #,classifier_model="mobilenet_v2"
-        train_worker = TrainWorker(model)
+
+        if self.checkpoint:
+            starting_epoch=IOHelper.get_epoch_from_checkpoint_path(self.checkpoint)
+        else: starting_epoch=0
+
+        train_worker = TrainWorker(model,starting_epoch)
+
+        #asta ar putea fi implementate in alta parte
+        #din self.checkpoint trebuie sa iau doar epoca
 
         train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test) #from_checkpoint="C:/Training_data/checkpoints/20210820-205329cp-007.h5"
 
@@ -59,7 +68,7 @@ def run():
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
 
-        trainer = ClassifierTrainer(trainer_args.image_shape)
+        trainer = ClassifierTrainer(trainer_args.image_shape,trainer_args.checkpoint)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:

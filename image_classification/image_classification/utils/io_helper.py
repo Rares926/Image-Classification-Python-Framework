@@ -76,6 +76,11 @@ class IOHelper:
         return filename_without_extension
     
     @staticmethod
+    def get_epoch_from_checkpoint_path(path:str)->int:
+        epoch=int(IOHelper.get_filename_without_extension(path)[-3:])
+        return epoch
+
+    @staticmethod
     def get_extension(path: str) -> str:
         return Path(path).suffix.strip()
     

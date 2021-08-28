@@ -11,8 +11,9 @@ from ..core.confusion_matrix import ConfusionMatrixCallback
 
 class TrainWorker:
     
-    def __init__(self,model):
+    def __init__(self,model,starting_epoch):
         self.model=model
+        self.starting_epoch=starting_epoch
 
 
     def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array, epochs:int = 10,from_checkpoint:str=None):
@@ -43,7 +44,7 @@ class TrainWorker:
                     metrics=['accuracy'])
                     
         self.model.summary()
-        self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])
+        self.model.fit(x_train, y_train, epochs=epochs-self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
         
