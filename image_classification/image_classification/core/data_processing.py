@@ -1,7 +1,8 @@
 import os
 import numpy as np
 import cv2 as cv
-
+import albumentations as A
+from numpy.lib.type_check import imag
 # Internal framework imports
 from ..utils.io_helper import IOHelper
 from ..utils.json_helper import JsonHelper
@@ -30,6 +31,21 @@ class DataProcessing:
         
         JsonHelper.write_json(os.path.join(training_workspace_dir, 'data.json'), labels)
         return labels
+
+    @staticmethod
+    def albumentate(image,transform=None):
+
+        transform = A.Compose([
+            A.Rotate(limit=35, p=1.0),
+            A.HorizontalFlip(p=0.5),
+            A.VerticalFlip(p=0.1),
+            # A.Normalize(mean=[0.0, 0.0, 0.0],std=[1.0, 1.0, 1.0],max_pixel_value=255.0,),
+            ])
+
+        transformed = transform(image=image)
+
+        return transformed["image"]
+
 
     @staticmethod
     def createFolders(root):
@@ -73,8 +89,13 @@ class DataProcessing:
                     if labels[key]['uid'] in image:
                         img_arr = cv.imread(os.path.join(path, image))[...,::-1] #converteste imagina din BGR in RGB 
                         #conditionam resize ul 
+                        #aici se poate adauga partea de albumentation 
+                        #https://albumentations.ai/docs/getting_started/image_augmentation/
                         arr_resized = cv.resize(img_arr, (image_size, image_size)) #ii da resize dupa marimile dorite 
+                        # img_arr=DataProcessing.albumentate(img_arr)
                         data.append([arr_resized, class_number])
+                        # data.append([img_arr, class_number])
+
                 except Exception as e:
                     print(e)
 

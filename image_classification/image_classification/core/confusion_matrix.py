@@ -45,7 +45,7 @@ class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         threshold = cm.max() / 2.
         for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
             color = "white" if cm[i, j] > threshold else "black"
-            plt.text(j, i, labels[i, j], horizontalalignment="center", color=color)
+            plt.text(j, i, labels[i, j] , horizontalalignment="center", color=color)
 
         plt.tight_layout()
         plt.ylabel('True label')

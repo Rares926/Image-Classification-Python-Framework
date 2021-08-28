@@ -43,7 +43,6 @@ class TrainWorker:
                     metrics=['accuracy'])
                     
         self.model.summary()
-        
         self.model.fit(x_train, y_train, epochs=epochs, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
