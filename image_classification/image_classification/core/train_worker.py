@@ -11,7 +11,7 @@ from ..core.confusion_matrix import ConfusionMatrixCallback
 
 class TrainWorker:
     
-    def __init__(self,model,starting_epoch):
+    def __init__(self, model, starting_epoch:int=0):
         self.model=model
         self.starting_epoch=starting_epoch
 
@@ -39,13 +39,12 @@ class TrainWorker:
         if from_checkpoint!=None:
             self.model.load_weights(from_checkpoint)
         
-        #optimizer=tf.keras.optimizers.Adam(learning_rate=0.001)
-        self.model.compile(optimizer=optimizer.get_opt(),
+        self.model.compile(optimizer=optimizer,
                     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                     metrics=['accuracy'])
                     
         self.model.summary()
-        self.model.fit(x_train, y_train, epochs=epochs-self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])
+        self.model.fit(x_train, y_train, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])
 
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
         

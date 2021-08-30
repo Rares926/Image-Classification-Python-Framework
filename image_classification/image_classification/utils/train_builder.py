@@ -3,7 +3,7 @@
 #Internal framework imports
 from .json_helper import JsonHelper
 from .network_params import NetworkParams
-
+from ..core.optimizer import Optimizer
 #Typing imports
 
 class TrainBuilder:
@@ -23,7 +23,11 @@ class TrainBuilder:
         self.workspace_path = raw_data['workspace_path']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
-        self.image_shape, self.image_format,self.checkpoint,self.optimizer = network_params.get_network_params()
 
+        optimizer_params=Optimizer()
+        optimizer_params.build_optimizer_params(raw_data['optimizer'])
+
+        self.image_shape, self.image_format,self.checkpoint = network_params.get_network_params()
+        self.optimizer=optimizer_params.get_opt()
 
 
