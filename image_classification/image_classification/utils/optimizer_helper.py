@@ -4,8 +4,8 @@
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class OptimizerHelper:
 
-# sgd adadelta rmsprop
 # la punctrul cu hiperparametrii le adaug in config direct langa path uri 
+
     STR_TO_BOOL={
         "True":True,
         "False":False
@@ -25,8 +25,35 @@ class OptimizerHelper:
 
         "SGD":
         {
+            "lr":0.01,
+            "momentum":0.0,
+            "nesterov":"False"
+        },
+
+        "Adadelta":
+        {
+            "lr":0.001,
+            "rho":0.95,
+            "epsilon":1e-07
+        },
+
+        "Adagrad":
+        {
+            "lr":0.001,
+            "initial_accumulator_value":0.1,
+            "epsilon":1e-07
             
+        },
+
+        "RMSprop":
+        {
+            "lr":0.001,
+            "rho":0.9,
+            "momentum":0.0,
+            "epsilon":1e-07,
+            "centered":"False"
         }
+
 
     }
 
