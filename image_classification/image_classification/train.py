@@ -14,7 +14,7 @@ from .utils.io_helper import IOHelper
 from .utils.train_builder import TrainBuilder
 from .utils.image_shape import ImageShape
 from .utils.image_format import ImageFormat
-from .utils.resize_worker import ResizeWorker
+from .utils.resize_method import ResizeMethod
 from .utils.ratio import Ratio
 # Typing imports imports
 
@@ -22,7 +22,7 @@ from .utils.ratio import Ratio
 class ClassifierTrainer():
     #NETWORK_SIZE = 224
 
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeWorker, ratios: Ratio):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method

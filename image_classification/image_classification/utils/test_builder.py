@@ -10,6 +10,7 @@ class TestBuilder:
     def __init__(self):
         self.images_path = None
         self.network_path = None
+        self.labels_path = None
         self.results_path = None
         self.topK = None
         self.image_shape = None
@@ -23,7 +24,8 @@ class TestBuilder:
             raise Exception("Invalid config file format")
         self.network_path = raw_data['network_path']
         self.images_path = raw_data['images_path']
-        self.results_path =raw_data['results_path']
+        self.labels_path = raw_data['labels_path']
+        self.results_path = raw_data['results_path']
         self.topK = raw_data['top_k']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])

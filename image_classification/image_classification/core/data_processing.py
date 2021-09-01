@@ -1,6 +1,6 @@
 import os
 from image_classification.utils.ratio import Ratio
-from image_classification.utils.resize_worker import ResizeWorker
+from image_classification.utils.resize_method import ResizeMethod
 
 import numpy as np
 import cv2 as cv
@@ -71,7 +71,7 @@ class DataProcessing:
                 IOHelper.copyfile(source, destination)
 
     @staticmethod
-    def loadData(data_dir: str, image_size: ImageShape, image_format: ImageFormat, resize_method:ResizeWorker, ratios:Ratio, labels: Dict[str,Dict[str,str]]) -> np.array:
+    def loadData(data_dir: str, image_size: ImageShape, image_format: ImageFormat, resize_method:ResizeMethod, ratios:Ratio, labels: Dict[str,Dict[str,str]]) -> np.array:
         data = []
         image_loader = ImageLoader(image_size, image_format, resize_method, ratios)
         for key in labels: 

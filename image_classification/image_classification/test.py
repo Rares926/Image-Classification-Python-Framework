@@ -14,10 +14,10 @@ from .utils.test_builder import TestBuilder
 
 
 class ModelTester():
-    NETWORK_SIZE = 224
 
-    def __init__(self, image_shape: ImageShape):
+    def __init__(self, image_shape: ImageShape, labels_path):
         self.image_shape = image_shape
+        self.labels_path = labels_path
     
     def do_test(self, checkpoint_root_dir: str, image_root_dir: str):
 
@@ -41,7 +41,7 @@ def run():
 
         tester_args = TestBuilder()
         tester_args.arg_parse(program_args.test_configuration_file)
-        tester = ModelTester(tester_args.image_shape)
+        tester = ModelTester(tester_args.image_shape, tester_args.labels_path)
         tester.do_test(tester_args.network_path, tester_args.images_path)
 
     except Exception as ex:

@@ -3,7 +3,7 @@
 #Internal framework imports
 from .image_format import ImageFormat
 from .image_shape import ImageShape
-from .resize_worker import ResizeWorker
+from .resize_method import ResizeMethod
 from .ratio import Ratio
 
 #Typing imports
@@ -27,9 +27,9 @@ class NetworkParams:
 
         self.image_shape = ImageShape(network_data['input_shape'])
         self.image_format = ImageFormat(network_data['input_format'])
-        self.resize_method = ResizeWorker(network_data['resize']['method'])
+        self.resize_method = ResizeMethod.str2enum(network_data['resize']['method'])
 
-        if self.resize_method.strategy == ResizeWorker.ResizeMethod.CROP:
+        if self.resize_method == ResizeMethod.CROP:
             if not {'params'} <= network_data['resize'].keys():
                 raise Exception("Missing crop ratio params")
             if not {'tl_ratio', 'br_ratio'} <= network_data['resize']['params'].keys():

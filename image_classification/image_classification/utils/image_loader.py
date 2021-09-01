@@ -4,14 +4,14 @@ import numpy as np
 #Internal framework imports
 from .image_shape import ImageShape
 from .image_format import ImageFormat
-from .resize_worker import ResizeWorker
+from .resize_method import ResizeMethod
 from .image_preprocessing import ImageProcessing
 from .ratio import Ratio
 
 #Typing imports
 
 class ImageLoader:
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeWorker, ratios: Ratio):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method
@@ -28,11 +28,11 @@ class ImageLoader:
         if self.image_format.data_format == ImageFormat.DataType.FLOAT:
             image = image.astype(np.float)
         
-        if self.resize_method.strategy == ResizeWorker.ResizeMethod.CROP:
+        if self.resize_method == ResizeMethod.CROP:
             image = ImageProcessing.crop(image, self.image_shape, self.ratios)
-        if self.resize_method.strategy == ResizeWorker.ResizeMethod.STRETCH:
+        if self.resize_method == ResizeMethod.STRETCH:
             image = ImageProcessing.stretch(image, self.image_shape)
-        if self.resize_method.strategy == ResizeWorker.ResizeMethod.LETTERBOX:
+        if self.resize_method == ResizeMethod.LETTERBOX:
             image = ImageProcessing.letterbox(image, self.image_shape)
 
         image = ImageProcessing.normalize(image)
