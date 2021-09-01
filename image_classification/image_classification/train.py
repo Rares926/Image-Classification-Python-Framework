@@ -22,11 +22,13 @@ from .utils.ratio import Ratio
 class ClassifierTrainer():
     #NETWORK_SIZE = 224
 
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio,checkpoint,optimizer):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method
         self.ratios = ratios
+        self.checkpoint=checkpoint
+        self.optimizer=optimizer
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -46,12 +48,20 @@ class ClassifierTrainer():
         x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
-        model_architurecture = ModelArchitecture(self.image_shape)
+        model_architurecture = ModelArchitecture(self.image_shape,self.checkpoint)
         model = model_architurecture.set_model(len(labels))
         #,classifier_model="mobilenet_v2"
-        train_worker = TrainWorker(model)
 
-        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
+        if self.checkpoint:
+            starting_epoch=IOHelper.get_epoch_from_checkpoint_path(self.checkpoint)
+        else: starting_epoch=0
+
+        train_worker = TrainWorker(model,starting_epoch)
+
+        #asta ar putea fi implementate in alta parte
+        #din self.checkpoint trebuie sa iau doar epoca
+
+        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test,self.optimizer) #from_checkpoint="C:/Training_data/checkpoints/20210820-205329cp-007.h5"
 
 
 def run():
@@ -64,7 +74,7 @@ def run():
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
-        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios)
+        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,trainer_args.checkpoint,trainer_args.optimizer)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:

@@ -5,6 +5,7 @@ from .image_format import ImageFormat
 from .image_shape import ImageShape
 from .resize_method import ResizeMethod
 from .ratio import Ratio
+from ..core.optimizer import Optimizer
 
 #Typing imports
 
@@ -14,9 +15,10 @@ class NetworkParams:
         self.image_format = None
         self.resize_method = None
         self.ratios = None
+        self.checkpoint=None #asta cred ca e inutil aici il sterg dupa niste testari 
 
     def build_network_params(self, network_data: dict):
-        if not {'input_shape', 'input_format', 'resize'} <= network_data.keys():
+        if not {'input_shape', 'input_format', 'resize', 'checkpoint'} <= network_data.keys():
             raise Exception("Invalid network params format")
         if not {'width', 'height', 'depth'} <= network_data['input_shape'].keys():
             raise Exception("Invalid input shape params")
@@ -41,5 +43,9 @@ class NetworkParams:
 
         
 
+        if network_data['checkpoint']!="None":
+            self.checkpoint=network_data['checkpoint']
+
+
     def get_network_params(self):
-        return self.image_shape, self.image_format, self.resize_method, self.ratios
+        return self.image_shape, self.image_format, self.resize_method, self.ratios, self.checkpoint

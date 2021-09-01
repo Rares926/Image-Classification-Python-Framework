@@ -39,15 +39,17 @@ class ModelArchitecture:
     "inception_v3" : "https://tfhub.dev/google/imagenet/inception_v3/classification/5"
     }
 
-    def __init__(self, input_shape: ImageShape): #TODO: width height channels
+    def __init__(self, input_shape: ImageShape, checkpoint: str = None): #TODO: width height channels
         self.input_shape = (input_shape.width, input_shape.height, input_shape.channels)
         self.inner_model=None
         self.augments=None 
         self.model = tf.keras.models.Sequential()
+        self.checkpoint=checkpoint
 
 
 
     def set_model(self, labels_size:int ,use_augumentation_layer:bool=False,classifier_model=None): #inner model si aug layers cu none ca params
+
         if classifier_model==None:
             self.inner_model = self.DEFAULT_INNER_MODEL
             if use_augumentation_layer==True:
@@ -63,6 +65,10 @@ class ModelArchitecture:
                 self.model.add(inner_layer)
 
             self.model.add(tf.keras.layers.Dense(labels_size, activation='softmax'))
+
+            if self.checkpoint:
+                self.model.load_weights(self.checkpoint)
+
         else:
          
             feature_extractor_layer = hub.KerasLayer(self.trained_models[classifier_model],input_shape=(224, 224),trainable=False)
@@ -71,7 +77,7 @@ class ModelArchitecture:
             feature_extractor_layer,
             tf.keras.layers.Dense(labels_size,activation='softmax')
                 ])
-
+            
     
         
         return self.model  #TODO : move to get_model method

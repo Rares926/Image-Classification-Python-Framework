@@ -1,0 +1,22 @@
+{
+	"network_path": "C:/Training_data/checkpoints/20210823-193111cp-008.h5",
+	"images_path": "C:/Test_image",
+	"results_path": "dir_path",
+	"top_k": 2,
+
+	"network":
+	{
+		"input_shape":
+		{
+			"width": 224,
+			"height": 224,
+			"depth": 3
+		},
+
+		"input_format":
+		{
+			"channels": "RGB",
+			"data_type": "FLOAT"
+		}
+	}
+}

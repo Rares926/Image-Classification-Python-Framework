@@ -4,7 +4,8 @@ from image_classification.utils.resize_method import ResizeMethod
 
 import numpy as np
 import cv2 as cv
-
+import albumentations as A
+from numpy.lib.type_check import imag
 # Internal framework imports
 from ..utils.io_helper import IOHelper
 from ..utils.json_helper import JsonHelper
@@ -41,6 +42,21 @@ class DataProcessing:
         labels = JsonHelper.read_json(data_file_location, True, "Data.json file missing!")
         label_count = len(labels.keys())
         return label_count
+
+    @staticmethod
+    def albumentate(image,transform=None):
+
+        transform = A.Compose([
+            A.Rotate(limit=35, p=1.0),
+            A.HorizontalFlip(p=0.5),
+            A.VerticalFlip(p=0.1),
+            # A.Normalize(mean=[0.0, 0.0, 0.0],std=[1.0, 1.0, 1.0],max_pixel_value=255.0,),
+            ])
+
+        transformed = transform(image=image)
+
+        return transformed["image"]
+
 
     @staticmethod
     def createFolders(root):

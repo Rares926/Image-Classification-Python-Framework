@@ -13,7 +13,8 @@ setup(
             'opencv-python==4.5.3.56',
             'tensorflow==2.5.0',
             'seaborn==0.11.1',
-            'jsonargparse==3.4.1'
+            'jsonargparse==3.4.1',
+            'albumentations==1.0.3'
       ],
       entry_points={
             'console_scripts': [
