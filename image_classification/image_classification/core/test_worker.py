@@ -1,6 +1,4 @@
-
 import cv2 as cv
-
 import numpy as np
 import os
 
@@ -8,6 +6,7 @@ import os
 # Internal framework imports
 from .data_visualization import DataVisualization
 from ..utils.image_shape import ImageShape
+from ..utils.io_helper import IOHelper
 # Typing imports imports
 
 
@@ -19,7 +18,7 @@ class TestWorker:
     
     def procces_image(self,image_path:str, image_shape: ImageShape):
         image=cv.imread(image_path)[...,::-1]
-        image = cv.resize(image, (image_shape.height, image_shape.width))
+        image = cv.resize(image, (image_shape.width, image_shape.height))
         image=image/255.0
         return image
 
@@ -37,6 +36,7 @@ class TestWorker:
             raise Exception("The model must be created in order to be used!")
 
         self.model.summary()
+        IOHelper.check_if_file_exists(checkpoint_path, "Checkpoint path invalid: ")
         self.model.load_weights(checkpoint_path)
 
     def evaluate_model(self,test_images,test_labels):
