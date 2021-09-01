@@ -27,7 +27,7 @@ class OptimizerHelper:
         {
             "lr":0.01,
             "momentum":0.0,
-            "nesterov":"False"
+            "nesterov":False
         },
 
         "Adadelta":
