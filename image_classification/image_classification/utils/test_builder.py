@@ -14,6 +14,8 @@ class TestBuilder:
         self.topK = None
         self.image_shape = None
         self.image_format = None
+        self.resize_method = None
+        self.ratios = None
 
     def arg_parse(self, path: str):
         raw_data = JsonHelper.read_json(path)
@@ -25,6 +27,6 @@ class TestBuilder:
         self.topK = raw_data['top_k']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
-        self.image_shape, self.image_format = network_params.get_network_params()
+        self.image_shape, self.image_format, self.resize_method, self.ratios = network_params.get_network_params()
 
 

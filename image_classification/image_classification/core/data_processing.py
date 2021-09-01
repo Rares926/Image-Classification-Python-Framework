@@ -37,6 +37,12 @@ class DataProcessing:
         return labels
 
     @staticmethod
+    def load_label_count(data_file_location: str):
+        labels = JsonHelper.read_json(data_file_location, True, "Data.json file missing!")
+        label_count = len(labels.keys())
+        return label_count
+
+    @staticmethod
     def createFolders(root):
         IOHelper.deletedirectory(os.path.join(root,'inputData'))
         directories = ('inputData\\train', 'inputData\\test')
