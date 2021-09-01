@@ -43,8 +43,9 @@ class NetworkParams:
 
         
 
-        if network_data['checkpoint']!="None":
-            self.checkpoint=network_data['checkpoint']
+        if {'checkpoint'} <= network_data.keys():
+            if network_data['checkpoint']!="None":
+                self.checkpoint=network_data['checkpoint']
 
 
     def get_network_params(self):

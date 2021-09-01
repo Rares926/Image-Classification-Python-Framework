@@ -1,5 +1,5 @@
-
-
+from ..utils.lr_schedule import LearningRateSchedule
+from ..utils.io_helper import IOHelper
 #de facut niste verificari in caz ca nu exista name ul samd
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class OptimizerHelper:
@@ -63,7 +63,7 @@ class OptimizerHelper:
     @staticmethod
     def set_optimizer_value(optimizer,name):
         opt_tmp={}
-
+        optimizer=IOHelper.set_dictionary_keys_to_lower(optimizer)
         for par in OptimizerHelper.DEFAULT_OPTIMIZER_VALUES[name]:
             if par in optimizer:
                 if isinstance(optimizer[par],str):
@@ -72,3 +72,18 @@ class OptimizerHelper:
             else: opt_tmp[par]=  OptimizerHelper.DEFAULT_OPTIMIZER_VALUES[name][par]
             
         return opt_tmp
+    
+    @staticmethod
+    def set_learning_rate(name,lr=None):
+        if lr==None:
+            return OptimizerHelper.DEFAULT_OPTIMIZER_VALUES[name]["lr"]
+        elif len(lr)==1:
+            if not{"value"} <= lr.keys():
+                raise Exception("Invalid LR format")
+            
+            return lr["value"] 
+        else:
+            a=LearningRateSchedule()
+            a.build_learning_rate_params(lr)
+            return a.get_lr()
+
