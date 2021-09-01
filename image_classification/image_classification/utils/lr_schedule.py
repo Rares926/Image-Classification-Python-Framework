@@ -20,8 +20,8 @@ class LearningRateSchedule():
 
         if not {"params"}<=lr.keys():
             self.params=LRScheduleHelper.set_learning_rate_schedule(self.name)
-            
-        else: self.params=LRScheduleHelper.set_learning_rate_schedule(self.name,lr["params"])
+        else: 
+            self.params=LRScheduleHelper.set_learning_rate_schedule(self.name,lr["params"])
 
     def get_lr(self):
         """Dispatch method"""

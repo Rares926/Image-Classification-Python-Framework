@@ -1,5 +1,5 @@
 {
-	"network_path": "C:/Training_data/checkpoints/20210823-193111cp-008.h5",
+	"network_path": "C:/Training_data/checkpoints/20210830-170646cp-009.h5",
 	"images_path": "C:/Test_image",
 	"results_path": "dir_path",
 	"top_k": 2,
@@ -19,4 +19,6 @@
 			"data_type": "FLOAT"
 		}
 	}
+
+
 }

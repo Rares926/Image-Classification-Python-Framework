@@ -19,7 +19,7 @@
 		},
 
 		
-		"checkpoint":"C:/Training_data/checkpoints/20210828-205540cp-009.h5"
+		"checkpoint":"C:/Training_data/checkpoints/20210828-205540cp-004.h5"
 
 	},
 
@@ -27,9 +27,21 @@
 	{
 
 		"name":"Adam",
+
+		"lr":
+		{
+			"value":1e-2,
+			"schedule":"ExponentialDecay",
+
+			"params":
+			{			
+			"decay_steps":10000,
+			"decay_rate":0.9
+			}
+		},
+
 		"params":
 		{
-			"lr":0.001,
 			"grad_clip":0.5,
 			"beta_1":0.9, 
 			"beta_2":0.999, 
