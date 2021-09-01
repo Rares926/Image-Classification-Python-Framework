@@ -25,6 +25,6 @@ class TestBuilder:
         self.topK = raw_data['top_k']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
-        self.image_shape, self.image_format = network_params.get_network_params()
+        self.image_shape, self.image_format,_ = network_params.get_network_params()
 
 
