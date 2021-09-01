@@ -37,12 +37,13 @@ def run():
         error_handler = usage_and_exit_error_handler,
         description="Test a model saved from a checkpoint")
         parser.add_argument("--test_configuration_file", "-config", required=True, help="The path to the test config file")
+        parser.add_argument("--checkpoint_path", "-checkpoint", required = False, help="The path of the checkpoint file")
         program_args = parser.parse_args()
 
         tester_args = TestBuilder()
         tester_args.arg_parse(program_args.test_configuration_file)
         tester = ModelTester(tester_args.image_shape, tester_args.labels_path)
-        tester.do_test(tester_args.network_path, tester_args.images_path)
+        tester.do_test(program_args.checkpoint_path, tester_args.images_path)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()
