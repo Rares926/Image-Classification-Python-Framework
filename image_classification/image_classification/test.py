@@ -1,5 +1,7 @@
 import os
 import sys
+from image_classification.core.data_processing import DataProcessing
+from image_classification.utils.image_shape import ImageShape
 from image_classification.utils.test_builder import TestBuilder
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
@@ -12,20 +14,21 @@ from .utils.test_builder import TestBuilder
 
 
 class ModelTester():
-    NETWORK_SIZE = 224
 
-    def __init__(self):
-        pass
+    def __init__(self, image_shape: ImageShape, labels_path):
+        self.image_shape = image_shape
+        self.labels_path = labels_path
     
     def do_test(self, checkpoint_root_dir: str, image_root_dir: str):
 
         # model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model_architurecture=ModelArchitecture(224,224,3)
-        model=model_architurecture.set_model(2)
+        model_architurecture=ModelArchitecture(self.image_shape)
+        label_count = DataProcessing.load_label_count("C:/Users/Radu Baciu/Desktop/Dev/Image-Classification-Python-Framework/image_classification/image_classification/data.json")
+        model=model_architurecture.set_model(label_count)
         #,classifier_model="mobilenet_v2"
         testWorker=TestWorker(model)
         testWorker.load_checkpoint(checkpoint_root_dir)
-        testWorker.test_image(image_root_dir,ModelTester.NETWORK_SIZE)
+        testWorker.test_image(image_root_dir, self.image_shape)
 
 
 def run():
@@ -38,7 +41,7 @@ def run():
 
         tester_args = TestBuilder()
         tester_args.arg_parse(program_args.test_configuration_file)
-        tester = ModelTester()
+        tester = ModelTester(tester_args.image_shape, tester_args.labels_path)
         tester.do_test(tester_args.network_path, tester_args.images_path)
 
     except Exception as ex:

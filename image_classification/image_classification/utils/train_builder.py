@@ -12,6 +12,8 @@ class TrainBuilder:
         self.workspace_path = None
         self.image_shape = None
         self.image_format = None
+        self.ratios = None
+        self.resize_method = None
         self.checkpoint=None
         self.optimizer=None
 
@@ -23,11 +25,9 @@ class TrainBuilder:
         self.workspace_path = raw_data['workspace_path']
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
+        self.image_shape, self.image_format, self.resize_method, self.ratios, self.checkpoint = network_params.get_network_params()
 
         optimizer_params=Optimizer()
         optimizer_params.build_optimizer_params(raw_data['optimizer'])
 
-        self.image_shape, self.image_format,self.checkpoint = network_params.get_network_params()
         self.optimizer=optimizer_params.get_opt()
-
-

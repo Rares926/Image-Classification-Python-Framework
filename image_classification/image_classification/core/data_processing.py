@@ -1,4 +1,7 @@
 import os
+from image_classification.utils.ratio import Ratio
+from image_classification.utils.resize_method import ResizeMethod
+
 import numpy as np
 import cv2 as cv
 import albumentations as A
@@ -6,13 +9,15 @@ from numpy.lib.type_check import imag
 # Internal framework imports
 from ..utils.io_helper import IOHelper
 from ..utils.json_helper import JsonHelper
+from ..utils.image_shape import ImageShape
+from ..utils.image_loader import ImageLoader
+from ..utils.image_format import ImageFormat
 
 # Typing imports imports
 from typing import Dict
 
 
 class DataProcessing:
-    
     def __init__(self):
         pass
     
@@ -31,6 +36,12 @@ class DataProcessing:
         
         JsonHelper.write_json(os.path.join(training_workspace_dir, 'data.json'), labels)
         return labels
+
+    @staticmethod
+    def load_label_count(data_file_location: str):
+        labels = JsonHelper.read_json(data_file_location, True, "Data.json file missing!")
+        label_count = len(labels.keys())
+        return label_count
 
     @staticmethod
     def albumentate(image,transform=None):
@@ -76,26 +87,19 @@ class DataProcessing:
                 IOHelper.copyfile(source, destination)
 
     @staticmethod
-    def loadData(data_dir: str, image_size: float, labels: Dict[str,Dict[str,str]]) -> np.array:
+    def loadData(data_dir: str, image_size: ImageShape, image_format: ImageFormat, resize_method:ResizeMethod, ratios:Ratio, labels: Dict[str,Dict[str,str]]) -> np.array:
         data = []
-        
-        for key in labels:
-            path = os.path.join(data_dir) #nu are sens acum dar o sa aiba dupa ce schimbam putin implementarile 
+        image_loader = ImageLoader(image_size, image_format, resize_method, ratios)
+        for key in labels: 
             class_number = int(key)  #luam clasa in dataset ca si indicele acesteia din labels
-            images = IOHelper.get_image_files(path)
+            images = IOHelper.get_image_files(data_dir)
 
             for image in images: #parcurge pe rand toate pozele din folderul dat 
                 try:
                     if labels[key]['uid'] in image:
-                        img_arr = cv.imread(os.path.join(path, image))[...,::-1] #converteste imagina din BGR in RGB 
-                        #conditionam resize ul 
-                        #aici se poate adauga partea de albumentation 
-                        #https://albumentations.ai/docs/getting_started/image_augmentation/
-                        arr_resized = cv.resize(img_arr, (image_size, image_size)) #ii da resize dupa marimile dorite 
-                        # img_arr=DataProcessing.albumentate(img_arr)
-                        data.append([arr_resized, class_number])
-                        # data.append([img_arr, class_number])
-
+                        image_path = os.path.join(data_dir, image)
+                        image = image_loader.load_image(image_path)
+                        data.append([image, class_number])
                 except Exception as e:
                     print(e)
 
@@ -118,8 +122,8 @@ class DataProcessing:
             x_test.append(image)
             y_test.append(label)
         
-        x_train = np.array(x_train) / 255.0
-        x_test = np.array(x_test) / 255.0
+        x_train = np.array(x_train)
+        x_test = np.array(x_test)
 
         y_train = np.array(y_train)
         y_test = np.array(y_test)

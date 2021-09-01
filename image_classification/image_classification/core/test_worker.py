@@ -1,4 +1,3 @@
-
 import cv2 as cv
 import numpy as np
 import os
@@ -6,6 +5,8 @@ import tensorflow as tf
 
 # Internal framework imports
 from .data_visualization import DataVisualization
+from ..utils.image_shape import ImageShape
+from ..utils.io_helper import IOHelper
 # Typing imports imports
 
 
@@ -15,17 +16,17 @@ class TestWorker:
     def __init__(self,model):
         self.model = model
     
-    def procces_image(self,image_path:str,image_size:float):
+    def procces_image(self,image_path:str, image_shape: ImageShape):
         image=cv.imread(image_path)[...,::-1]
-        image = cv.resize(image, (image_size, image_size))
+        image = cv.resize(image, (image_shape.width, image_shape.height))
         image=image/255.0
         return image
 
-    def procces_folder(self,img_names:str,folder_path:str,image_size:float):
+    def procces_folder(self,img_names:str,folder_path:str, image_shape: ImageShape):
         data=[]
         for name in img_names:
             tmp_path=os.path.join(folder_path,name)
-            image=self.procces_image(tmp_path,image_size)
+            image=self.procces_image(tmp_path,image_shape)
             data.append(image)
 
         return np.array(data)
@@ -35,15 +36,16 @@ class TestWorker:
             raise Exception("The model must be created in order to be used!")
 
         self.model.summary()
+        IOHelper.check_if_file_exists(checkpoint_path, "Checkpoint path invalid: ")
         self.model.load_weights(checkpoint_path)
 
     def evaluate_model(self,test_images,test_labels):
         loss, acc = self.model.evaluate(test_images, test_labels, verbose=2)
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
 
-    def test_image(self,image_path:str,image_size:float): 
+    def test_image(self,image_path:str,image_shape: ImageShape): 
         img_names = os.listdir(image_path)
-        data=self.procces_folder(img_names,image_path,image_size)
+        data=self.procces_folder(img_names,image_path,image_shape)
 
         if not img_names:
             raise Exception("The folder is empty")
