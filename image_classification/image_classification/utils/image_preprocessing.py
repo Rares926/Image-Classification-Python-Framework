@@ -3,6 +3,7 @@ import cv2 as cv
 #Internal framework imports 
 from image_classification.utils.image_shape import ImageShape #TODO: change to relative import after testing
 from image_classification.utils.ratio import Ratio
+from .point import Point
 #Typing imports
 
 class ImageProcessing:
@@ -76,8 +77,8 @@ class ImageProcessing:
             raise("Image is empty")
         original_height, original_width, channels = image.shape
         original_image_shape = ImageShape({'width':original_width,'height':original_height,'depth':channels})
-        top_left_x, top_left_y, bottom_right_x, bottom_right_y = ratio.size_calculator(original_image_shape)
-        cropped_image = image[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
+        top_left_point, bottom_right_point = ratio.size_calculator(original_image_shape)
+        cropped_image = image[top_left_point.coord_y:bottom_right_point.coord_y, top_left_point.coord_x:bottom_right_point.coord_x]
         cropped_image = ImageProcessing.stretch(cropped_image, cropped_image_shape)
         return cropped_image
 

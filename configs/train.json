@@ -3,7 +3,7 @@
     "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting",
     "network": {
         "input_shape": {
-            "width": 224,
+            "width": 220,
             "height": 200,
             "depth": 3
         },
