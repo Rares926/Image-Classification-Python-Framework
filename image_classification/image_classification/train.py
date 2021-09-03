@@ -1,5 +1,6 @@
 import os
 import sys
+
 from PIL.Image import Image
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
@@ -20,9 +21,8 @@ from .utils.ratio import Ratio
 
 
 class ClassifierTrainer():
-    #NETWORK_SIZE = 224
-
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio,checkpoint,optimizer):
+    
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, checkpoint ,optimizer):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method
@@ -70,11 +70,12 @@ def run():
         error_handler = usage_and_exit_error_handler,
         description="Train a custom classifier using Tensorflow framework")
         parser.add_argument("--training_configuration_file", "-config", required=True, help="The path of the training configuration file (must be JSON format)")
+        parser.add_argument("--checkpoint_path", "-checkpoint", required = False, help="The path of the checkpoint file")
         program_args = parser.parse_args()
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
-        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,trainer_args.checkpoint,trainer_args.optimizer)
+        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,program_args.checkpoint_path,trainer_args.optimizer)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:
