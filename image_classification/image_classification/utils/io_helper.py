@@ -81,6 +81,12 @@ class IOHelper:
         return epoch
 
     @staticmethod
+    def set_dictionary_keys_to_lower(d):
+        d =  {k.lower(): v for k, v in d.items()}
+        return d
+
+
+    @staticmethod
     def get_extension(path: str) -> str:
         return Path(path).suffix.strip()
     
@@ -95,6 +101,7 @@ class IOHelper:
             if show_confirmation:
                 print("Created {} directory".format(dir_path))
     
+
     @staticmethod
     def copyfile(src: str, dst: str) -> None:
         shutil.copyfile(src, dst)

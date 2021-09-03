@@ -23,7 +23,7 @@ class ModelTester():
 
         # model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
         model_architurecture=ModelArchitecture(self.image_shape)
-        label_count = DataProcessing.load_label_count("C:/Users/Radu Baciu/Desktop/Dev/Image-Classification-Python-Framework/image_classification/image_classification/data.json")
+        label_count = DataProcessing.load_label_count(self.labels_path)
         model=model_architurecture.set_model(label_count)
         #,classifier_model="mobilenet_v2"
         testWorker=TestWorker(model)
@@ -37,7 +37,7 @@ def run():
         error_handler = usage_and_exit_error_handler,
         description="Test a model saved from a checkpoint")
         parser.add_argument("--test_configuration_file", "-config", required=True, help="The path to the test config file")
-        parser.add_argument("--checkpoint_path", "-checkpoint", required = False, help="The path of the checkpoint file")
+        parser.add_argument("--checkpoint_path", "-checkpoint", required = True, help="The path of the checkpoint file")
         program_args = parser.parse_args()
 
         tester_args = TestBuilder()

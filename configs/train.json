@@ -1,41 +1,40 @@
 {
     "dataset_path": "C:/animalsDataset",
-	"workspace_path": "C:/Training_data",
-
-	"network":
-	{
-
-		"input_shape":
-		{
-			"width": 224,
-			"height": 224,
-			"depth": 3
-		},
-
-		"input_format":
-		{
-			"channels": "RGB",
-			"data_type": "FLOAT"
-		},
-
-		
-		"checkpoint":"C:/Training_data/checkpoints/20210828-205540cp-009.h5"
-
-	},
-
-	"optimizer":
-	{
-
-		"name":"Adam",
-		"params":
-		{
-			"lr":0.001,
-			"grad_clip":0.5,
-			"beta_1":0.9, 
-			"beta_2":0.999, 
-			"decay":0.0, 
-			"amsgrad":"False"
-		}
-		
-	}
+    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting",
+    "network": {
+        "input_shape": {
+            "width": 224,
+            "height": 200,
+            "depth": 3
+        },
+        "input_format": {
+            "channels": "RGB",
+            "data_type": "FLOAT"
+        },
+        "resize": {
+            "method": "CROP",
+            "params": {
+                "tl_ratio": 0.1,
+                "br_ratio": 0.1
+            }
+        }
+    },
+    "optimizer": {
+        "name": "Adam",
+        "lr": {
+            "value": 0.01,
+            "schedule": "ExponentialDecay",
+            "params": {
+                "decay_steps": 10000,
+                "decay_rate": 0.9
+            }
+        },
+        "params": {
+            "grad_clip": 0.5,
+            "beta_1": 0.9,
+            "beta_2": 0.999,
+            "decay": 0,
+            "amsgrad": "False"
+        }
+    }
 }

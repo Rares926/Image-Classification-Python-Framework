@@ -1,22 +1,24 @@
 {
-	"network_path": "C:/Training_data/checkpoints/20210823-193111cp-008.h5",
-	"images_path": "C:/Test_image",
-	"results_path": "dir_path",
-	"top_k": 2,
-
-	"network":
-	{
-		"input_shape":
-		{
-			"width": 224,
-			"height": 224,
-			"depth": 3
-		},
-
-		"input_format":
-		{
-			"channels": "RGB",
-			"data_type": "FLOAT"
-		}
-	}
+    "images_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/inputData/test",
+    "labels_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/data.json",
+    "results_path": "dir_path",
+    "top_k": 2,
+    "network": {
+        "input_shape": {
+            "width": 224,
+            "height": 200,
+            "depth": 3
+        },
+        "input_format": {
+            "channels": "RGB",
+            "data_type": "FLOAT"
+        },
+        "resize": {
+            "method": "CROP",
+            "params": {
+                "tl_ratio": 0.1,
+                "br_ratio": 0.1
+            }
+        }
+    }
 }
