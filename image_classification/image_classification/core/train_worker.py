@@ -16,7 +16,7 @@ class TrainWorker:
         self.starting_epoch=starting_epoch
 
 
-    def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array,optimizer=None, epochs:int = 10,from_checkpoint:str=None):
+    def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array,optimizer=None, epochs:int = 10,from_checkpoint:str=None,train_metrics='accuracy'):
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
@@ -41,7 +41,7 @@ class TrainWorker:
         
         self.model.compile(optimizer=optimizer,
                     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
-                    metrics=['accuracy'])
+                    metrics=train_metrics)
                     
         self.model.summary()
         self.model.fit(x_train, y_train, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])

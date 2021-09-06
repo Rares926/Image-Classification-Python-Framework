@@ -1,5 +1,5 @@
 from ..utils.io_helper import IOHelper
-
+from ..utils.dict_helper import DICTHelper
 #de facut niste verificari in caz ca nu exista name ul samd
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class LRScheduleHelper:
@@ -44,12 +44,15 @@ class LRScheduleHelper:
             return LRScheduleHelper.DEFAULT_PARAMS_VALUES[name]
         else:
             params=IOHelper.set_dictionary_keys_to_lower(params)
-            for par in LRScheduleHelper.DEFAULT_PARAMS_VALUES[name]:
-                if par in params:
-                    if isinstance(params[par],str):
-                         params_tmp[par]=LRScheduleHelper.STR_TO_BOOL[params[par]]
-                    else: params_tmp[par]=params[par]
-                else: params_tmp[par]=  LRScheduleHelper.DEFAULT_PARAMS_VALUES[name][par]
+
+            params_tmp=DICTHelper.combine_dict_params(LRScheduleHelper.DEFAULT_PARAMS_VALUES,params,name)
+
+            # for par in LRScheduleHelper.DEFAULT_PARAMS_VALUES[name]:
+            #     if par in params:
+            #         if isinstance(params[par],str):
+            #              params_tmp[par]=LRScheduleHelper.STR_TO_BOOL[params[par]]
+            #         else: params_tmp[par]=params[par]
+            #     else: params_tmp[par]=  LRScheduleHelper.DEFAULT_PARAMS_VALUES[name][par]
 
         return params_tmp
 

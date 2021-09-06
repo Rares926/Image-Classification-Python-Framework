@@ -24,9 +24,6 @@ class Optimizer:
         self.params=OptimizerHelper.set_optimizer_value(optimizer_data["params"],self.name)
         
 
-
-
-
     def get_opt(self):
         """Dispatch method"""
         method_name = 'opt_' + str(self.name)

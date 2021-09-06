@@ -1,1 +1,10 @@
-{"0": {"name": "cats", "uid": "class_000"}, "1": {"name": "dogs", "uid": "class_001"}}
+{
+    "0": {
+        "name": "cats",
+        "uid": "class_000"
+    },
+    "1": {
+        "name": "dogs",
+        "uid": "class_001"
+    }
+}

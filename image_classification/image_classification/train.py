@@ -22,13 +22,14 @@ from .utils.ratio import Ratio
 
 class ClassifierTrainer():
     
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, checkpoint ,optimizer):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, checkpoint ,optimizer,metrics):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method
         self.ratios = ratios
         self.checkpoint=checkpoint
         self.optimizer=optimizer
+        self.metrics=metrics
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -61,7 +62,7 @@ class ClassifierTrainer():
         #asta ar putea fi implementate in alta parte
         #din self.checkpoint trebuie sa iau doar epoca
 
-        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test,self.optimizer) #from_checkpoint="C:/Training_data/checkpoints/20210820-205329cp-007.h5"
+        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test,self.optimizer,train_metrics=self.metrics) #from_checkpoint="C:/Training_data/checkpoints/20210820-205329cp-007.h5"
 
 
 def run():
@@ -75,7 +76,7 @@ def run():
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
-        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,program_args.checkpoint_path,trainer_args.optimizer)
+        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,program_args.checkpoint_path,trainer_args.optimizer,trainer_args.metrics)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:
