@@ -37,3 +37,11 @@ class Augment:
     def aug_randomcrop(self,params):
         return A.RandomCrop(width=params["width"], height=params["height"])
 
+    def aug_rotate(self,params):
+        return A.Rotate (limit=params["limit"],
+                        interpolation=params["interpolation"],
+                        border_mode=params["border_mode"],
+                        value=params["value"],
+                        mask_value=params["mask_value"],
+                        p=params["p"])
+

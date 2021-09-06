@@ -3,7 +3,7 @@ from ..utils.dict_helper import DICTHelper
 
 class AugmentHelper:
     
-    POSSIBLE_AUGUMENTATIONS=["randomcrop","horizontalflip","verticalflip","rotate"]
+    POSSIBLE_AUGUMENTATIONS=["horizontalflip","randomcrop","flip","randombrightnesscontrast","rotate"]
 
     DEFAULT_AUGUMENTATIONS={
         "horizontalflip":{
@@ -14,10 +14,31 @@ class AugmentHelper:
             "height":None,
             "width":None,
             "p":1
+        },
+
+        "flip":{
+                "p":0.5
+        },
+
+        "randombrightnesscontrast":{
+                "brightness_limit":0.2,
+                "contrast_limit":0.2,
+                "brightness_by_max":True,
+                "p":0.5
+        },
+
+        "rotate":{
+            "limit":90,
+            "interpolation":1,
+            "border_mode":"4",
+            "value":None,
+            "mask_value":None,
+            "p":0.5
+
         }
 
+        }
 
-    }
     def __init__(self):
         pass
     

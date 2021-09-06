@@ -3,8 +3,8 @@
     "workspace_path": "C:/Training_data",
     "network": {
         "input_shape": {
-            "width": 220,
-            "height": 200,
+            "width": 200,
+            "height": 220,
             "depth": 3
         },
         "input_format": {
