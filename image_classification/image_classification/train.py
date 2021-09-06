@@ -2,6 +2,7 @@ import os
 import sys
 
 from PIL.Image import Image
+from image_classification.utils.image_loader import ImageLoader
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 import cv2 as cv
@@ -39,13 +40,13 @@ class ClassifierTrainer():
         train_location = training_workspace_dir + '/inputData/train'
         test_location = training_workspace_dir + '/inputData/test'
 
-        train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
-        test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
+        ##train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
+        ##test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
 
         #DataVisualization.visualizeImage(train, labels)
         #DataVisualization.checkDatasetBalance(train, labels) 
 
-        x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
+        ##x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
 
         print("Starting training worker...")
         model_architurecture = ModelArchitecture(self.image_shape,self.checkpoint)
@@ -60,8 +61,8 @@ class ClassifierTrainer():
 
         #asta ar putea fi implementate in alta parte
         #din self.checkpoint trebuie sa iau doar epoca
-
-        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test,self.optimizer) #from_checkpoint="C:/Training_data/checkpoints/20210820-205329cp-007.h5"
+        image_loader = ImageLoader(self.image_shape, self.image_format, self.resize_method, self.ratios)
+        train_worker.train(training_workspace_dir, labels ,image_loader, self.optimizer) #, x_train, y_train, x_test, y_test
 
 
 def run():
