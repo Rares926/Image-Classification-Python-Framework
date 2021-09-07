@@ -1,7 +1,10 @@
+
+from image_classification.core.data_generator import DataGenerator
+from image_classification.utils.image_loader import ImageLoader
 import tensorflow as tf
 import datetime
 import os
-import numpy as np 
+import numpy as np
 
 # Internal framework imports
 from ..utils.io_helper import IOHelper
@@ -16,10 +19,12 @@ class TrainWorker:
         self.starting_epoch=starting_epoch
 
 
-    def train(self, workspace:str, x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array,optimizer=None, epochs:int = 10,from_checkpoint:str=None,train_metrics='accuracy'):
+    def train(self, workspace:str, labels, image_loader:ImageLoader, optimizer=None, epochs:int = 10, from_checkpoint:str=None,train_metrics='accuracy'): # ,x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
+        train_location = workspace + '/inputData/train'
+        test_location = workspace + '/inputData/test'
 
         checkpoint_path = os.path.join(workspace,"checkpoints")
         IOHelper.create_directory(checkpoint_path)
@@ -35,18 +40,21 @@ class TrainWorker:
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
-
-        if from_checkpoint!=None:
-            self.model.load_weights(from_checkpoint)
         
         self.model.compile(optimizer=optimizer,
                     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                     metrics=train_metrics)
                     
+        if from_checkpoint!=None:
+            self.model.load_weights(from_checkpoint)
+                    
         self.model.summary()
-        self.model.fit(x_train, y_train, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,x_train,x_test,y_train,y_test,workspace),cp_callback])
+        training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True)
+        testing_generator = DataGenerator(test_location, labels, image_loader, is_train_data=True)
+        self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback, cp_callback])
+        # self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model,training_generator, testing_generator, workspace),cp_callback]) #x_train,x_test,y_train,y_test, in callback
 
-        test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=1)
+        test_loss, test_acc = self.model.evaluate(testing_generator, verbose=1)
         
         print('\nTest loss:', test_loss)
         print('\nTest accuracy:', test_acc)

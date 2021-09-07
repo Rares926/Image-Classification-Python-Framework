@@ -10,12 +10,10 @@ import sklearn.metrics
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         
-    def __init__(self,model,x_train,x_test,y_train,y_test,workspace):
+    def __init__(self,model,train_generator, test_generator,workspace):
         self.model=model
-        self.x_train=x_train
-        self.y_train=y_train
-        self.x_test=x_test
-        self.y_test=y_test
+        self.train_generator = train_generator
+        self.test_generator = test_generator
         self.workspace=workspace
 
     def on_epoch_end(self, epoch, logs=None):
