@@ -40,13 +40,13 @@ class TrainWorker:
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
-
-        if from_checkpoint!=None:
-            self.model.load_weights(from_checkpoint)
         
         self.model.compile(optimizer=optimizer,
                     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                     metrics=['accuracy'])
+                    
+        if from_checkpoint!=None:
+            self.model.load_weights(from_checkpoint)
                     
         self.model.summary()
         training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True)
