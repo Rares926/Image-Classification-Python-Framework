@@ -62,7 +62,7 @@ class OptimizerHelper:
         pass
     
     @staticmethod
-    def set_optimizer_value(optimizer,name):
+    def set_optimizer_value(optimizer:dict,name:str):
 
         optimizer=IOHelper.set_dictionary_keys_to_lower(optimizer)
 

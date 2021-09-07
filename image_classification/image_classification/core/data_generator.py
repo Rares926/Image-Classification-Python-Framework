@@ -24,7 +24,7 @@ class DataGenerator(tf.keras.utils.Sequence):
     def __len__(self): #from Sequence
         return len(self.image_names)//self.batch_size
 
-    def __getitem__(self, index): #from Sequence
+    def __getitem__(self, index:int): #from Sequence
         batch_images = self.image_names[index * self.batch_size : (index + 1) * self.batch_size]
 
         x, y = self.generate_X(batch_images)

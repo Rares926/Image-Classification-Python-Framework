@@ -19,7 +19,7 @@ class TrainWorker:
         self.starting_epoch=starting_epoch
 
 
-    def train(self, workspace:str, labels, image_loader:ImageLoader, optimizer=None, epochs:int = 10, from_checkpoint:str=None,train_metrics:list='accuracy',augmentations=None): # ,x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array
+    def train(self, workspace:str, labels, image_loader:ImageLoader, optimizer=None, epochs:int = 10, from_checkpoint:str=None,train_metrics:list='accuracy',augmentations:list=None): # ,x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 

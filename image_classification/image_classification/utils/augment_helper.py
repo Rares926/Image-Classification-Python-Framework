@@ -46,7 +46,7 @@ class AugmentHelper:
     def check_name(name:str):
         return name.lower() in AugmentHelper.POSSIBLE_AUGUMENTATIONS
 
-    def get_params(aug:dict,name):
+    def get_params(aug:dict,name:str):
 
         aug=IOHelper.set_dictionary_keys_to_lower(aug)
         aug_tmp=DICTHelper.combine_dict_params(AugmentHelper.DEFAULT_AUGUMENTATIONS,aug,name)

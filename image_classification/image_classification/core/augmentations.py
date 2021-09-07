@@ -25,19 +25,19 @@ class Augment:
         #returneaza augmentarile create in forma de lista
         #lista asta se poate transmite ca parametru in compose 
 
-    def get_aug(self,augument):
+    def get_aug(self,augument:dict):
         method_name = 'aug_' + augument["name"]
         method = getattr(self, method_name, lambda: "Invalid optimizier")
 
         return method(augument["params"])
 
-    def aug_horizontalflip(self,params):
+    def aug_horizontalflip(self,params:dict):
         return A.HorizontalFlip(p=params["p"])
 
-    def aug_randomcrop(self,params):
+    def aug_randomcrop(self,params:dict):
         return A.RandomCrop(width=params["width"], height=params["height"])
 
-    def aug_rotate(self,params):
+    def aug_rotate(self,params:dict):
         return A.Rotate (limit=params["limit"],
                         interpolation=params["interpolation"],
                         border_mode=params["border_mode"],
