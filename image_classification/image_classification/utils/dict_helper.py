@@ -13,7 +13,7 @@ class DICTHelper:
         pass
 
     @staticmethod
-    def combine_dict_params(const_dict,config_dict,name):
+    def combine_dict_params(const_dict:dict,config_dict:dict,name:str):
 
         tmp_dict={}
 

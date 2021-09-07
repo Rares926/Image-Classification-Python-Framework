@@ -43,17 +43,7 @@
             "params":{
                 "p":0.8
             }
-        },
-        
-        {
-            "name":"RandomCrop",
-            "params":{
-                "width":220,
-                "height":200
-
-            }
         }
-
     ],
 
 

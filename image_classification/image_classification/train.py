@@ -23,7 +23,7 @@ from .utils.ratio import Ratio
 
 class ClassifierTrainer():
     
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, checkpoint ,optimizer,metrics):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, checkpoint ,optimizer,metrics,augmentations):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method
@@ -31,6 +31,7 @@ class ClassifierTrainer():
         self.checkpoint=checkpoint
         self.optimizer=optimizer
         self.metrics=metrics
+        self.augmentations=augmentations
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
@@ -63,7 +64,7 @@ class ClassifierTrainer():
         #asta ar putea fi implementate in alta parte
         #din self.checkpoint trebuie sa iau doar epoca
         image_loader = ImageLoader(self.image_shape, self.image_format, self.resize_method, self.ratios)
-        train_worker.train(training_workspace_dir, labels ,image_loader, self.optimizer, from_checkpoint=self.checkpoint,train_metrics=self.metrics) #aici mai trebuie adaugat ceva de train metrics
+        train_worker.train(training_workspace_dir, labels ,image_loader, self.optimizer, from_checkpoint=self.checkpoint,train_metrics=self.metrics,augmentations=self.augmentations) #aici mai trebuie adaugat ceva de train metrics
 
 
 def run():
@@ -77,7 +78,7 @@ def run():
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
-        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,program_args.checkpoint_path,trainer_args.optimizer,trainer_args.metrics)
+        trainer = ClassifierTrainer(trainer_args.image_shape, trainer_args.image_format, trainer_args.resize_method,trainer_args.ratios,program_args.checkpoint_path,trainer_args.optimizer,trainer_args.metrics,trainer_args.augumentations)
         trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
 
     except Exception as ex:
