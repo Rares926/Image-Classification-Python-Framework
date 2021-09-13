@@ -6,14 +6,14 @@ import itertools
 import io
 import sklearn.metrics
 
-
+#Internal framework imports
+from image_classification.core import data_generator
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         
-    def __init__(self,model,train_generator, test_generator,workspace):
+    def __init__(self,model, data_generator, workspace):
         self.model=model
-        self.train_generator = train_generator
-        self.test_generator = test_generator
+        self.data_generator = data_generator
         self.workspace=workspace
 
     def on_epoch_end(self, epoch, logs=None):
@@ -39,15 +39,13 @@ class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         # Compute the labels from the normalized confusion matrix.
         labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
 
-        # Use white text if squares are dark; otherwise black.
-        threshold = cm.max() / 2.
         for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-            color = "white" if cm[i, j] > threshold else "black"
-            plt.text(j, i, labels[i, j] , horizontalalignment="center", color=color)
+            plt.text(j, i, labels[i, j] , horizontalalignment="center", color="black")
 
         plt.tight_layout()
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
+        plt.savefig("C:/Users/Radu Baciu/Desktop/workspaceTesting/test.png")
         return figure
 
     def plot_to_image(self,figure):
@@ -69,13 +67,19 @@ class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
 
     def log_confusion_matrix(self,epoch):
         # Use the model to predict the values from the validation dataset.
-        test_pred_raw = self.model.predict(self.x_test)
-        test_pred = np.argmax(test_pred_raw, axis=1)
+        ground_truths = np.empty((0))
+        test_prediction = np.empty((0))
+        #generator length in var
+        for index in range(len(self.data_generator)):
+            batch_images, batch_ground_truths = self.data_generator[index]
+            ground_truths = np.append(ground_truths, batch_ground_truths)
+            test_prediction_raw = self.model.predict(batch_images)
+            test_prediction = np.append(test_prediction, np.argmax(test_prediction_raw, axis=1))
 
         # Calculate the confusion matrix.
-        cm = sklearn.metrics.confusion_matrix(self.y_test, test_pred)
+        cm = sklearn.metrics.confusion_matrix(ground_truths, test_prediction)
         # Log the confusion matrix as an image summary.
-        figure =self.plot_confusion_matrix(cm, ["cat","dog"])
+        figure =self.plot_confusion_matrix(cm, ["cat","dog"]) #labels parametrized
         cm_image =self.plot_to_image(figure)
 
         file_writer_cm = tf.summary.create_file_writer(self.workspace + '/cm')

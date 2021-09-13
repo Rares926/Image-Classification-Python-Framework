@@ -9,6 +9,7 @@ import albumentations as A
 # Internal framework imports
 from ..utils.io_helper import IOHelper
 from ..core.confusion_matrix import ConfusionMatrixCallback
+from ..core.data_processing import DataProcessing
 # Typing imports imports
 
 
@@ -52,9 +53,9 @@ class TrainWorker:
         transform = A.Compose(augmentations)
 
         self.model.summary()
-        training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True,transform=transform)
+        training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True, transform = transform)
         testing_generator = DataGenerator(test_location, labels, image_loader, is_train_data=True)
-        self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback, cp_callback])
+        self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace),cp_callback])
 
         test_loss, test_acc = self.model.evaluate(testing_generator, verbose=1)
         
