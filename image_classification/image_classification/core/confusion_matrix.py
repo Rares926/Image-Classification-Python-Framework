@@ -1,4 +1,5 @@
-
+import os
+from image_classification.core.data_processing import DataProcessing
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,10 +12,11 @@ from image_classification.core import data_generator
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         
-    def __init__(self,model, data_generator, workspace):
+    def __init__(self,model, data_generator, workspace, labels_location):
         self.model=model
         self.data_generator = data_generator
         self.workspace=workspace
+        self.labels_location = labels_location
 
     def on_epoch_end(self, epoch, logs=None):
         self.log_confusion_matrix(epoch)
@@ -78,8 +80,9 @@ class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
 
         # Calculate the confusion matrix.
         cm = sklearn.metrics.confusion_matrix(ground_truths, test_prediction)
+        label_names = DataProcessing.load_label_names(self.labels_location)
         # Log the confusion matrix as an image summary.
-        figure =self.plot_confusion_matrix(cm, ["cat","dog"]) #labels parametrized
+        figure =self.plot_confusion_matrix(cm, label_names) #labels parametrized
         cm_image =self.plot_to_image(figure)
 
         file_writer_cm = tf.summary.create_file_writer(self.workspace + '/cm')

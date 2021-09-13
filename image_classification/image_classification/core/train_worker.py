@@ -26,6 +26,7 @@ class TrainWorker:
 
         train_location = workspace + '/inputData/train'
         test_location = workspace + '/inputData/test'
+        labels_location = workspace + '/data.json'
 
         checkpoint_path = os.path.join(workspace,"checkpoints")
         IOHelper.create_directory(checkpoint_path)
@@ -55,7 +56,7 @@ class TrainWorker:
         self.model.summary()
         training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True, transform = transform)
         testing_generator = DataGenerator(test_location, labels, image_loader, is_train_data=True)
-        self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace),cp_callback])
+        self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
 
         test_loss, test_acc = self.model.evaluate(testing_generator, verbose=1)
         
