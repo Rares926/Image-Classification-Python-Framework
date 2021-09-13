@@ -44,6 +44,14 @@ class DataProcessing:
         return label_count
 
     @staticmethod
+    def load_label_names(data_file_location: str):
+        labels = JsonHelper.read_json(data_file_location, True, "Data.json file missing!")
+        label_names = []
+        for i in labels.keys():
+            label_names.append(labels[i]["name"])
+        return label_names
+
+    @staticmethod
     def albumentate(image,transform=None):
 
         transform = A.Compose([
