@@ -70,9 +70,8 @@ class DataProcessing:
     def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
         for key in label:
             list = os.listdir(os.path.join(dataset, label[key]['name'])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
-            number_of_files = len(list)
+            number_of_files = 1000#len(list)
             to_be_trained = int(quotient * number_of_files)
-            #to_be_tested = number_of_files - to_be_trained
 
             for photo in range(to_be_trained):
                 source = os.path.join(dataset, label[key]['name'], list[photo])
@@ -106,24 +105,15 @@ class DataProcessing:
         return data
 
     @staticmethod
-    def proccesAndNormalize(train: np.ndarray, test: np.ndarray):
-        x_train = []
-        y_train = []
-        x_test = []
-        y_test = []  
+    def proccesAndNormalize(data: np.ndarray):
+        x_data = []
+        y_data = []
 
-        for image, label in train:
-            x_train.append(image)
-            y_train.append(label)
-        
-        for image, label in test:
-            x_test.append(image)
-            y_test.append(label)
-        
-        x_train = np.array(x_train)
-        x_test = np.array(x_test)
+        for image, label in data:
+            x_data.append(image)
+            y_data.append(label)
+   
+        x_data = np.array(x_data)
+        y_data = np.array(y_data)
 
-        y_train = np.array(y_train)
-        y_test = np.array(y_test)
-
-        return x_train, y_train, x_test, y_test
+        return x_data, y_data
