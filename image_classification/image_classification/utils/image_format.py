@@ -25,7 +25,6 @@ class ImageFormat:
                 raise Exception('Error: Undefined color space!')
             return cls.UNDEFINED
 
-
     class DataType(Enum):
         UNDEFINED = 1
         UINT8 = 2

@@ -1,5 +1,5 @@
 from ..utils.io_helper import IOHelper
-
+from ..utils.dict_helper import DICTHelper
 #de facut niste verificari in caz ca nu exista name ul samd
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class LRScheduleHelper:
@@ -33,7 +33,7 @@ class LRScheduleHelper:
         pass
     
     @staticmethod
-    def set_learning_rate_schedule(name,params=None):
+    def set_learning_rate_schedule(name:str,params=None):
         params_tmp={}
         
         #daca params nu apare sau daca apare dar nu are nici un element se transmit valorile de baza 
@@ -44,12 +44,8 @@ class LRScheduleHelper:
             return LRScheduleHelper.DEFAULT_PARAMS_VALUES[name]
         else:
             params=IOHelper.set_dictionary_keys_to_lower(params)
-            for par in LRScheduleHelper.DEFAULT_PARAMS_VALUES[name]:
-                if par in params:
-                    if isinstance(params[par],str):
-                         params_tmp[par]=LRScheduleHelper.STR_TO_BOOL[params[par]]
-                    else: params_tmp[par]=params[par]
-                else: params_tmp[par]=  LRScheduleHelper.DEFAULT_PARAMS_VALUES[name][par]
+
+            params_tmp=DICTHelper.combine_dict_params(LRScheduleHelper.DEFAULT_PARAMS_VALUES,params,name)
 
         return params_tmp
 

@@ -1,11 +1,11 @@
 {
-    "images_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/inputData/test",
-    "labels_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/data.json",
+    "images_path": "C:/Test_image",
+    "labels_path": "C:/Image-Classification-Python-Framework/image_classification/image_classification/data.json",
     "results_path": "dir_path",
     "top_k": 2,
     "network": {
         "input_shape": {
-            "width": 224,
+            "width": 220,
             "height": 200,
             "depth": 3
         },

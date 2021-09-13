@@ -1,10 +1,10 @@
 {
     "dataset_path": "C:/animalsDataset",
-    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting",
+    "workspace_path": "C:/Training_data",
     "network": {
         "input_shape": {
-            "width": 220,
-            "height": 200,
+            "width": 200,
+            "height": 220,
             "depth": 3
         },
         "input_format": {
@@ -36,5 +36,17 @@
             "decay": 0,
             "amsgrad": "False"
         }
-    }
+    },
+    "augmentations":[
+        {
+            "name":"horizontalFlip",
+            "params":{
+                "p":0.8
+            }
+        }
+    ],
+
+
+    "metrics":["accuracy"]
+
 }

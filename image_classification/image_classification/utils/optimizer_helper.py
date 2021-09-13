@@ -1,5 +1,6 @@
 from ..utils.lr_schedule import LearningRateSchedule
 from ..utils.io_helper import IOHelper
+from ..utils.dict_helper import DICTHelper
 #de facut niste verificari in caz ca nu exista name ul samd
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class OptimizerHelper:
@@ -61,16 +62,12 @@ class OptimizerHelper:
         pass
     
     @staticmethod
-    def set_optimizer_value(optimizer,name):
-        opt_tmp={}
+    def set_optimizer_value(optimizer:dict,name:str):
+
         optimizer=IOHelper.set_dictionary_keys_to_lower(optimizer)
-        for par in OptimizerHelper.DEFAULT_OPTIMIZER_VALUES[name]:
-            if par in optimizer:
-                if isinstance(optimizer[par],str):
-                    opt_tmp[par]=OptimizerHelper.STR_TO_BOOL[optimizer[par]]
-                else : opt_tmp[par]=optimizer[par]
-            else: opt_tmp[par]=  OptimizerHelper.DEFAULT_OPTIMIZER_VALUES[name][par]
-            
+
+        opt_tmp=DICTHelper.combine_dict_params(OptimizerHelper.DEFAULT_OPTIMIZER_VALUES,optimizer,name)
+
         return opt_tmp
     
     @staticmethod
