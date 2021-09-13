@@ -24,11 +24,11 @@ class TrainWorker:
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
-        train_location = workspace + '/inputData/train'
-        test_location = workspace + '/inputData/test'
-        labels_location = workspace + '/data.json'
-
-        checkpoint_path = os.path.join(workspace,"checkpoints")
+        train_location = os.path.join(workspace, 'inputData', 'train')
+        test_location = os.path.join(workspace, 'inputData', 'test')
+        labels_location = os.path.join(workspace, 'data.json')
+        checkpoint_path = os.path.join(workspace,'checkpoints')
+        
         IOHelper.create_directory(checkpoint_path)
 
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"cp-{epoch:03G}.h5",
