@@ -23,8 +23,18 @@ class ModelArchitecture:
             tf.keras.layers.MaxPool2D((2, 2)),
             tf.keras.layers.Dropout(0.2),
 
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
+            tf.keras.layers.Conv2D(256, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.2),
+
             tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(256, activation='relu'),
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dropout(0.2)
                 ]
