@@ -1,9 +1,9 @@
 import cv2 as cv
 
 #Internal framework imports 
-from image_classification.utils.image_shape import ImageShape #TODO: change to relative import after testing
-from image_classification.utils.ratio import Ratio
-from .point import Point
+from ..data_structures.image_shape import ImageShape #TODO: change to relative import after testing
+from ..data_structures.ratio import Ratio
+from ..data_structures.point import Point
 #Typing imports
 
 class ImageProcessing:

@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow_hub as hub
 # Internal framework imports
-from ..utils.image_shape import ImageShape
+from ..data_structures.image_shape import ImageShape
 # Typing imports imports
 
 

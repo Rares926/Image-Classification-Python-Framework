@@ -1,5 +1,5 @@
-from ..utils.io_helper import IOHelper
-from ..utils.dict_helper import DICTHelper
+from .io_helper import IOHelper
+from .dict_helper import DICTHelper
 #de facut niste verificari in caz ca nu exista name ul samd
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class LRScheduleHelper:

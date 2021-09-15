@@ -1,11 +1,10 @@
-from image_classification.utils.image_loader import ImageLoader
 import tensorflow as tf
 import numpy as np
 import os
 
 #Internal framework imports
-from ..utils.io_helper import IOHelper
-from ..utils.image_loader import ImageLoader
+from ..utils.helpers.io_helper import IOHelper
+from ..network.image_loader import ImageLoader
 
 #Typing imports
 

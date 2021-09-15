@@ -1,17 +1,18 @@
 import os
-from image_classification.utils.ratio import Ratio
-from image_classification.utils.resize_method import ResizeMethod
+from ..data_structures.ratio import Ratio
+from ..utils.resize_method import ResizeMethod
 
 import numpy as np
 import cv2 as cv
 import albumentations as A
 from numpy.lib.type_check import imag
 # Internal framework imports
-from ..utils.io_helper import IOHelper
-from ..utils.json_helper import JsonHelper
-from ..utils.image_shape import ImageShape
-from ..utils.image_loader import ImageLoader
-from ..utils.image_format import ImageFormat
+from ..utils.helpers.io_helper import IOHelper
+from ..utils.helpers.json_helper import JsonHelper
+
+from ..data_structures.image_shape import ImageShape
+from ..network.image_loader import ImageLoader
+from ..data_structures.image_format import ImageFormat
 
 # Typing imports imports
 from typing import Dict

@@ -1,5 +1,5 @@
 import tensorflow as tf 
-from ..utils.optimizer_helper import OptimizerHelper
+from ..utils.helpers.optimizer_helper import OptimizerHelper
 
 
 #parametrii o sa aibe valori de 0 daca nu trebuie transmise 

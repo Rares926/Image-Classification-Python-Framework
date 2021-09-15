@@ -1,15 +1,15 @@
 
-from image_classification.core.data_generator import DataGenerator
-from image_classification.utils.image_loader import ImageLoader
+from ..data_structures.data_generator import DataGenerator
+from ..network.image_loader import ImageLoader
 import tensorflow as tf
 import datetime
 import os
 import numpy as np
 import albumentations as A
 # Internal framework imports
-from ..utils.io_helper import IOHelper
-from ..core.confusion_matrix import ConfusionMatrixCallback
-from ..core.data_processing import DataProcessing
+from ..utils.helpers.io_helper import IOHelper
+from ..network.confusion_matrix import ConfusionMatrixCallback
+from ..utils.data_processing import DataProcessing
 # Typing imports imports
 
 

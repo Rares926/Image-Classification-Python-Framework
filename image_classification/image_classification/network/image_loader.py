@@ -2,11 +2,11 @@ import cv2 as cv
 import numpy as np
 
 #Internal framework imports
-from .image_shape import ImageShape
-from .image_format import ImageFormat
-from .resize_method import ResizeMethod
-from .image_preprocessing import ImageProcessing
-from .ratio import Ratio
+from ..data_structures.image_shape import ImageShape
+from ..data_structures.image_format import ImageFormat
+from ..utils.resize_method import ResizeMethod
+from ..utils.image_preprocessing import ImageProcessing
+from ..data_structures.ratio import Ratio
 
 #Typing imports
 

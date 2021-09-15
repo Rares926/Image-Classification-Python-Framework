@@ -1,14 +1,13 @@
 import os
-from image_classification.core.data_processing import DataProcessing
+from ..utils.data_processing import DataProcessing
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
-import itertools
 import io
 import sklearn.metrics
 
 #Internal framework imports
-from image_classification.core import data_generator
+from image_classification.data_structures import data_generator
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         

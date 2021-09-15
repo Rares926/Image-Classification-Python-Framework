@@ -1,8 +1,8 @@
 
 
 #Internal framework imports
-from .json_helper import JsonHelper
-from .network_params import NetworkParams
+from ..utils.helpers.json_helper import JsonHelper
+from ..network.network_params import NetworkParams
 
 #Typing imports
 

@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import optimizers 
-from ..utils.lr_schedule_helper import LRScheduleHelper
+from ..utils.helpers.lr_schedule_helper import LRScheduleHelper
 
 class LearningRateSchedule():
 

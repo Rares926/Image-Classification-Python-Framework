@@ -1,10 +1,9 @@
 
-
 #Internal framework imports
-from ..core.augmentations import Augment
-from .json_helper import JsonHelper
-from .network_params import NetworkParams
-from ..core.optimizer import Optimizer
+from ..network.augmentations import Augment
+from ..utils.helpers.json_helper import JsonHelper
+from ..network.network_params import NetworkParams
+from ..network.optimizer import Optimizer
 #Typing imports
 
 class TrainBuilder:

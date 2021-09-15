@@ -2,22 +2,21 @@ import os
 import sys
 
 from PIL.Image import Image
-from image_classification.utils.image_loader import ImageLoader
+from image_classification.network.image_loader import ImageLoader
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 import cv2 as cv
 
 # Internal framework imports
-from .core.data_visualization import DataVisualization
-from .core.data_processing import DataProcessing
+from .utils.data_processing import DataProcessing
 from .core.train_worker import TrainWorker
-from .core.network_architecture import ModelArchitecture
-from .utils.io_helper import IOHelper
-from .utils.train_builder import TrainBuilder
-from .utils.image_shape import ImageShape
-from .utils.image_format import ImageFormat
+from .network.network_architecture import ModelArchitecture
+from .utils.helpers.io_helper import IOHelper
+from .builders.train_builder import TrainBuilder
+from .data_structures.image_shape import ImageShape
+from .data_structures.image_format import ImageFormat
 from .utils.resize_method import ResizeMethod
-from .utils.ratio import Ratio
+from .data_structures.ratio import Ratio
 # Typing imports imports
 
 
