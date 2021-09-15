@@ -42,7 +42,7 @@ class ClassifierTrainer():
         train_location = training_workspace_dir + '/inputData/train'
         test_location = training_workspace_dir + '/inputData/test'
 
-        ##train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
+        train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
         ##test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
 
         #DataVisualization.visualizeImage(train, labels)

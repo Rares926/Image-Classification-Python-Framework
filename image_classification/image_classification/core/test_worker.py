@@ -1,4 +1,5 @@
 import cv2 as cv
+from image_classification.core.data_processing import DataProcessing
 import numpy as np
 import os
 import tensorflow as tf
@@ -11,10 +12,9 @@ from ..utils.io_helper import IOHelper
 
 
 class TestWorker:
-    NETWORK_SIZE = 224
-
-    def __init__(self,model):
+    def __init__(self, model, data_file_location):
         self.model = model
+        self.data_file_location = data_file_location
     
     def procces_image(self,image_path:str, image_shape: ImageShape):
         image=cv.imread(image_path)[...,::-1]
@@ -43,27 +43,23 @@ class TestWorker:
         loss, acc = self.model.evaluate(test_images, test_labels, verbose=2)
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
 
-    def test_image(self,image_path:str,image_shape: ImageShape): 
+    def test_image(self,image_path:str,image_shape: ImageShape, results_folder): 
         img_names = os.listdir(image_path)
         data=self.procces_folder(img_names,image_path,image_shape)
+        folder_names = DataProcessing.load_label_names(self.data_file_location)
 
         if not img_names:
             raise Exception("The folder is empty")
         else:
-            if len(data)==1:
-
-                result=self.model.predict(data,batch_size=1)
-                max_percent_index=np.argmax(result[0])
-
-                DataVisualization.showImage((data*255.0)[0],max_percent_index,result[0][max_percent_index])
-                print("A fost detectata clasa {} cu probabilitatea {}".format(max_percent_index,result[0][max_percent_index]))
-
-            else:
-                result=self.model.predict(data,batch_size=len(img_names))
-                print(result)
-                indexes_list=[np.argmax(i) for i in result]
-                percent=[result[index,indexes_list[index]] for index in range(len(indexes_list))]
-                print(list(zip(img_names,indexes_list,percent)))
+            result=self.model.predict(data,batch_size=len(img_names))
+            print(result)
+            indexes_list=[np.argmax(i) for i in result]
+            ground_truths = [DataProcessing.load_ground_truths(self.data_file_location, image_name) for image_name in img_names]
+            final_data = list(zip(data,indexes_list,ground_truths, img_names))
+            for item in final_data:
+                if not (item[1] == item[2]):
+                    path = os.path.join(results_folder, folder_names[item[1]], item[3])
+                    cv.imwrite(path, item[0]*255)
                 # for index in range(len(indexes_list)):
                 #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[index,indexes_list[index]]))   
 

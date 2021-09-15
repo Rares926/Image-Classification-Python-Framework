@@ -44,6 +44,14 @@ class DataProcessing:
         return label_count
 
     @staticmethod
+    def load_ground_truths(data_file_location: str, image_name: str):
+        labels = JsonHelper.read_json(data_file_location, True, "Data.json file missing!")
+        for key in labels:
+            if labels[key]['uid'] in image_name:
+                return int(key)
+        raise Exception('Error: Invalid file name!')
+        
+    @staticmethod
     def load_label_names(data_file_location: str):
         labels = JsonHelper.read_json(data_file_location, True, "Data.json file missing!")
         label_names = []
@@ -73,6 +81,14 @@ class DataProcessing:
         for directory in directories:
             output_path = os.path.join(root, directory)
             IOHelper.create_directory(output_path, True)
+
+    @staticmethod
+    def createResultsFolders(root, labels_path):
+        IOHelper.create_directory(root) #folderul trebuie creat sau trebuie sa existe?
+        folder_names = DataProcessing.load_label_names(labels_path)
+        for item in folder_names:
+            temp_path = os.path.join(root, item)
+            IOHelper.create_directory(temp_path)
 
     @staticmethod
     def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
