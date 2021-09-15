@@ -27,8 +27,8 @@ class OptimizerHelper:
         "SGD":
         {
             "lr":0.01,
-            "momentum":0.0,
-            "nesterov":False
+            "momentum":0.9,
+            "nesterov":True
         },
 
         "Adadelta":

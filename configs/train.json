@@ -1,10 +1,10 @@
 {
     "dataset_path": "C:/animalsDataset",
-    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting",
+    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/training-2021-09-14",
     "network": {
         "input_shape": {
-            "width": 200,
-            "height": 220,
+            "width": 224,
+            "height": 224,
             "depth": 3
         },
         "input_format": {
@@ -12,36 +12,30 @@
             "data_type": "FLOAT"
         },
         "resize": {
-            "method": "CROP",
+            "method": "LETTERBOX",
             "params": {
-                "tl_ratio": 0.1,
-                "br_ratio": 0.1
+               
             }
         }
     },
     "optimizer": {
-        "name": "Adam",
+        "name": "SGD",
         "lr": {
             "value": 0.01,
-            "schedule": "ExponentialDecay",
+            "schedule": "PolynomialDecay",
             "params": {
-                "decay_steps": 10000,
-                "decay_rate": 0.9
+                "decay_steps": 10000
             }
         },
         "params": {
-            "grad_clip": 0.5,
-            "beta_1": 0.9,
-            "beta_2": 0.999,
-            "decay": 0,
-            "amsgrad": "False"
+            
         }
     },
     "augmentations":[
         {
             "name":"horizontalFlip",
             "params":{
-                "p":0.8
+                "p":0.5
             }
         }
     ],

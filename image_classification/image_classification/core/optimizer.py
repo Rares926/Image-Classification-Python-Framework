@@ -42,25 +42,25 @@ class Optimizer:
                                         )
 
     def opt_SGD(self):
-        tf.keras.optimizers.SGD(learning_rate=self.lr,
+        return tf.keras.optimizers.SGD(learning_rate=self.lr,
                                 momentum=self.params["momentum"],
                                 nesterov=self.params["nesterov"],
                                 )
 
     def opt_Adadelta(self):
-        tf.keras.optimizers.Adadelta(learning_rate=self.lr,
+        return tf.keras.optimizers.Adadelta(learning_rate=self.lr,
                                      rho=self.params["rho"],
                                      epsilon=self.params["epsilon"],
                                      )
 
     def opt_Adagrad(self):
-        tf.keras.optimizers.Adagrad(learning_rate=self.lr,
+        return tf.keras.optimizers.Adagrad(learning_rate=self.lr,
                                      initial_accumulator_value=self.params["initial_accumulator_value"],
                                      epsilon=self.params["epsilon"],
                                      )
 
     def opt_RMSprop(self):
-        tf.keras.optimizers.RMSprop(learning_rate=self.lr,
+        return tf.keras.optimizers.RMSprop(learning_rate=self.lr,
                                      rho=self.params["rho"],
                                      momentum=self.params["momentum"],
                                      epsilon=self.params["epsilon"],
