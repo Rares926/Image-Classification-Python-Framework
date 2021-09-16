@@ -3,27 +3,30 @@ import tensorflow as tf
 import datetime
 import os
 import albumentations as A
+
 # Internal framework imports
 from ..utils.helpers.io_helper import IOHelper
 from ..network.data_generator import DataGenerator
 from ..data_structures.image_loader import ImageLoader
 from ..network.confusion_matrix import ConfusionMatrixCallback
-# Typing imports imports
 
+# Typing imports imports
 
 class TrainWorker:
     
-    def __init__(self, model, starting_epoch:int=0):
+    def __init__(self, model,network, starting_epoch:int=0):
         self.model=model
         self.starting_epoch=starting_epoch
+        self.network=network
 
 
-    def train(self, workspace:str, labels, image_loader:ImageLoader, optimizer=None, epochs:int = 10, from_checkpoint:str=None,train_metrics:list='accuracy',augmentations:list=None): # ,x_train:np.ndarray, y_train:np.array, x_test:np.ndarray, y_test:np.array
+    def train(self, workspace:str, labels, image_loader:ImageLoader, epochs:int = 10, from_checkpoint:str=None):
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
         train_location = os.path.join(workspace, 'inputData', 'train')
         test_location = os.path.join(workspace, 'inputData', 'test')
+
         labels_location = os.path.join(workspace, 'data.json')
         checkpoint_path = os.path.join(workspace,'checkpoints')
         
@@ -41,15 +44,15 @@ class TrainWorker:
 
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
         
-        self.model.compile(optimizer=optimizer,
-                    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
-                    metrics=train_metrics)
+        self.model.compile( optimizer=self.network.optimizer,
+                            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
+                            metrics=self.network.metrics )
                     
         if from_checkpoint!=None:
             self.model.load_weights(from_checkpoint)
                     
 
-        transform = A.Compose(augmentations)
+        transform = A.Compose(self.network.augmentations)
 
         self.model.summary()
         training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True, transform = transform)

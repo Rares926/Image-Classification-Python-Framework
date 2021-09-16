@@ -2,7 +2,6 @@
 
 #Internal framework inputs
 from ...network.lr_schedule import LearningRateSchedule
-from ...utils.helpers.io_helper import IOHelper
 from ...utils.helpers.dict_helper import DICTHelper
 
 class OptimizerHelper:
@@ -64,7 +63,7 @@ class OptimizerHelper:
     @staticmethod
     def set_optimizer_value(optimizer:dict,name:str):
 
-        optimizer=IOHelper.set_dictionary_keys_to_lower(optimizer)
+        optimizer=DICTHelper.set_dictionary_keys_to_lower(optimizer)
 
         opt_tmp=DICTHelper.combine_dict_params(OptimizerHelper.DEFAULT_OPTIMIZER_VALUES,optimizer,name)
 

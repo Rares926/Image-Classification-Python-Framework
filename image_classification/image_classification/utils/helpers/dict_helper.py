@@ -13,6 +13,11 @@ class DICTHelper:
         pass
 
     @staticmethod
+    def set_dictionary_keys_to_lower(d):
+        d =  {k.lower(): v for k, v in d.items()}
+        return d
+        
+    @staticmethod
     def combine_dict_params(const_dict:dict,config_dict:dict,name:str):
 
         tmp_dict={}

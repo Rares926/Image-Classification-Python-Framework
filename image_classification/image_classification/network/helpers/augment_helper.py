@@ -1,7 +1,6 @@
 
 
 #Internal framework inputs
-from ...utils.helpers.io_helper import IOHelper
 from ...utils.helpers.dict_helper import DICTHelper
 
 class AugmentHelper:
@@ -51,7 +50,7 @@ class AugmentHelper:
 
     def get_params(aug:dict,name:str):
 
-        aug=IOHelper.set_dictionary_keys_to_lower(aug)
+        aug=DICTHelper.set_dictionary_keys_to_lower(aug)
         aug_tmp=DICTHelper.combine_dict_params(AugmentHelper.DEFAULT_AUGUMENTATIONS,aug,name)
 
         return aug_tmp

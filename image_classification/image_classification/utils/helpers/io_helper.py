@@ -80,11 +80,6 @@ class IOHelper:
         epoch=int(IOHelper.get_filename_without_extension(path)[-3:])
         return epoch
 
-    @staticmethod
-    def set_dictionary_keys_to_lower(d):
-        d =  {k.lower(): v for k, v in d.items()}
-        return d
-
 
     @staticmethod
     def get_extension(path: str) -> str:

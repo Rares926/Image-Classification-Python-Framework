@@ -1,12 +1,12 @@
 {
-    "images_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/inputData/test",
-    "labels_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/data.json",
-    "results_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/results",
+    "images_path": "C:/Test_image",
+    "labels_path": "C:/Training_data/data.json",
+    "results_path": "C:/alea_gresite",
     "top_k": 2,
     "network": {
         "input_shape": {
-            "width": 220,
-            "height": 200,
+            "width": 224,
+            "height": 224,
             "depth": 3
         },
         "input_format": {

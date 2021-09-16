@@ -53,12 +53,13 @@ class TestWorker:
             result=self.model.predict(data,batch_size=len(img_names))
             print(result)
             indexes_list=[np.argmax(i) for i in result]
+            
+            # de verificat mai jos daca pozele din fisierul de test au in nume date care sa apartina de json si sa se specifice in read me ca ele trebuie sa aibe aceste date in nume 
+
             ground_truths = [DataProcessing.load_ground_truths(self.data_file_location, image_name) for image_name in img_names]
             final_data = list(zip(data,indexes_list,ground_truths, img_names))
             for item in final_data:
                 if not (item[1] == item[2]):
                     path = os.path.join(results_folder, folder_names[item[1]], item[3])
-                    cv.imwrite(path, item[0]*255)
-                # for index in range(len(indexes_list)):
-                #     print("Pentru poza {} a fost detectata clasa {} cu probabilitatea {}".format(img_names[index],indexes_list[index],result[index,indexes_list[index]]))   
+                    cv.imwrite(path, item[0]*255)  
 

@@ -43,7 +43,7 @@ def run():
 
         tester_args = TestBuilder()
         tester_args.arg_parse(program_args.test_configuration_file)
-        tester = ModelTester(tester_args.image_shape, tester_args.labels_path, tester_args.results_path)
+        tester = ModelTester(tester_args.network.image_shape, tester_args.labels_path, tester_args.results_path)
         tester.do_test(program_args.checkpoint_path, tester_args.images_path)
 
     except Exception as ex:

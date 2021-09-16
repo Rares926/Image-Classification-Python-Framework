@@ -1,7 +1,6 @@
 
 
 #Internal framework inputs
-from ...utils.helpers.io_helper import IOHelper
 from ...utils.helpers.dict_helper import DICTHelper
 
 class LRScheduleHelper:
@@ -43,7 +42,7 @@ class LRScheduleHelper:
 
             return LRScheduleHelper.DEFAULT_PARAMS_VALUES[name]
         else:
-            params=IOHelper.set_dictionary_keys_to_lower(params)
+            params=DICTHelper.set_dictionary_keys_to_lower(params)
 
             params_tmp=DICTHelper.combine_dict_params(LRScheduleHelper.DEFAULT_PARAMS_VALUES,params,name)
 
