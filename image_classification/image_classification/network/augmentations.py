@@ -1,6 +1,5 @@
 import albumentations as A
 from .helpers.augment_helper import AugmentHelper 
-from ..utils.helpers.io_helper import IOHelper
 
 class Augment:
 
@@ -22,8 +21,6 @@ class Augment:
 
     def get_aug_list(self):
         return self.aug_list
-        #returneaza augmentarile create in forma de lista
-        #lista asta se poate transmite ca parametru in compose 
 
     def get_aug(self,augument:dict):
         method_name = 'aug_' + augument["name"]

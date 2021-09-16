@@ -1,4 +1,6 @@
 import tensorflow as tf 
+
+#Internal framework imports
 from .helpers.optimizer_helper import OptimizerHelper
 
 

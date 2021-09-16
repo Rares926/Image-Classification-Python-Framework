@@ -1,11 +1,9 @@
 import os
 import sys
 
-from PIL.Image import Image
 from .data_structures.image_loader import ImageLoader
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
-import cv2 as cv
 
 # Internal framework imports
 from .utils.data_processing import DataProcessing

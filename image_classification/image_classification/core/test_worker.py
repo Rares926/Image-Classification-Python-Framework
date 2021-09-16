@@ -1,12 +1,12 @@
 import cv2 as cv
-from ..utils.data_processing import DataProcessing
 import numpy as np
 import os
-import tensorflow as tf
 
 # Internal framework imports
+from ..utils.data_processing import DataProcessing
 from ..data_structures.image_shape import ImageShape
 from ..utils.helpers.io_helper import IOHelper
+
 # Typing imports imports
 
 

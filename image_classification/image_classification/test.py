@@ -1,12 +1,12 @@
 import os
 import sys
-from image_classification.utils.data_processing import DataProcessing
-from image_classification.data_structures.image_shape import ImageShape
-from image_classification.builders.test_builder import TestBuilder
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 
 # Internal framework imports
+from .utils.data_processing import DataProcessing
+from .data_structures.image_shape import ImageShape
+from .builders.test_builder import TestBuilder
 from .core.test_worker import TestWorker
 from .network.network_architecture import ModelArchitecture
 from .builders.test_builder import TestBuilder
