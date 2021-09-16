@@ -1,7 +1,7 @@
 
 
 #Internal framework inputs
-from ...network.lr_schedule import LearningRateSchedule
+from ...network.lr_schedule       import LearningRateSchedule
 from ...utils.helpers.dict_helper import DICTHelper
 
 class OptimizerHelper:

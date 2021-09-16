@@ -2,7 +2,7 @@
 
 #Internal framework imports
 from .image_shape import ImageShape
-from .point import Point
+from .point       import Point
 
 #Typing imports
 

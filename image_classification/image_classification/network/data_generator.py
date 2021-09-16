@@ -1,9 +1,9 @@
 import tensorflow as tf
-import numpy as np
+import numpy      as np
 import os
 
 #Internal framework imports
-from ..utils.helpers.io_helper import IOHelper
+from ..utils.helpers.io_helper      import IOHelper
 from ..data_structures.image_loader import ImageLoader
 
 #Typing imports

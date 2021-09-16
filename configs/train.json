@@ -41,6 +41,6 @@
     ],
 
 
-    "metrics":["accuracy"]
+    "metrics":["accuracy","mean_absolute_error"]
 
 }

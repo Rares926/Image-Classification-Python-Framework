@@ -1,15 +1,15 @@
 import os
 import sys
-from jsonargparse import ArgumentParser
+from jsonargparse      import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 
 # Internal framework imports
-from .utils.data_processing import DataProcessing
-from .data_structures.image_shape import ImageShape
-from .builders.test_builder import TestBuilder
-from .core.test_worker import TestWorker
+from .utils.data_processing        import DataProcessing
+from .data_structures.image_shape  import ImageShape
+from .builders.test_builder        import TestBuilder
+from .core.test_worker             import TestWorker
 from .network.network_architecture import ModelArchitecture
-from .builders.test_builder import TestBuilder
+from .builders.test_builder        import TestBuilder
 # Typing imports imports
 
 

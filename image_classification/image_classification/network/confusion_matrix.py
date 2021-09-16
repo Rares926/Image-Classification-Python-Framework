@@ -1,12 +1,12 @@
-import tensorflow as tf
+import tensorflow        as tf
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy             as np
 import io
 import sklearn.metrics
 
 #Internal framework imports
 from ..utils.data_processing import DataProcessing
-from .data_generator import DataGenerator
+from .data_generator         import DataGenerator
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         

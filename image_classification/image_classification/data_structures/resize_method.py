@@ -1,5 +1,3 @@
-from enum import Enum
-
 #Internal framework imports
 
 #Typing imports
