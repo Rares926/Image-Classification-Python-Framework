@@ -4,7 +4,7 @@ import numpy as np
 #Internal framework imports
 from ..data_structures.image_shape import ImageShape
 from ..data_structures.image_format import ImageFormat
-from ..utils.resize_method import ResizeMethod
+from ..data_structures.resize_method import ResizeMethod
 from ..utils.image_preprocessing import ImageProcessing
 from ..data_structures.ratio import Ratio
 

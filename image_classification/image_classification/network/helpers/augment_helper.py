@@ -1,5 +1,5 @@
-from .io_helper import IOHelper
-from .dict_helper import DICTHelper
+from ...utils.helpers.io_helper import IOHelper
+from ...utils.helpers.dict_helper import DICTHelper
 
 class AugmentHelper:
     

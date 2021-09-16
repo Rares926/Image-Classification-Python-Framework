@@ -1,6 +1,6 @@
 from ...network.lr_schedule import LearningRateSchedule
-from .io_helper import IOHelper
-from .dict_helper import DICTHelper
+from ...utils.helpers.io_helper import IOHelper
+from ...utils.helpers.dict_helper import DICTHelper
 #de facut niste verificari in caz ca nu exista name ul samd
 # de verificat si daca scrie cu litere mari sa translatesze in lowercase 
 class OptimizerHelper:

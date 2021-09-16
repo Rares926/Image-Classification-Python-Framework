@@ -1,5 +1,5 @@
 import albumentations as A
-from ..utils.helpers.augment_helper import AugmentHelper 
+from .helpers.augment_helper import AugmentHelper 
 from ..utils.helpers.io_helper import IOHelper
 
 class Augment:

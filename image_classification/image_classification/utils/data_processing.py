@@ -1,6 +1,6 @@
 import os
 from ..data_structures.ratio import Ratio
-from ..utils.resize_method import ResizeMethod
+from ..data_structures.resize_method import ResizeMethod
 
 import numpy as np
 import cv2 as cv
@@ -11,7 +11,7 @@ from ..utils.helpers.io_helper import IOHelper
 from ..utils.helpers.json_helper import JsonHelper
 
 from ..data_structures.image_shape import ImageShape
-from ..network.image_loader import ImageLoader
+from ..data_structures.image_loader import ImageLoader
 from ..data_structures.image_format import ImageFormat
 
 # Typing imports imports
@@ -61,21 +61,6 @@ class DataProcessing:
         return label_names
 
     @staticmethod
-    def albumentate(image,transform=None):
-
-        transform = A.Compose([
-            A.Rotate(limit=35, p=1.0),
-            A.HorizontalFlip(p=0.5),
-            A.VerticalFlip(p=0.1),
-            A.Normalize(mean=[0.0, 0.0, 0.0],std=[1.0, 1.0, 1.0],max_pixel_value=255.0,),
-            ])
-
-        transformed = transform(image=image)
-
-        return transformed["image"]
-
-
-    @staticmethod
     def createFolders(root):
         IOHelper.deletedirectory(os.path.join(root,'inputData'))
         directories = ('inputData\\train', 'inputData\\test')
@@ -95,7 +80,7 @@ class DataProcessing:
     def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
         for key in label:
             list = os.listdir(os.path.join(dataset, label[key]['name'])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
-            number_of_files = len(list)#1000
+            number_of_files = 1000#len(list)#
             to_be_trained = int(quotient * number_of_files)
 
             for photo in range(to_be_trained):

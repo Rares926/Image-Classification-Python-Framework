@@ -4,7 +4,7 @@ import os
 
 #Internal framework imports
 from ..utils.helpers.io_helper import IOHelper
-from ..network.image_loader import ImageLoader
+from ..data_structures.image_loader import ImageLoader
 
 #Typing imports
 

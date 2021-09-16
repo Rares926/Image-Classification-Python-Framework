@@ -2,7 +2,7 @@ import os
 import sys
 
 from PIL.Image import Image
-from image_classification.network.image_loader import ImageLoader
+from .data_structures.image_loader import ImageLoader
 from jsonargparse import ArgumentParser
 from jsonargparse.util import usage_and_exit_error_handler
 import cv2 as cv
@@ -15,7 +15,7 @@ from .utils.helpers.io_helper import IOHelper
 from .builders.train_builder import TrainBuilder
 from .data_structures.image_shape import ImageShape
 from .data_structures.image_format import ImageFormat
-from .utils.resize_method import ResizeMethod
+from .data_structures.resize_method import ResizeMethod
 from .data_structures.ratio import Ratio
 # Typing imports imports
 
@@ -38,17 +38,6 @@ class ClassifierTrainer():
         DataProcessing.createFolders(training_workspace_dir)
         DataProcessing.splitData(dataset_root_dir, training_workspace_dir, 0.9, labels)
 
-        train_location = training_workspace_dir + '/inputData/train'
-        test_location = training_workspace_dir + '/inputData/test'
-
-        train = DataProcessing.loadData(train_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
-        ##test = DataProcessing.loadData(test_location, self.image_shape, self.image_format, self.resize_method, self.ratios, labels)
-
-        #DataVisualization.visualizeImage(train, labels)
-        #DataVisualization.checkDatasetBalance(train, labels) 
-
-        ##x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
-
         print("Starting training worker...")
         model_architurecture = ModelArchitecture(self.image_shape)
         model = model_architurecture.set_model(len(labels))
@@ -60,8 +49,6 @@ class ClassifierTrainer():
 
         train_worker = TrainWorker(model,starting_epoch)
 
-        #asta ar putea fi implementate in alta parte
-        #din self.checkpoint trebuie sa iau doar epoca
         image_loader = ImageLoader(self.image_shape, self.image_format, self.resize_method, self.ratios)
         train_worker.train(training_workspace_dir, labels ,image_loader, self.optimizer, from_checkpoint=self.checkpoint,train_metrics=self.metrics,augmentations=self.augmentations) #aici mai trebuie adaugat ceva de train metrics
 

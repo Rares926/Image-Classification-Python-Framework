@@ -1,6 +1,6 @@
 
-from ..data_structures.data_generator import DataGenerator
-from ..network.image_loader import ImageLoader
+from ..network.data_generator import DataGenerator
+from ..data_structures.image_loader import ImageLoader
 import tensorflow as tf
 import datetime
 import os

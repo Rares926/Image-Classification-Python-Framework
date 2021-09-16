@@ -7,7 +7,7 @@ import io
 import sklearn.metrics
 
 #Internal framework imports
-from image_classification.data_structures import data_generator
+from .data_generator import DataGenerator
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         
