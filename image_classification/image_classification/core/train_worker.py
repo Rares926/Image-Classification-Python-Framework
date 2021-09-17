@@ -20,7 +20,7 @@ class TrainWorker:
         self.network=network
 
 
-    def train(self, workspace:str, labels, image_loader:ImageLoader, epochs:int = 10, from_checkpoint:str=None):
+    def train(self, workspace:str, labels, image_loader:ImageLoader, from_checkpoint:str=None):
         if self.model is None:
             raise Exception("The model must be created in order to be used!")
 
@@ -57,8 +57,9 @@ class TrainWorker:
         self.model.summary()
         training_generator = DataGenerator(train_location, labels, image_loader, is_train_data=True, transform = transform)
         testing_generator = DataGenerator(test_location, labels, image_loader, is_train_data=True)
-        self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
+        self.model.fit(training_generator, epochs=self.network.epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
 
         test_results = list(self.model.evaluate(testing_generator, verbose=1))
+        
         for item in test_results:
             print(item)

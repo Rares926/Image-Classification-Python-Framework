@@ -19,6 +19,8 @@ class NetworkBuilder:
         self.augmentations = None
         self.metrics       = None
 
+        self.epochs        = 10
+
 
 
 

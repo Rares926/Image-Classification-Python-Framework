@@ -26,6 +26,9 @@ class TrainBuilder:
         self.workspace_path = raw_data['workspace_path']
         self.network.model_path=raw_data['model_path']
         
+        if {'epochs'} <=raw_data.keys():
+            self.network.epochs=raw_data['epochs']
+
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
         self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios = network_params.get_network_params()

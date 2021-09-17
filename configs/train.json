@@ -2,7 +2,7 @@
     "dataset_path": "Z:/rebars_tubes",
     "workspace_path": "Z:/rebars_tubes_TrainingData",
     "model_path":"Z:/rebars_tubes_TrainingData/m.py",
-
+    "epochs":10,
     "network": {
         "input_shape": {
             "width": 224,
@@ -15,9 +15,7 @@
         },
         "resize": {
             "method": "LETTERBOX",
-            "params": {
-               
-            }
+            "params": {}
         }
     },
     "optimizer": {
@@ -27,7 +25,7 @@
             "schedule": "PolynomialDecay",
             "params": {
                 "decay_steps": 10000
-            }
+                      }
         },
         "params": {
         }
