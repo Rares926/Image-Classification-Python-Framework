@@ -6,7 +6,7 @@ from jsonargparse.util import usage_and_exit_error_handler
 
 # Internal framework imports
 from .utils.data_processing        import DataProcessing
-from .data_structures.image_shape  import ImageShape
+from .builders.network_builder     import NetworkBuilder
 from .builders.test_builder        import TestBuilder
 from .core.test_worker             import TestWorker
 from .network.network_architecture import ModelArchitecture
@@ -23,15 +23,14 @@ class ModelTester():
     
     def do_test(self, checkpoint_root_dir: str, image_root_dir: str):
         DataProcessing.createResultsFolders(self.results_path, self.labels_path)
-        model_architurecture=ModelArchitecture(self.image_shape)
+        model_architurecture=ModelArchitecture(self.network.image_shape)
         label_count = DataProcessing.load_label_count(self.labels_path)
 
         model=model_architurecture.set_model(label_count,model_path=self.network.model_path)
 
-        #,classifier_model="mobilenet_v2"
         testWorker=TestWorker(model, self.labels_path)
         testWorker.load_checkpoint(checkpoint_root_dir)
-        testWorker.test_image(image_root_dir, self.network.image_shape, self.results_path)
+        testWorker.test_images(image_root_dir, self.network, self.results_path)
 
 
 def run():

@@ -59,7 +59,6 @@ class TrainWorker:
         testing_generator = DataGenerator(test_location, labels, image_loader, is_train_data=True)
         self.model.fit(training_generator, epochs=epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
 
-        test_loss, test_acc = self.model.evaluate(testing_generator, verbose=1)
-        
-        print('\nTest loss:', test_loss)
-        print('\nTest accuracy:', test_acc)
+        test_results = list(self.model.evaluate(testing_generator, verbose=1))
+        for item in test_results:
+            print(item)
