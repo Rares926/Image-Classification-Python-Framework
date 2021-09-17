@@ -31,7 +31,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         if self.is_train_data:
             return x, y
         else:
-            return x
+            return x, y, batch_images
 
     def generate_X(self, batch_images):
 
@@ -53,9 +53,8 @@ class DataGenerator(tf.keras.utils.Sequence):
 
             x[index,] = image
             
-            if self.is_train_data:
-                class_id = int(image_name.split('P')[0].split('class_')[1])
-                y[index] = class_id
+            class_id = int(image_name.split('P')[0].split('class_')[1])
+            y[index] = class_id
         
         return x, y
 

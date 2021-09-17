@@ -1,6 +1,6 @@
 {
     "dataset_path": "C:/animalsDataset",
-    "workspace_path": "C:/Training_data",
+    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/",
     "network": {
         "input_shape": {
             "width": 224,
