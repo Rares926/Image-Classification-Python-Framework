@@ -1,7 +1,7 @@
 {
-    "dataset_path": "C:/animalsDataset",
-    "workspace_path": "C:/Training_data",
-    "model_path":"C:/Training_data/m.py",
+    "dataset_path": "Z:/rebars_tubes",
+    "workspace_path": "Z:/rebars_tubes_TrainingData",
+    "model_path":"Z:/rebars_tubes_TrainingData/m.py",
 
     "network": {
         "input_shape": {
@@ -38,7 +38,16 @@
             "params":{
                 "p":0.5
             }
+        },
+        {
+            "name":"rotate",
+            "params":{}
+        },
+        {
+            "name":"flip",
+            "params":{}
         }
+
     ],
 
     "metrics":["accuracy","mean_absolute_error"]

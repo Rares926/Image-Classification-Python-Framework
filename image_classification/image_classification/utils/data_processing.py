@@ -77,7 +77,7 @@ class DataProcessing:
     def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
         for key in label:
             list = os.listdir(os.path.join(dataset, label[key]['name'])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
-            number_of_files = 1000#len(list)#
+            number_of_files = len(list)
             to_be_trained = int(quotient * number_of_files)
 
             for photo in range(to_be_trained):

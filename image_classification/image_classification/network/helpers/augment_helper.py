@@ -5,7 +5,7 @@ from ...utils.helpers.dict_helper import DICTHelper
 
 class AugmentHelper:
     
-    POSSIBLE_AUGUMENTATIONS=["horizontalflip","randomcrop","flip","randombrightnesscontrast","rotate"]
+    POSSIBLE_AUGUMENTATIONS=["horizontalflip","randomcrop","flip","randombrightnesscontrast","rotate","centercrop"]
 
     DEFAULT_AUGUMENTATIONS={
         "horizontalflip":{
@@ -13,6 +13,12 @@ class AugmentHelper:
         },
 
         "randomcrop":{
+            "height":None,
+            "width":None,
+            "p":1
+        },
+
+        "centercrop":{
             "height":None,
             "width":None,
             "p":1
@@ -32,7 +38,7 @@ class AugmentHelper:
         "rotate":{
             "limit":90,
             "interpolation":1,
-            "border_mode":"4",
+            "border_mode":4,
             "value":None,
             "mask_value":None,
             "p":0.5
