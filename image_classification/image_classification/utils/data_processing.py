@@ -3,13 +3,13 @@ import numpy as np
 from numpy.lib.type_check import imag
 
 # Internal framework imports
-from ..data_structures.ratio import Ratio
+from ..data_structures.ratio         import Ratio
 from ..data_structures.resize_method import ResizeMethod
-from ..utils.helpers.io_helper import IOHelper
-from ..utils.helpers.json_helper import JsonHelper
-from ..data_structures.image_shape import ImageShape
-from ..data_structures.image_loader import ImageLoader
-from ..data_structures.image_format import ImageFormat
+from ..utils.helpers.io_helper       import IOHelper
+from ..utils.helpers.json_helper     import JsonHelper
+from ..data_structures.image_shape   import ImageShape
+from ..data_structures.image_loader  import ImageLoader
+from ..data_structures.image_format  import ImageFormat
 
 # Typing imports imports
 from typing import Dict
@@ -77,7 +77,7 @@ class DataProcessing:
     def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
         for key in label:
             list = os.listdir(os.path.join(dataset, label[key]['name'])) #creeaza o lista cu toate imaginile dintr un folder cu path ul creat 
-            number_of_files = 1000#len(list)#
+            number_of_files = len(list)
             to_be_trained = int(quotient * number_of_files)
 
             for photo in range(to_be_trained):

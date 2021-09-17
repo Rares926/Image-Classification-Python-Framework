@@ -4,6 +4,7 @@
 from ..utils.helpers.json_helper import JsonHelper
 from ..network.network_params    import NetworkParams
 from .network_builder            import NetworkBuilder
+
 #Typing imports
 
 class TestBuilder:
@@ -23,6 +24,9 @@ class TestBuilder:
         self.images_path = raw_data['images_path']
         self.labels_path = raw_data['labels_path']
         self.results_path = raw_data['results_path']
+
+        self.network.model_path=raw_data['model_path']
+        
         self.topK = raw_data['top_k']
         
         network_params = NetworkParams()

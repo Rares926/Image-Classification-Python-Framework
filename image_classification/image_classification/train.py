@@ -14,6 +14,7 @@ from .utils.helpers.io_helper      import IOHelper
 from .builders.train_builder       import TrainBuilder
 
 
+
 # Typing imports imports
 
 
@@ -33,8 +34,7 @@ class ClassifierTrainer():
 
         print("Starting training worker...")
         model_architurecture = ModelArchitecture(self.network.image_shape)
-        model = model_architurecture.set_model(len(labels))
-        #,classifier_model="mobilenet_v2"
+        model = model_architurecture.set_model(len(labels),model_path=self.network.model_path)
 
         if self.checkpoint:
             starting_epoch=IOHelper.get_epoch_from_checkpoint_path(self.checkpoint)

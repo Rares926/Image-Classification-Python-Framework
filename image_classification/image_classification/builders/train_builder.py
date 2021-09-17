@@ -19,12 +19,13 @@ class TrainBuilder:
 
         raw_data = JsonHelper.read_json(path)
 
-        if not {'dataset_path', 'workspace_path','network','augmentations'} <= raw_data.keys():
+        if not {'dataset_path', 'workspace_path','model_path','network','augmentations'} <= raw_data.keys():
             raise Exception("Invalid config file format")
 
         self.dataset_path = raw_data['dataset_path']
         self.workspace_path = raw_data['workspace_path']
-
+        self.network.model_path=raw_data['model_path']
+        
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
         self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios = network_params.get_network_params()

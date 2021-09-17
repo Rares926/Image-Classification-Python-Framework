@@ -26,7 +26,7 @@ class ImageLoader:
             image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
         if self.image_format.data_format == ImageFormat.DataType.FLOAT:
-            image = image.astype(np.float)
+            image = image.astype(np.float32)
         
         if self.resize_method == ResizeMethod.CROP:
             image = ImageProcessing.crop(image, self.image_shape, self.ratios)

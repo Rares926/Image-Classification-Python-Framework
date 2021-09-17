@@ -2,7 +2,8 @@ import cv2 as cv
 
 #Internal framework imports 
 from ..data_structures.image_shape import ImageShape 
-from ..data_structures.ratio import Ratio
+from ..data_structures.ratio       import Ratio
+
 #Typing imports
 
 class ImageProcessing:
@@ -88,31 +89,3 @@ class ImageProcessing:
         normalized_image = image / 255
         return normalized_image    
         
-
-
-def run():
-    
-    img = cv.imread("C:/Users/Radu Baciu/Desktop/workspaceTesting/inputData/train/class_000P0.jpg")
-    TEST_SHAPE = ImageShape({'width':100,'height':300,'depth':3})
-    TEST_SHAPE2 = ImageShape({'width':500,'height':700,'depth':3})
-    TEST_SHAPE3 = ImageShape({'width':300,'height':280,'depth':3})
-    TEST_RATIO = Ratio(0.3,0.3)
-    cv.imshow('Original image', img)
-
-    # img2=ImageProcessing.stretch(img, TEST_SHAPE)
-    # cv.imshow("Streched image",img2)
-    # cv.waitKey(0)    
-
-    # img1=ImageProcessing.letterbox(img, TEST_SHAPE2, padding="center")
-    # cv.imshow('Processed image', img1)
-    # cv.waitKey(0)
-
-    img3=ImageProcessing.crop(img,TEST_SHAPE3,TEST_RATIO)
-    cv.imshow("Cropped image",img3)
-    cv.waitKey(0)
-    img3 = ImageProcessing.normalize(img3)
-    a=0
-
-
-if __name__ == "__main__":
-    run()
