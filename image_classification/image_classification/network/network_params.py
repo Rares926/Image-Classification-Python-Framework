@@ -1,10 +1,10 @@
 
 
 #Internal framework imports
-from ..data_structures.image_format import ImageFormat
-from ..data_structures.image_shape import ImageShape
+from ..data_structures.image_format  import ImageFormat
+from ..data_structures.image_shape   import ImageShape
 from ..data_structures.resize_method import ResizeMethod
-from ..data_structures.ratio import Ratio
+from ..data_structures.ratio         import Ratio
 
 
 #Typing imports

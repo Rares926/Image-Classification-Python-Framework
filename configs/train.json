@@ -1,6 +1,8 @@
 {
     "dataset_path": "C:/animalsDataset",
     "workspace_path": "C:/Training_data",
+    "model_path":"C:/Training_data/m.py",
+
     "network": {
         "input_shape": {
             "width": 224,
@@ -28,7 +30,6 @@
             }
         },
         "params": {
-            
         }
     },
     "augmentations":[
@@ -39,7 +40,6 @@
             }
         }
     ],
-
 
     "metrics":["accuracy","mean_absolute_error"]
 
