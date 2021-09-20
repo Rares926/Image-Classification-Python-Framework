@@ -26,9 +26,9 @@ class ClassifierTrainer():
         self.network=network
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
+        
         IOHelper.create_directory(training_workspace_dir)
         labels = DataProcessing.build_labels(dataset_root_dir, training_workspace_dir)
-        labelss = JsonHelper.read_json(os.path.join(training_workspace_dir,"data.json"))
         DataProcessing.createFolders(training_workspace_dir)
         DataProcessing.splitData(dataset_root_dir, training_workspace_dir, 0.9, labels)
 

@@ -21,7 +21,8 @@ setup(
       entry_points={
             'console_scripts': [
                   'image_classif_train= image_classification.train:run',
-                  'image_classif_test= image_classification.test:run'
+                  'image_classif_test= image_classification.test:run',
+                  'aug_test= image_classification.aug:run',
             ],
       }
 )
