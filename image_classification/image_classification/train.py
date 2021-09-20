@@ -1,6 +1,6 @@
 import os
 import sys
-from image_classification.utils.helpers.json_helper import JsonHelper
+from image_classification.utils.helpers.workspace_helper import WorkspaceHelper
 from jsonargparse                  import ArgumentParser
 from jsonargparse.util             import usage_and_exit_error_handler
 
@@ -12,7 +12,7 @@ from .core.train_worker            import TrainWorker
 from .network.network_architecture import ModelArchitecture
 from .utils.helpers.io_helper      import IOHelper
 from .builders.train_builder       import TrainBuilder
-
+from .data_structures.resize_method import ResizeMethod
 
 
 # Typing imports imports
@@ -27,10 +27,12 @@ class ClassifierTrainer():
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
         IOHelper.create_directory(training_workspace_dir)
-        labels = DataProcessing.build_labels(dataset_root_dir, training_workspace_dir)
-        labelss = JsonHelper.read_json(os.path.join(training_workspace_dir,"data.json"))
-        DataProcessing.createFolders(training_workspace_dir)
-        DataProcessing.splitData(dataset_root_dir, training_workspace_dir, 0.9, labels)
+
+        image_loader = ImageLoader(self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios, normalize=False)
+        workspace_creator = WorkspaceHelper(dataset_root_dir, training_workspace_dir, image_loader)
+        workspace_creator.createFolders()
+        labels = workspace_creator.build_labels()
+        workspace_creator.splitData(labels)
 
         print("Starting training worker...")
         model_architurecture = ModelArchitecture(self.network.image_shape)
@@ -43,8 +45,8 @@ class ClassifierTrainer():
 
         train_worker = TrainWorker(model,self.network,starting_epoch)
 
-        image_loader = ImageLoader(self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios)
-
+        image_loader.normalize = True
+        image_loader.resize_method = ResizeMethod.NONE
         train_worker.train(training_workspace_dir, labels ,image_loader, from_checkpoint=self.checkpoint) 
 
 
