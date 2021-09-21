@@ -1,4 +1,5 @@
 import cv2 as cv
+from image_classification.data_structures.resize_method import ResizeMethod
 
 #Internal framework imports 
 from ..data_structures.image_shape import ImageShape 
@@ -72,14 +73,17 @@ class ImageProcessing:
         return bordered_image
 
     @staticmethod
-    def crop(image, cropped_image_shape: ImageShape, ratio:Ratio):
+    def crop(image, cropped_image_shape: ImageShape, ratio:Ratio, resize_after_crop: ResizeMethod):
         if image is None:
             raise("Image is empty")
         original_height, original_width, channels = image.shape
         original_image_shape = ImageShape({'width':original_width,'height':original_height,'depth':channels})
         top_left_point, bottom_right_point = ratio.size_calculator(original_image_shape)
         cropped_image = image[top_left_point.coord_y:bottom_right_point.coord_y, top_left_point.coord_x:bottom_right_point.coord_x]
-        cropped_image = ImageProcessing.stretch(cropped_image, cropped_image_shape)
+        if resize_after_crop == ResizeMethod.STRETCH:
+            cropped_image = ImageProcessing.stretch(cropped_image, cropped_image_shape)
+        else:
+            cropped_image = ImageProcessing.letterbox(cropped_image, cropped_image_shape)
         return cropped_image
 
     @staticmethod

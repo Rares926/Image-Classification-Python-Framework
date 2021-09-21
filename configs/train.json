@@ -1,8 +1,9 @@
 {
-    "dataset_path": "Z:/rebars_tubes",
-    "workspace_path": "Z:/rebars_tubes_TrainingData",
-    "model_path":"Z:/rebars_tubes_TrainingData/m.py",
+    "dataset_path": "C:/rebars_tubes",
+    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes",
+    "model_path":"C:/Users/Radu Baciu/Desktop/workspaceTesting/m.py",
     "epochs":10,
+    "split_percentage":0.9,
     "network": {
         "input_shape": {
             "width": 224,
@@ -14,8 +15,12 @@
             "data_type": "FLOAT"
         },
         "resize": {
-            "method": "LETTERBOX",
-            "params": {}
+            "method": "CROP",
+            "params": {
+                "tl_ratio": 0.25,
+                "br_ratio": 0.25,
+                "resize_after_crop":"LETTERBOX"
+            }
         }
     },
     "optimizer": {

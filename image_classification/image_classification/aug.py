@@ -35,11 +35,11 @@ class AugTester():
                 image=cv2.imread(tmp_path)
                 self.img_path.append(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-
     def do_augmentation_test(self,output_path=None):
 
             output_location=output_path if output_path!=None else os.getcwd()
-            directory=DataProcessing.createFolder(output_location,"augm_test")
+            path = os.path.join(output_location,"augm_test")
+            IOHelper.create_directory(path)
 
             for idx in range(len(self.img_path)):
 
@@ -49,15 +49,9 @@ class AugTester():
                     new_image=transformed["image"]
 
                     json_object = json.dumps(transformed["replay"], indent = 4) 
-                    JsonHelper.write_json(os.path.join(directory,self.img_names[idx]+"_aug_"+str(step)+".json"),json_object)
+                    JsonHelper.write_json(os.path.join(path,self.img_names[idx]+"_aug_"+str(step)+".json"),json_object)
 
-                    cv2.imwrite(os.path.join(directory,self.img_names[idx]+"_aug_"+str(step)+".jpg"),new_image)
-
-    def replay_aug(image_path,json_aug_path):
-        #aply a saved augmentation on an image 
-        print("hey")
-
-
+                    cv2.imwrite(os.path.join(path,self.img_names[idx]+"_aug_"+str(step)+".jpg"),new_image)
 
 def run():
     try:
