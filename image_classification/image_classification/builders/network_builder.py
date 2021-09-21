@@ -12,6 +12,7 @@ class NetworkBuilder:
         self.image_format  = None
         self.resize_method = None
         self.ratios        = None
+        self.resize_after_crop = None
 
         self.model_path    = None
         

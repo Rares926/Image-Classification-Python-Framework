@@ -19,7 +19,7 @@
             "params": {
                 "tl_ratio": 0.25,
                 "br_ratio": 0.25,
-                "ceva":"LETTERBOX/STRETCH"
+                "resize_after_crop":"LETTERBOX"
             }
         }
     },

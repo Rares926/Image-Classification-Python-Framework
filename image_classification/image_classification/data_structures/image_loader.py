@@ -11,11 +11,12 @@ from ..data_structures.ratio         import Ratio
 #Typing imports
 
 class ImageLoader:
-    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, normalize: bool = True):
+    def __init__(self, image_shape: ImageShape, image_format: ImageFormat, resize_method: ResizeMethod, ratios: Ratio, resize_after_crop: ResizeMethod, normalize: bool = True):
         self.image_shape = image_shape
         self.image_format = image_format
         self.resize_method = resize_method
         self.ratios = ratios
+        self.resize_after_crop = resize_after_crop
         self.normalize = normalize
 
     def load_image(self, image_path: str):
@@ -30,7 +31,7 @@ class ImageLoader:
             image = image.astype(np.float32)
         
         if self.resize_method == ResizeMethod.CROP:
-            image = ImageProcessing.crop(image, self.image_shape, self.ratios)
+            image = ImageProcessing.crop(image, self.image_shape, self.ratios, self.resize_after_crop)
         if self.resize_method == ResizeMethod.STRETCH:
             image = ImageProcessing.stretch(image, self.image_shape)
         if self.resize_method == ResizeMethod.LETTERBOX:

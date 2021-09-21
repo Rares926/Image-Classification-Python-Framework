@@ -15,6 +15,7 @@ class NetworkParams:
         self.image_format = None
         self.resize_method = None
         self.ratios = None
+        self.resize_after_crop = None
 
     def build_network_params(self, network_data: dict):
         if not {'input_shape', 'input_format', 'resize'} <= network_data.keys():
@@ -33,12 +34,13 @@ class NetworkParams:
         if self.resize_method == ResizeMethod.CROP:
             if not {'params'} <= network_data['resize'].keys():
                 raise Exception("Missing crop ratio params")
-            if not {'tl_ratio', 'br_ratio'} <= network_data['resize']['params'].keys():
+            if not {'tl_ratio', 'br_ratio', 'resize_after_crop'} <= network_data['resize']['params'].keys():
                 raise Exception("Invalid crop ratio params")
             ratio_sum = network_data['resize']['params']['tl_ratio'] + network_data['resize']['params']['br_ratio']
             if ratio_sum > 1:
                 raise Exception("Crop ratio sum must not exceed 1")
             self.ratios = Ratio(network_data['resize']['params']['tl_ratio'], network_data['resize']['params']['br_ratio'])
+            self.resize_after_crop = ResizeMethod.str2enum(network_data['resize']['params']['resize_after_crop'], True)
 
     def get_network_params(self):
-        return self.image_shape, self.image_format, self.resize_method, self.ratios
+        return self.image_shape, self.image_format, self.resize_method, self.ratios, self.resize_after_crop
