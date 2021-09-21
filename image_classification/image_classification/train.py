@@ -26,6 +26,7 @@ class ClassifierTrainer():
         self.network=network
     
     def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
+        
         IOHelper.create_directory(training_workspace_dir)
 
         image_loader = ImageLoader(self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios, self.network.resize_after_crop, normalize=False)

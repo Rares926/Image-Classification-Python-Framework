@@ -44,11 +44,15 @@
         },
         {
             "name":"rotate",
-            "params":{}
+            "params":{
+                "p":0.7
+            }
         },
         {
             "name":"flip",
-            "params":{}
+            "params":{
+                "p":0.7
+            }
         }
 
     ],
