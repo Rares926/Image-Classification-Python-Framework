@@ -2,8 +2,7 @@ import os
 import sys
 import albumentations as A
 import cv2
-import numpy as np 
-from image_classification.utils.helpers.json_helper import JsonHelper
+import json
 from jsonargparse                  import ArgumentParser
 from jsonargparse.util             import usage_and_exit_error_handler
 
@@ -11,34 +10,30 @@ from jsonargparse.util             import usage_and_exit_error_handler
 from .builders.aug_builder         import AugBuilder
 from .utils.data_processing        import DataProcessing
 from .utils.helpers.io_helper      import IOHelper
+from .utils.helpers.json_helper    import JsonHelper
 # Typing imports imports
 
 
 class AugTester():
-    #https://albumentations.ai/docs/faq/#how-can-i-find-which-augmentations-were-applied-to-the-input-data-and-which-parameters-they-used
+
     def __init__(self, transform, path: str ,steps: int):
 
-        self.transform =A.Compose(transform)
+        self.transform =A.ReplayCompose(transform)
         self.steps     =int(steps)
 
-        #creez doua liste una cu pozele citite si una cu numele acestora si le dau zip 
         self.img_names=[]
         self.img_path=[]
 
-        #lista cu numele pozelor indiferent daca e una sau mai multe
         if IOHelper.is_image_file(path):
-            self.img_names.append(IOHelper.get_filename(path))
+            self.img_names.append(IOHelper.get_filename_without_extension(path))
             image = cv2.imread(path)
             self.img_path.append(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         else:
-            self.img_names = IOHelper.get_image_files(path)
+            self.img_names=IOHelper.get_image_files_without_extension(path) #functie noua
             for idx in self.img_names:
-                tmp_path=os.path.join(path,idx)
+                tmp_path=os.path.join(path,idx+".jpg")
                 image=cv2.imread(tmp_path)
                 self.img_path.append(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
-
-
 
 
     def do_augmentation_test(self,output_path=None):
@@ -47,10 +42,20 @@ class AugTester():
             directory=DataProcessing.createFolder(output_location,"augm_test")
 
             for idx in range(len(self.img_path)):
-                for step in range(self.steps):
-                    transformed = self.transform(image=self.img_path[idx])["image"]
-                    cv2.imwrite(os.path.join(directory,self.img_names[idx]+"_aug_"+str(step)+".jpg"),transformed)
 
+                for step in range(self.steps):
+
+                    transformed = self.transform(image=self.img_path[idx])
+                    new_image=transformed["image"]
+
+                    json_object = json.dumps(transformed["replay"], indent = 4) 
+                    JsonHelper.write_json(os.path.join(directory,self.img_names[idx]+"_aug_"+str(step)+".json"),json_object)
+
+                    cv2.imwrite(os.path.join(directory,self.img_names[idx]+"_aug_"+str(step)+".jpg"),new_image)
+
+    def replay_aug(image_path,json_aug_path):
+        #aply a saved augmentation on an image 
+        print("hey")
 
 
 
