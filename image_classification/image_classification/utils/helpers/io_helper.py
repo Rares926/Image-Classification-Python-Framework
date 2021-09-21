@@ -64,6 +64,12 @@ class IOHelper:
     @staticmethod
     def get_image_files(dir_path: str, full_path: bool = False, recursively: bool = False) -> List[str]:
         return IOHelper.get_files(dir_path, IOHelper.IMAGE_EXTENSIONS, full_path, recursively)
+
+    @staticmethod
+    def get_image_files_without_extension(dir_path: str, full_path: bool = False, recursively: bool = False) -> List[str]:
+        img_files=IOHelper.get_files(dir_path, IOHelper.IMAGE_EXTENSIONS, full_path, recursively)
+        return [IOHelper.get_filename_without_extension(file) for file in img_files]
+
     
     @staticmethod
     def get_filename(path: str) -> str:

@@ -73,6 +73,11 @@ class DataProcessing:
             temp_path = os.path.join(root, item)
             IOHelper.create_directory(temp_path)
 
+    def createFolder(root,name):
+            temp_path = os.path.join(root, name)
+            IOHelper.create_directory(temp_path)
+            return temp_path
+
     @staticmethod
     def splitData(dataset, workspace:str, quotient:float, label: Dict[str,Dict[str,str]]):
         for key in label:
