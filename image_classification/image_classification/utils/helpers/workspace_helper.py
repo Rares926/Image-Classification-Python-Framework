@@ -37,6 +37,10 @@ class WorkspaceHelper:
 
     def splitData(self, labels: Dict[str,Dict[str,str]], quotient:float = 0.9):
         
+        log_train = {}
+        log_train_path = os.path.join(self.workspace_directory, 'train_log.json')
+        log_test = {}
+        log_test_path = os.path.join(self.workspace_directory, 'test_log.json')
         if quotient >=1 or quotient <=0:
             raise Exception("Split quotient out of bounds!")
         for key in labels:
@@ -46,15 +50,20 @@ class WorkspaceHelper:
 
             for photo in range(to_be_trained):
                 source = os.path.join(self.dataset_directory, labels[key]['name'], list[photo])
-                destination = self.workspace_directory + '/inputData/train/' + labels[key]['uid'] + 'P' + str(photo) + '.jpg'
+                new_name = labels[key]['uid'] + 'P' + str(photo) + '.jpg'
+                destination = self.workspace_directory + '/inputData/train/' + new_name
                 image = self.image_loader.load_image(source)
-                #salvam conversii de nume pe disc
+                log_train[list[photo]] = new_name
                 cv.imwrite(destination, image)
                 #IOHelper.copyfile(source, destination)
 
             for photo in range(to_be_trained, number_of_files):
                 source = os.path.join(self.dataset_directory, labels[key]['name'], list[photo])
-                destination = self.workspace_directory + '/inputData/test/' + labels[key]['uid'] + 'P' + str(photo) + '.jpg'
+                new_name = labels[key]['uid'] + 'P' + str(photo) + '.jpg'
+                destination = self.workspace_directory + '/inputData/test/' + new_name
                 image = self.image_loader.load_image(source)
+                log_test[list[photo]] = new_name
                 cv.imwrite(destination, image)
                 #IOHelper.copyfile(source, destination)
+            JsonHelper.write_json(log_train_path, log_train)
+            JsonHelper.write_json(log_test_path, log_test)
