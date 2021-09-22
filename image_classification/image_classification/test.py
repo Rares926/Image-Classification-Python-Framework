@@ -21,7 +21,7 @@ class ModelTester():
         self.labels_path = labels_path
         self.results_path = results_path
     
-    def do_test(self, checkpoint_root_dir: str, image_root_dir: str, process_images):
+    def do_test(self, checkpoint_root_dir: str, image_root_dir: str, preprocess_images: bool):
         DataProcessing.createResultsFolders(self.results_path, self.labels_path)
         model_architurecture=ModelArchitecture(self.network.image_shape)
         label_count = DataProcessing.load_label_count(self.labels_path)
@@ -30,7 +30,7 @@ class ModelTester():
 
         testWorker=TestWorker(model, self.labels_path)
         testWorker.load_checkpoint(checkpoint_root_dir)
-        testWorker.test_images(image_root_dir, self.network, self.results_path, process_images)
+        testWorker.test_images(image_root_dir, self.network, self.results_path, preprocess_images)
 
 
 def run():
@@ -40,13 +40,13 @@ def run():
         description="Test a model saved from a checkpoint")
         parser.add_argument("--test_configuration_file", "-config", required=True, help="The path to the test config file")
         parser.add_argument("--checkpoint_path", "-checkpoint", required = True, help="The path of the checkpoint file")
-        parser.add_argument("--process_testing_images", "-process", required = True, help="Process the testing images with the config params")
+        parser.add_argument('--preprocess_testing_images', action='store_true', default=False, help='Preprocess the testing images with the config params')
         program_args = parser.parse_args()
 
         tester_args = TestBuilder()
         tester_args.arg_parse(program_args.test_configuration_file)
         tester = ModelTester(tester_args.network, tester_args.labels_path, tester_args.results_path)
-        tester.do_test(program_args.checkpoint_path, tester_args.images_path, program_args.process_testing_images)
+        tester.do_test(program_args.checkpoint_path, tester_args.images_path, program_args.preprocess_testing_images)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()

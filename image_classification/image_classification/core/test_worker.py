@@ -32,9 +32,9 @@ class TestWorker:
         loss, acc = self.model.evaluate(test_images, test_labels, verbose=2)
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
 
-    def test_images(self, images_path:str, network: NetworkBuilder, results_folder, process_images): #nume,imagine,ground truth,predict
+    def test_images(self, images_path:str, network: NetworkBuilder, results_folder, preprocess_images: bool): #nume,imagine,ground truth,predict
         image_loader = ImageLoader(network.image_shape, network.image_format, network.resize_method, network.ratios, network.resize_after_crop)
-        if process_images == 'false':
+        if preprocess_images == False:
             image_loader.resize_method = ResizeMethod.NONE
         label_list = JsonHelper.read_json(self.data_file_location)
         label_names = DataProcessing.load_label_names(self.data_file_location)

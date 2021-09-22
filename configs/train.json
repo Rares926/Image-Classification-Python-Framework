@@ -1,6 +1,6 @@
 {
     "dataset_path": "C:/rebars_tubes",
-    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes",
+    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes_2",
     "model_path":"C:/Users/Radu Baciu/Desktop/workspaceTesting/m.py",
     "epochs":10,
     "split_percentage":0.9,
@@ -27,10 +27,7 @@
         "name": "SGD",
         "lr": {
             "value": 0.01,
-            "schedule": "PolynomialDecay",
-            "params": {
-                "decay_steps": 10000
-                      }
+            "schedule": "ExponentialDecay"    
         },
         "params": {
         }
@@ -43,12 +40,6 @@
             }
         },
         {
-            "name":"rotate",
-            "params":{
-                "p":0.7
-            }
-        },
-        {
             "name":"flip",
             "params":{
                 "p":0.7
@@ -57,6 +48,6 @@
 
     ],
 
-    "metrics":["accuracy","mean_absolute_error"]
+    "metrics":["accuracy"]
 
 }
