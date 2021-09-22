@@ -1,5 +1,6 @@
 import cv2   as cv
 from image_classification.data_structures.image_loader import ImageLoader
+from image_classification.data_structures.resize_method import ResizeMethod
 from image_classification.network.data_generator import DataGenerator
 from image_classification.utils.helpers.json_helper import JsonHelper
 import numpy as np
@@ -31,8 +32,10 @@ class TestWorker:
         loss, acc = self.model.evaluate(test_images, test_labels, verbose=2)
         print("Loaded model, accuracy: {:5.2f}%".format(100 * acc))
 
-    def test_images(self, images_path:str, network: NetworkBuilder, results_folder): #nume,imagine,ground truth,predict
-        image_loader = ImageLoader(network.image_shape, network.image_format, network.resize_method, network.ratios)
+    def test_images(self, images_path:str, network: NetworkBuilder, results_folder, preprocess_images: bool): #nume,imagine,ground truth,predict
+        image_loader = ImageLoader(network.image_shape, network.image_format, network.resize_method, network.ratios, network.resize_after_crop)
+        if preprocess_images == False:
+            image_loader.resize_method = ResizeMethod.NONE
         label_list = JsonHelper.read_json(self.data_file_location)
         label_names = DataProcessing.load_label_names(self.data_file_location)
         testing_generator = DataGenerator(images_path, label_list, image_loader, is_train_data = False)

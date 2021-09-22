@@ -31,6 +31,6 @@ class TestBuilder:
         
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])
-        self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios = network_params.get_network_params()
+        self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios, self.network.resize_after_crop = network_params.get_network_params()
 
 
