@@ -19,9 +19,11 @@
             "data_type": "FLOAT"
         },
         "resize": {
-            "method": "LETTERBOX",
+            "method": "CROP",
             "params": {
-
+                "tl_ratio":0.25,
+                "br_ratio":0.25,
+                "resize_after_crop":"LETTERBOX"
             }
         }
     },
