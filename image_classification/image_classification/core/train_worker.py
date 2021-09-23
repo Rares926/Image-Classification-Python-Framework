@@ -33,6 +33,7 @@ class TrainWorker:
         
         IOHelper.create_directory(checkpoint_path)
 
+        print("-------------------->CREATING CALLBACKS<--------------------")
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path+"/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+"cp-{epoch:03G}.h5",
                                                          save_best_only=False,
                                                          save_freq='epoch',
@@ -40,27 +41,41 @@ class TrainWorker:
                                                          save_weights_only=True,
                                                          verbose=1)
 
-
         workspace=workspace+"/tensorboard/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=workspace, histogram_freq=1)
-        
+        print("-------------->CALLBACKS CREATED SUCCESSFULLY<--------------")
+
+
+        print("--------------------->COMPILING MODEL<----------------------")
         self.model.compile( optimizer=self.network.optimizer,
                             loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                             metrics=self.network.metrics )
-                    
+        print("--------------------->MODEL COMPILED<----------------------")
+
+
         if from_checkpoint!=None:
             self.model.load_weights(from_checkpoint)
+            print("--------------->WEIGHTS LOADED FROM CHECKPOINT<---------------")
                     
 
         transform = A.Compose(self.network.augmentations)
 
+        print("-------------------->SHOW MODEL SUMMARY<---------------------")
         self.model.summary()
-        
+
+
+        print("--------->CREATING TRAINING AND TESTING GENERATORS<---------")
         training_generator = DataGenerator(train_location, labels, image_loader, self.network.batch_size, is_train_data=True, transform = transform)
         testing_generator = DataGenerator(test_location, labels, image_loader, self.network.batch_size, is_train_data=True)
-        self.model.fit(training_generator,validation_data = testing_generator, epochs=self.network.epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
+        print("-------------->PROCCES COMPLETED SUCCESSFULLY<--------------")
 
+
+        print("-------------------->STARTING TRAINING<--------------------")
+        self.model.fit(training_generator,validation_data = testing_generator, epochs=self.network.epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
+        print("-------------->TRAINING COMPLETED SUCCESSFULLY<--------------")
+
+
+        print("------------------->PRINTING TEST RESULTS<-------------------")
         test_results = list(self.model.evaluate(testing_generator, verbose=1))
         
         for item in test_results:

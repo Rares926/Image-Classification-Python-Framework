@@ -1,8 +1,8 @@
 import cv2   as cv
-from image_classification.data_structures.image_loader import ImageLoader
-from image_classification.data_structures.resize_method import ResizeMethod
-from image_classification.network.data_generator import DataGenerator
-from image_classification.utils.helpers.json_helper import JsonHelper
+from ..data_structures.image_loader import ImageLoader
+from ..data_structures.resize_method import ResizeMethod
+from ..network.data_generator import DataGenerator
+from ..utils.helpers.json_helper import JsonHelper
 import numpy as np
 import os
 import tensorflow as tf
