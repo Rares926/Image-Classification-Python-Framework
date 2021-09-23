@@ -25,15 +25,23 @@ class ClassifierTrainer():
         self.checkpoint=checkpoint
         self.network=network
     
-    def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
+    def do_train(self, dataset_root_dir: str, training_workspace_dir: str, dont_generate_dataset):
+        
         
         IOHelper.create_directory(training_workspace_dir)
-
         image_loader = ImageLoader(self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios, self.network.resize_after_crop, normalize=False)
         workspace_creator = WorkspaceHelper(dataset_root_dir, training_workspace_dir, image_loader)
-        workspace_creator.createFolders()
         labels = workspace_creator.build_labels()
-        workspace_creator.splitData(labels, self.network.split_percentage)
+        if dont_generate_dataset == False:
+            workspace_creator.createFolders()
+            workspace_creator.splitData(labels, self.network.split_percentage)
+        else:
+            temp_path = os.path.join(training_workspace_dir, 'inputData')
+            IOHelper.check_if_dir_exists(temp_path, "inputData folder does not exist")
+            temp_train_path = os.path.join(temp_path, 'train')
+            temp_test_path = os.path.join(temp_path, 'test')
+            IOHelper.check_if_dir_exists(temp_train_path, "inputData/train folder does not exist")
+            IOHelper.check_if_dir_exists(temp_test_path, "inputData/test folder does not exist")
 
         print("Starting training worker...")
         model_architurecture = ModelArchitecture(self.network.image_shape)
@@ -58,13 +66,13 @@ def run():
         description="Train a custom classifier using Tensorflow framework")
         parser.add_argument("--training_configuration_file", "-config", required=True, help="The path of the training configuration file (must be JSON format)")
         parser.add_argument("--checkpoint_path", "-checkpoint", required = False, help="The path of the checkpoint file")
-
+        parser.add_argument('--dont_generate_dataset', action='store_true', default=False, help='Skip workspace dataset generation')
         program_args = parser.parse_args()
 
         trainer_args = TrainBuilder()
         trainer_args.arg_parse(program_args.training_configuration_file)
         trainer = ClassifierTrainer(trainer_args.network,program_args.checkpoint_path)
-        trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path)
+        trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path, program_args.dont_generate_dataset)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()
