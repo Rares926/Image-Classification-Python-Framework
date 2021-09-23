@@ -1,9 +1,9 @@
 {
-    "images_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/inputData/test",
-    "labels_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/data.json",
-    "results_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/bad_detections",
-    "model_path":"C:/Users/Radu Baciu/Desktop/Image-Classification-Python-Framework/configs/model.py",
-    "top_k": 2,
+    "images_path": "Z:/rebars_tubes_TrainingData/inputData/test",
+    "labels_path": "Z:/rebars_tubes_TrainingData/data.json",
+    "results_path": "Z:/rebars_tubes_TrainingData/test_result",
+    "model_path":"Z:/rebars_tubes_TrainingData/m.py",
+    "top_k": 1,
     "network": {
         "input_shape": {
             "width": 224,
