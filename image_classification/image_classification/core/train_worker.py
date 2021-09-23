@@ -50,7 +50,7 @@ class TrainWorker:
         self.model.compile( optimizer=self.network.optimizer,
                             loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits = False),
                             metrics=self.network.metrics )
-        print("--------------------->MODEL COMPILED<----------------------")
+        print("--------------------->MODEL COMPILED<-----------------------")
 
 
         if from_checkpoint!=None:
@@ -60,7 +60,7 @@ class TrainWorker:
 
         transform = A.Compose(self.network.augmentations)
 
-        print("-------------------->SHOW MODEL SUMMARY<---------------------")
+        print("------------------->SHOW MODEL SUMMARY<---------------------")
         self.model.summary()
 
 
@@ -70,7 +70,7 @@ class TrainWorker:
         print("-------------->PROCCES COMPLETED SUCCESSFULLY<--------------")
 
 
-        print("-------------------->STARTING TRAINING<--------------------")
+        print("-------------------->STARTING TRAINING<---------------------")
         self.model.fit(training_generator,validation_data = testing_generator, epochs=self.network.epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, testing_generator, workspace, labels_location),cp_callback])
         print("-------------->TRAINING COMPLETED SUCCESSFULLY<--------------")
 

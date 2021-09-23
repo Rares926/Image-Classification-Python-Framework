@@ -1,16 +1,16 @@
 import cv2   as cv
-from ..data_structures.image_loader import ImageLoader
-from ..data_structures.resize_method import ResizeMethod
-from ..network.data_generator import DataGenerator
-from ..utils.helpers.json_helper import JsonHelper
+
 import numpy as np
 import os
-import tensorflow as tf
 
 # Internal framework imports
-from ..utils.data_processing       import DataProcessing
-from ..utils.helpers.io_helper     import IOHelper
-from ..builders.network_builder    import NetworkBuilder
+from ..data_structures.image_loader  import ImageLoader
+from ..data_structures.resize_method import ResizeMethod
+from ..network.data_generator        import DataGenerator
+from ..utils.helpers.json_helper     import JsonHelper
+from ..utils.data_processing         import DataProcessing
+from ..utils.helpers.io_helper       import IOHelper
+from ..builders.network_builder      import NetworkBuilder
 
 # Typing imports imports
 
@@ -27,6 +27,7 @@ class TestWorker:
         self.model.summary()
         IOHelper.check_if_file_exists(checkpoint_path, "Checkpoint path invalid: ")
         self.model.load_weights(checkpoint_path)
+        print("------------------------>CHECHPOINT LOADED<-----------------------")
 
 
     def top_k_batch(self,predictions,truths,topK):
@@ -51,14 +52,16 @@ class TestWorker:
         label_list = JsonHelper.read_json(self.data_file_location)
         label_names = DataProcessing.load_label_names(self.data_file_location)
 
+        print("------------------->CREATING TESTING GENERATOR<-------------------")
         testing_generator = DataGenerator(images_path, label_list, image_loader, network.batch_size, is_train_data = False)
-
+        print("------------------------>GENERATOR CREATED<-----------------------")
         topK_predicted=0
         topK_total=0
 
-        for index in range(len(testing_generator)):
+        print("------------------------>STARTING TESTING<------------------------")
+        for idx in range(len(testing_generator)):
 
-            batch_images, ground_truths, image_names = testing_generator[index]
+            batch_images, ground_truths, image_names = testing_generator[idx]
 
             raw_predictions = self.model.predict(batch_images, testing_generator.batch_size) #aici trebuie sa iau pe rand fiecare rand si la maxim sa pun 1 iar la minim 0
             predictions = [np.argmax(i) for i in raw_predictions]
@@ -73,7 +76,8 @@ class TestWorker:
                     path = os.path.join(results_folder, label_names[predictions[index]], image_names[index])
                     cv.imwrite(path, image_data)
 
-        print('Done')
+            print("------------------------>BATCH {} FINISHED<------------------------".format(idx))
+        print("------------------------>TESTING FINISHED<------------------------")
         print('TopK accuracy for topk={} is {}'.format(topK,topK_predicted/topK_total))
             
 
