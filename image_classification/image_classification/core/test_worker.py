@@ -36,9 +36,11 @@ class TestWorker:
         image_loader = ImageLoader(network.image_shape, network.image_format, network.resize_method, network.ratios, network.resize_after_crop)
         if preprocess_images == False:
             image_loader.resize_method = ResizeMethod.NONE
+            
         label_list = JsonHelper.read_json(self.data_file_location)
         label_names = DataProcessing.load_label_names(self.data_file_location)
-        testing_generator = DataGenerator(images_path, label_list, image_loader, is_train_data = False)
+        testing_generator = DataGenerator(images_path, label_list, image_loader, network.batch_size, is_train_data = False)
+
         for index in range(len(testing_generator)):
             batch_images, ground_truths, image_names = testing_generator[index]
             raw_predictions = self.model.predict(batch_images, testing_generator.batch_size)

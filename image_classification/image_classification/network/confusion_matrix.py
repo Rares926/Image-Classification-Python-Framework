@@ -6,7 +6,6 @@ import sklearn.metrics
 
 #Internal framework imports
 from ..utils.data_processing import DataProcessing
-from .data_generator         import DataGenerator
 
 class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
         

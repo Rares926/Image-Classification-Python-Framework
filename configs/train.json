@@ -1,9 +1,13 @@
 {
     "dataset_path": "C:/rebars_tubes",
     "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes_2",
-    "model_path":"C:/Users/Radu Baciu/Desktop/workspaceTesting/m.py",
-    "epochs":10,
+    "model_path":"C:/Users/Radu Baciu/Desktop/Image-Classification-Python-Framework/configs/model.py",
+
+    "epochs":30,
+    "batch_size":32,
+
     "split_percentage":0.9,
+
     "network": {
         "input_shape": {
             "width": 224,
@@ -24,10 +28,9 @@
         }
     },
     "optimizer": {
-        "name": "SGD",
+        "name": "Adam",
         "lr": {
-            "value": 0.01,
-            "schedule": "ExponentialDecay"    
+            "value": 0.01
         },
         "params": {
         }

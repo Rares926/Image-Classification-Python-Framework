@@ -10,7 +10,7 @@ from ..data_structures.image_loader import ImageLoader
 
 class DataGenerator(tf.keras.utils.Sequence):
 
-    def __init__(self, data_path, labels, image_loader: ImageLoader, batch_size = 32, is_train_data = False,transform=None):
+    def __init__(self, data_path, labels, image_loader: ImageLoader, batch_size, is_train_data = False, transform=None):
         self.data_path = data_path
         self.labels = labels
         self.image_loader = image_loader
@@ -21,11 +21,12 @@ class DataGenerator(tf.keras.utils.Sequence):
         self.on_epoch_end()
 
     def __len__(self): #from Sequence
-        return len(self.image_names)//self.batch_size
+        a = len(self.image_names)//self.batch_size
+        return a
+        
 
     def __getitem__(self, index:int): #from Sequence
         batch_images = self.image_names[index * self.batch_size : (index + 1) * self.batch_size]
-
         x, y = self.generate_X(batch_images)
 
         if self.is_train_data:
@@ -35,8 +36,8 @@ class DataGenerator(tf.keras.utils.Sequence):
 
     def generate_X(self, batch_images):
 
-        x = np.empty((self.batch_size, self.image_loader.image_shape.height, self.image_loader.image_shape.width, self.image_loader.image_shape.channels))
-        y = np.empty((self.batch_size))
+        x = np.empty((len(batch_images), self.image_loader.image_shape.height, self.image_loader.image_shape.width, self.image_loader.image_shape.channels))
+        y = np.empty((len(batch_images)))
 
         for index, image_name in enumerate(batch_images):
             image_path = os.path.join(self.data_path, image_name)
@@ -44,8 +45,6 @@ class DataGenerator(tf.keras.utils.Sequence):
 
             if not self.is_train_data and self.transform!=None:
                 raise Exception("It's not possible to use augmentatins on test data")
-
-            #aici trebuie sa aplic transform pe image
             
             if self.transform!=None:
                 transformed = self.transform(image=image)

@@ -28,6 +28,8 @@ class TrainBuilder:
         
         if {'epochs'} <=raw_data.keys():
             self.network.epochs=raw_data['epochs']
+        if {'batch_size'} <=raw_data.keys():
+            self.network.batch_size=raw_data['batch_size']
 
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])

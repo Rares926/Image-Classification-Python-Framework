@@ -21,6 +21,7 @@ class NetworkBuilder:
         self.metrics       = None
 
         self.epochs        = 10
+        self.batch_size    = 32
 
 
 
