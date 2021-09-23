@@ -63,14 +63,19 @@ class TrainWorker:
 
         print("------------------->SHOW MODEL SUMMARY<---------------------")
         self.model.summary()
-        print("--------->CREATING TRAINING AND TESTING GENERATORS<---------")
+        print("--------->CREATING TRAINING AND TESTING GENERATORS<---------") 
         training_generator = DataGenerator(train_location, labels, image_loader, self.network.batch_size, DatasetType.TRAIN, transform = transform)
         validation_generator = DataGenerator(test_location, labels, image_loader, self.network.batch_size, DatasetType.VALIDATION)
         print("-------------->PROCCES COMPLETED SUCCESSFULLY<--------------")
+
         print("-------------------->STARTING TRAINING<---------------------")
         self.model.fit(training_generator,validation_data = validation_generator, epochs=self.network.epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, validation_generator, workspace, labels_location),cp_callback])
+        print("-------------->TRAINING COMPLETED SUCCESSFULLY<--------------")
 
+        print("------------------->PRINTING TEST RESULTS<-------------------")
         test_results = list(self.model.evaluate(validation_generator, verbose=1))
         
         for item in test_results:
             print(item)
+
+
