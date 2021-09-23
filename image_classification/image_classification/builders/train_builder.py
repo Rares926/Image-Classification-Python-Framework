@@ -28,6 +28,7 @@ class TrainBuilder:
         
         if {'epochs'} <=raw_data.keys():
             self.network.epochs=raw_data['epochs']
+            
         if {'batch_size'} <=raw_data.keys():
             self.network.batch_size=raw_data['batch_size']
         if {'split_percentage'} <= raw_data.keys():

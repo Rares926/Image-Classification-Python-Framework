@@ -21,8 +21,10 @@ class ModelTester():
         self.labels_path = labels_path
         self.results_path = results_path
     
-    def do_test(self, checkpoint_root_dir: str, image_root_dir: str, preprocess_images: bool):
+    def do_test(self, checkpoint_root_dir: str, image_root_dir: str, preprocess_images: bool,topK: int=1):
+
         DataProcessing.createResultsFolders(self.results_path, self.labels_path)
+
         model_architurecture=ModelArchitecture(self.network.image_shape)
         label_count = DataProcessing.load_label_count(self.labels_path)
 
@@ -30,7 +32,7 @@ class ModelTester():
 
         testWorker=TestWorker(model, self.labels_path)
         testWorker.load_checkpoint(checkpoint_root_dir)
-        testWorker.test_images(image_root_dir, self.network, self.results_path, preprocess_images)
+        testWorker.test_images(image_root_dir, self.network, self.results_path, preprocess_images,topK)
 
 
 def run():
@@ -46,7 +48,7 @@ def run():
         tester_args = TestBuilder()
         tester_args.arg_parse(program_args.test_configuration_file)
         tester = ModelTester(tester_args.network, tester_args.labels_path, tester_args.results_path)
-        tester.do_test(program_args.checkpoint_path, tester_args.images_path, program_args.preprocess_testing_images)
+        tester.do_test(program_args.checkpoint_path, tester_args.images_path, program_args.preprocess_testing_images,tester_args.topK)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()

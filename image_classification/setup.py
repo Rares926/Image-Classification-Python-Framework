@@ -22,7 +22,7 @@ setup(
             'console_scripts': [
                   'image_classif_train= image_classification.train:run',
                   'image_classif_test= image_classification.test:run',
-                  'aug_test= image_classification.aug:run',
+                  'image_classif_aug_test= image_classification.aug:run',
             ],
       }
 )

@@ -1,7 +1,7 @@
 {
-    "dataset_path": "C:/rebars_tubes",
-    "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes_2",
-    "model_path":"C:/Users/Radu Baciu/Desktop/Image-Classification-Python-Framework/configs/model.py",
+    "dataset_path": "Z:/animalsDataset",
+    "workspace_path": "Z:/cats_dogs_TrainingData",
+    "model_path":"Z:/cats_dogs_TrainingData/m.py",
 
     "epochs":3,
     "batch_size":32,
@@ -19,18 +19,16 @@
             "data_type": "FLOAT"
         },
         "resize": {
-            "method": "CROP",
+            "method": "LETTERBOX",
             "params": {
-                "tl_ratio": 0.25,
-                "br_ratio": 0.25,
-                "resize_after_crop":"LETTERBOX"
+
             }
         }
     },
     "optimizer": {
         "name": "Adam",
         "lr": {
-            "value": 0.01
+            "value": 0.07
         },
         "params": {
         }

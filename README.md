@@ -63,7 +63,7 @@ The script has 2 parameters:
 The train script can be called by ussing a certain command
 ##### Example
 
-- `train.py` `-config` "C:/configs/train.json" `-checkpoint`[optional] "Z:/cats_dogs_TrainingData/checkpoints/20210917-150603cp-009.h5"
+- `image_classif_train` `-config` "C:/configs/train.json" `-checkpoint`[optional] "Z:/cats_dogs_TrainingData/checkpoints/20210917-150603cp-009.h5"
 
 
 ### Image-classification train.json parameters
@@ -209,7 +209,7 @@ The script has 3 parameters:
 The test script can be called by ussing a certain command
 ##### Example
 
-- `test.py` `-config` "C:/configs/test.json" `-checkpoint` "C:/Training_data/checkpoints/20210916-131359cp-010.h5"
+- `image_classif_test` `-config` "C:/configs/test.json" `-checkpoint` "C:/Training_data/checkpoints/20210916-131359cp-010.h5"
 
 
 ### Image-classification test.json parameters
@@ -247,7 +247,7 @@ The script has 4 parameters:
 The augmentation testing script can be called by ussing a certain command
 ##### Example
 
-- `aug.py` `-config` "C:/configs/train.json" `-img` "C:/output_aug/to_be_aug" `-steps` "10" `out` "Z:/output_aug"
+- `image_classif_aug_test` `-config` "C:/configs/train.json" `-img` "C:/output_aug/to_be_aug" `-steps` "10" `out` "Z:/output_aug"
 
 <!-- LICENSE -->
 ## License

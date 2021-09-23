@@ -1,8 +1,8 @@
 {
-    "images_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes/inputData/test",
-    "labels_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes/data.json",
-    "results_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes/results",
-    "model_path":"C:/Users/Radu Baciu/Desktop/workspaceTesting/m.py",
+    "images_path": "C:/Test_image",
+    "labels_path": "Z:/cats_dogs_TrainingData/data.json",
+    "results_path": "Z:/cats_dogs_TrainingData/results",
+    "model_path":"Z:/cats_dogs_TrainingData/m.py",
     "top_k": 2,
     "network": {
         "input_shape": {
@@ -15,11 +15,8 @@
             "data_type": "FLOAT"
         },
         "resize": {
-            "method": "CROP",
+            "method": "LETTERBOX",
             "params": {
-                "tl_ratio": 0.25,
-                "br_ratio": 0.25,
-                "resize_after_crop":"LETTERBOX"
             }
         }
     }
