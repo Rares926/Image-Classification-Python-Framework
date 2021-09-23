@@ -1,5 +1,6 @@
 
 from image_classification.builders.network_builder import NetworkBuilder
+from image_classification.data_structures.dataset_type import DatasetType
 import tensorflow     as tf
 import datetime
 import os
@@ -62,6 +63,14 @@ class TrainWorker:
 
         print("------------------->SHOW MODEL SUMMARY<---------------------")
         self.model.summary()
+<<<<<<< HEAD
+        
+        training_generator = DataGenerator(train_location, labels, image_loader, self.network.batch_size, DatasetType.TRAIN, transform = transform)
+        validation_generator = DataGenerator(test_location, labels, image_loader, self.network.batch_size, DatasetType.VALIDATION)
+        self.model.fit(training_generator,validation_data = validation_generator, epochs=self.network.epochs,initial_epoch=self.starting_epoch, callbacks=[tensorboard_callback,ConfusionMatrixCallback(self.model, validation_generator, workspace, labels_location),cp_callback])
+
+        test_results = list(self.model.evaluate(validation_generator, verbose=1))
+=======
 
 
         print("--------->CREATING TRAINING AND TESTING GENERATORS<---------")
@@ -77,6 +86,7 @@ class TrainWorker:
 
         print("------------------->PRINTING TEST RESULTS<-------------------")
         test_results = list(self.model.evaluate(testing_generator, verbose=1))
+>>>>>>> develop
         
         for item in test_results:
             print(item)

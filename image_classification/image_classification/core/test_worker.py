@@ -1,11 +1,11 @@
 import cv2   as cv
-
 import numpy as np
 import os
 
 # Internal framework imports
 from ..data_structures.image_loader  import ImageLoader
 from ..data_structures.resize_method import ResizeMethod
+from ..data_structures.dataset_type  import DatasetType
 from ..network.data_generator        import DataGenerator
 from ..utils.helpers.json_helper     import JsonHelper
 from ..utils.data_processing         import DataProcessing
@@ -53,7 +53,7 @@ class TestWorker:
         label_names = DataProcessing.load_label_names(self.data_file_location)
 
         print("------------------->CREATING TESTING GENERATOR<-------------------")
-        testing_generator = DataGenerator(images_path, label_list, image_loader, network.batch_size, is_train_data = False)
+        testing_generator = DataGenerator(images_path, label_list, image_loader, network.batch_size, DatasetType.TEST)
         print("------------------------>GENERATOR CREATED<-----------------------")
         topK_predicted=0
         topK_total=0
