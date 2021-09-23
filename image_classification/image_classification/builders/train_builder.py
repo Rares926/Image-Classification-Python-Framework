@@ -30,6 +30,8 @@ class TrainBuilder:
             self.network.epochs=raw_data['epochs']
         if {'batch_size'} <=raw_data.keys():
             self.network.batch_size=raw_data['batch_size']
+        if {'split_percentage'} <= raw_data.keys():
+            self.network.split_percentage = raw_data['split_percentage']
 
         network_params = NetworkParams()
         network_params.build_network_params(raw_data['network'])

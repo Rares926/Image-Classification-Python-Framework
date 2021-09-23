@@ -33,7 +33,7 @@ class ClassifierTrainer():
         workspace_creator = WorkspaceHelper(dataset_root_dir, training_workspace_dir, image_loader)
         workspace_creator.createFolders()
         labels = workspace_creator.build_labels()
-        workspace_creator.splitData(labels)
+        workspace_creator.splitData(labels, self.network.split_percentage)
 
         print("Starting training worker...")
         model_architurecture = ModelArchitecture(self.network.image_shape)

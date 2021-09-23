@@ -3,10 +3,10 @@
     "workspace_path": "C:/Users/Radu Baciu/Desktop/workspaceTesting/aa-rebars and tubes_2",
     "model_path":"C:/Users/Radu Baciu/Desktop/Image-Classification-Python-Framework/configs/model.py",
 
-    "epochs":30,
+    "epochs":3,
     "batch_size":32,
 
-    "split_percentage":0.9,
+    "split_percentage":0.8,
 
     "network": {
         "input_shape": {

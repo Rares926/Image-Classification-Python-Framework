@@ -26,7 +26,8 @@ class TestBuilder:
         self.results_path = raw_data['results_path']
 
         self.network.model_path = raw_data['model_path']
-        self.network.batch_size = raw_data['batch_size']
+        if {'batch_size'} <=raw_data.keys():
+            self.network.batch_size=raw_data['batch_size']
         
         self.topK = raw_data['top_k']
         

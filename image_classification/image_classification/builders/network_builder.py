@@ -22,6 +22,7 @@ class NetworkBuilder:
 
         self.epochs        = 10
         self.batch_size    = 32
+        self.split_percentage = 0.9
 
 
 

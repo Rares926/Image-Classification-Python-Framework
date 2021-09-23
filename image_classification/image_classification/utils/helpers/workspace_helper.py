@@ -35,7 +35,7 @@ class WorkspaceHelper:
         JsonHelper.write_json(os.path.join(self.workspace_directory, 'data.json'), labels)
         return labels
 
-    def splitData(self, labels: Dict[str,Dict[str,str]], quotient:float = 0.9):
+    def splitData(self, labels: Dict[str,Dict[str,str]], quotient:float):
         
         log_train = {}
         log_train_path = os.path.join(self.workspace_directory, 'train_log.json')

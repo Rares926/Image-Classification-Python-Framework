@@ -21,7 +21,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         self.on_epoch_end()
 
     def __len__(self): #from Sequence
-        a = len(self.image_names)//self.batch_size
+        a = len(self.image_names)//self.batch_size + 1
         return a
         
 
