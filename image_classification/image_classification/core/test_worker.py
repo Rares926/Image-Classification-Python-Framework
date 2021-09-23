@@ -31,18 +31,15 @@ class TestWorker:
 
 
     def top_k_batch(self,predictions,truths,topK):
-
-        tmp = np.zeros_like(predictions)
-        tmp[np.arange(len(predictions)), predictions.argmax(1)] = 1
         result=0
-        for idx in range(len(truths)):
-            tb_verrified=truths[idx]
-            if tb_verrified in tmp[idx][:topK]:
+        for idx,row in enumerate(predictions):
+            tmp=row
+            tmp=sorted(tmp,reverse=True)
+            new_list=[row.tolist().index(x) for x in tmp]
+            if truths[idx] in new_list[:topK]:
                 result+=1
-        
         return result
             
-
 
     def test_images(self, images_path:str, network: NetworkBuilder, results_folder, preprocess_images: bool,topK: int): 
         image_loader = ImageLoader(network.image_shape, network.image_format, network.resize_method, network.ratios, network.resize_after_crop)
@@ -78,6 +75,7 @@ class TestWorker:
 
             print("------------------------>BATCH {} FINISHED<------------------------".format(idx))
         print("------------------------>TESTING FINISHED<------------------------")
+        print(topK_predicted,topK_total)
         print('TopK accuracy for topk={} is {}'.format(topK,topK_predicted/topK_total))
             
 
