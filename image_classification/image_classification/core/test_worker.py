@@ -1,4 +1,5 @@
 import cv2   as cv
+from image_classification.data_structures.dataset_type import DatasetType
 from image_classification.data_structures.image_loader import ImageLoader
 from image_classification.data_structures.resize_method import ResizeMethod
 from image_classification.network.data_generator import DataGenerator
@@ -51,7 +52,7 @@ class TestWorker:
         label_list = JsonHelper.read_json(self.data_file_location)
         label_names = DataProcessing.load_label_names(self.data_file_location)
 
-        testing_generator = DataGenerator(images_path, label_list, image_loader, network.batch_size, is_train_data = False)
+        testing_generator = DataGenerator(images_path, label_list, image_loader, network.batch_size, DatasetType.TEST)
 
         topK_predicted=0
         topK_total=0
