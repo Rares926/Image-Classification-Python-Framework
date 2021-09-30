@@ -1,50 +1,62 @@
 import os
 import sys
-from jsonargparse import ArgumentParser
-from jsonargparse.util import usage_and_exit_error_handler
+from image_classification.utils.helpers.workspace_helper import WorkspaceHelper
+from jsonargparse                  import ArgumentParser
+from jsonargparse.util             import usage_and_exit_error_handler
 
 # Internal framework imports
-from .core.data_visualization import DataVisualization
-from .core.data_processing import DataProcessing
-from .core.train_worker import TrainWorker
-from .core.network_architecture import ModelArchitecture
-from .utils.io_helper import IOHelper
+from .data_structures.image_loader import ImageLoader
+from .builders.network_builder     import NetworkBuilder
+from .utils.data_processing        import DataProcessing
+from .core.train_worker            import TrainWorker
+from .network.network_architecture import ModelArchitecture
+from .utils.helpers.io_helper      import IOHelper
+from .builders.train_builder       import TrainBuilder
+from .data_structures.resize_method import ResizeMethod
+
+
 # Typing imports imports
 
 
 class ClassifierTrainer():
-    NETWORK_SIZE = 224
-
-    def __init__(self, len, wid, ch):
-        self.length = int(len)
-        self.width = int(wid)
-        self.channels = int(ch)
     
-    def do_train(self, dataset_root_dir: str, training_workspace_dir: str):
+    def __init__(self, network:NetworkBuilder, checkpoint):
+
+        self.checkpoint=checkpoint
+        self.network=network
+    
+    def do_train(self, dataset_root_dir: str, training_workspace_dir: str, dont_generate_dataset):
+        
+        
         IOHelper.create_directory(training_workspace_dir)
-        labels = DataProcessing.build_labels(dataset_root_dir, training_workspace_dir)
-        DataProcessing.createFolders(training_workspace_dir)
-        DataProcessing.splitData(dataset_root_dir, training_workspace_dir, 4/5, labels)
-
-        train_location = training_workspace_dir + '/inputData/train'
-        test_location = training_workspace_dir + '/inputData/test'
-
-        #TODO: loadData needs image length and width instead of ClassifierTrainer.NETWORK_SIZE
-        train = DataProcessing.loadData(train_location, ClassifierTrainer.NETWORK_SIZE, labels)
-        test = DataProcessing.loadData(test_location, ClassifierTrainer.NETWORK_SIZE, labels)
-
-        DataVisualization.visualizeImage(train, labels)
-        DataVisualization.checkDatasetBalance(train, labels) 
-
-        x_train, y_train, x_test, y_test = DataProcessing.proccesAndNormalize(train, test)
+        image_loader = ImageLoader(self.network.image_shape, self.network.image_format, self.network.resize_method, self.network.ratios, self.network.resize_after_crop, normalize=False)
+        workspace_creator = WorkspaceHelper(dataset_root_dir, training_workspace_dir, image_loader)
+        labels = workspace_creator.build_labels()
+        if dont_generate_dataset == False:
+            workspace_creator.createFolders()
+            workspace_creator.splitData(labels, self.network.split_percentage)
+        else:
+            temp_path = os.path.join(training_workspace_dir, 'inputData')
+            IOHelper.check_if_dir_exists(temp_path, "inputData folder does not exist")
+            temp_train_path = os.path.join(temp_path, 'train')
+            temp_test_path = os.path.join(temp_path, 'test')
+            IOHelper.check_if_dir_exists(temp_train_path, "inputData/train folder does not exist")
+            IOHelper.check_if_dir_exists(temp_test_path, "inputData/test folder does not exist")
 
         print("Starting training worker...")
-        model_architurecture=ModelArchitecture(self.length,self.width,self.channels)
-        model=model_architurecture.set_model(len(labels))
+        model_architurecture = ModelArchitecture(self.network.image_shape)
+        model = model_architurecture.set_model(len(labels),model_path=self.network.model_path)
 
-        train_worker = TrainWorker(model)
+        if self.checkpoint:
+            starting_epoch=IOHelper.get_epoch_from_checkpoint_path(self.checkpoint)
+        else: starting_epoch=0
 
-        train_worker.train(training_workspace_dir, x_train, y_train, x_test, y_test)
+
+        train_worker = TrainWorker(model,self.network,starting_epoch)
+
+        image_loader.normalize = True
+        image_loader.resize_method = ResizeMethod.NONE
+        train_worker.train(training_workspace_dir, labels ,image_loader, from_checkpoint=self.checkpoint) 
 
 
 def run():
@@ -52,15 +64,15 @@ def run():
         parser = ArgumentParser(prog="classifiertrainer",
         error_handler = usage_and_exit_error_handler,
         description="Train a custom classifier using Tensorflow framework")
-        parser.add_argument("--dataset_root_dir", "-d", required=True, help="The path of the dataset root dir")
-        parser.add_argument("--training_workspace_dir", "-t", required=True, help="The path of the training workspace root dir")
-        parser.add_argument("--image_length", "-l", required=True, help="Image length for the model")
-        parser.add_argument("--image_width", "-w", required=True, help="Image width for the model")
-        parser.add_argument("--image_channels", "-c", required=False, help="Number of image channels for the model (default is 3)")
-        args = parser.parse_args()
+        parser.add_argument("--training_configuration_file", "-config", required=True, help="The path of the training configuration file (must be JSON format)")
+        parser.add_argument("--checkpoint_path", "-checkpoint", required = False, help="The path of the checkpoint file")
+        parser.add_argument('--dont_generate_dataset', action='store_true', default=False, help='Skip workspace dataset generation')
+        program_args = parser.parse_args()
 
-        trainer = ClassifierTrainer(args.image_length, args.image_width,args.image_channels)
-        trainer.do_train(args.dataset_root_dir, args.training_workspace_dir)
+        trainer_args = TrainBuilder()
+        trainer_args.arg_parse(program_args.training_configuration_file)
+        trainer = ClassifierTrainer(trainer_args.network,program_args.checkpoint_path)
+        trainer.do_train(trainer_args.dataset_path, trainer_args.workspace_path, program_args.dont_generate_dataset)
 
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()

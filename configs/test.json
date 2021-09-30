@@ -1,0 +1,23 @@
+{
+    "images_path": "Z:/rebars_tubes_TrainingData/inputData/test",
+    "labels_path": "Z:/rebars_tubes_TrainingData/data.json",
+    "results_path": "Z:/rebars_tubes_TrainingData/test_result",
+    "model_path":"Z:/rebars_tubes_TrainingData/m.py",
+    "top_k": 1,
+    "network": {
+        "input_shape": {
+            "width": 224,
+            "height": 224,
+            "depth": 3
+        },
+        "input_format": {
+            "channels": "RGB",
+            "data_type": "FLOAT"
+        },
+        "resize": {
+            "method": "LETTERBOX",
+            "params": {
+            }
+        }
+    }
+}

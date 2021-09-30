@@ -1,0 +1,56 @@
+{
+    "dataset_path": "Z:/rebars_tubes",
+    "workspace_path": "Z:/rebars_tubes_TrainingData",
+    "model_path":"Z:/rebars_tubes_TrainingData/m.py",
+
+    "epochs":30,
+    "batch_size":32,
+
+    "split_percentage":0.9,
+
+    "network": {
+        "input_shape": {
+            "width": 224,
+            "height": 224,
+            "depth": 3
+        },
+        "input_format": {
+            "channels": "RGB",
+            "data_type": "FLOAT"
+        },
+        "resize": {
+            "method": "CROP",
+            "params": {
+                "tl_ratio":0.25,
+                "br_ratio":0.25,
+                "resize_after_crop":"LETTERBOX"
+            }
+        }
+    },
+    "optimizer": {
+        "name": "Adam",
+        "lr": {
+            "value": 0.07
+        },
+        "params": {
+        }
+    },
+    "augmentations":[
+        {
+            "name":"horizontalFlip",
+            "params":{
+                "p":0.5
+            }
+        },
+        {
+            "name":"flip",
+            "params":{
+                "p":0.7
+            }
+        }
+
+    ],
+
+    "metrics":["accuracy"]
+
+}

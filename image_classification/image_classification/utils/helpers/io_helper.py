@@ -64,6 +64,12 @@ class IOHelper:
     @staticmethod
     def get_image_files(dir_path: str, full_path: bool = False, recursively: bool = False) -> List[str]:
         return IOHelper.get_files(dir_path, IOHelper.IMAGE_EXTENSIONS, full_path, recursively)
+
+    @staticmethod
+    def get_image_files_without_extension(dir_path: str, full_path: bool = False, recursively: bool = False) -> List[str]:
+        img_files=IOHelper.get_files(dir_path, IOHelper.IMAGE_EXTENSIONS, full_path, recursively)
+        return [IOHelper.get_filename_without_extension(file) for file in img_files]
+
     
     @staticmethod
     def get_filename(path: str) -> str:
@@ -75,6 +81,12 @@ class IOHelper:
         filename_without_extension, _ = os.path.splitext(filename)
         return filename_without_extension
     
+    @staticmethod
+    def get_epoch_from_checkpoint_path(path:str)->int:
+        epoch=int(IOHelper.get_filename_without_extension(path)[-3:])
+        return epoch
+
+
     @staticmethod
     def get_extension(path: str) -> str:
         return Path(path).suffix.strip()
@@ -90,6 +102,7 @@ class IOHelper:
             if show_confirmation:
                 print("Created {} directory".format(dir_path))
     
+
     @staticmethod
     def copyfile(src: str, dst: str) -> None:
         shutil.copyfile(src, dst)
